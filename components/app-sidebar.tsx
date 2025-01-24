@@ -29,109 +29,110 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Admin",
+    email: "admin@admin.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "ORTUBIA",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "",
     },
     {
-      name: "Acme Corp.",
+      name: "SEPESUR",
       logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      plan: "",
     },
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Pesca",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Externa",
           url: "#",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
+          title: "Interna",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Corte",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "Cortador mecanico interior",
           url: "#",
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
+          title: "Cortador mecanico exterior",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Impacto",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
+          title: "Intensificador de golpe hidraulico",
           url: "#",
         },
         {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
+          title: "Tijera de pesca",
           url: "#",
         },
       ],
     },
     {
-      title: "Settings",
+      title: "Reparacion",
       url: "#",
       icon: Settings2,
       items: [
         {
-          title: "General",
+          title: "Impresor de plomo",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Rascador de cañeria",
+          url: "#",
+        },
+      ],
+    },
+    {
+          title: "Recoleccion",
+          url: "#",
+          icon: Settings2,
+          items: [
+            {
+              title: "Pescador Arpon",
+              url: "#",
+            },
+            {
+              title: "Pescador Canasta",
+              url: "#",
+            },
+          ],
+    },
+    {
+      title: "Rotacion",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "Fresa canónica",
           url: "#",
         },
         {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Fresa plana",
           url: "#",
         },
       ],
@@ -139,20 +140,21 @@ const data = {
   ],
   projects: [
     {
-      name: "Design Engineering",
+      name: "Usuarios",
       url: "#",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
+      name: "Productos",
       url: "#",
       icon: PieChart,
     },
     {
-      name: "Travel",
+      name: "Categorias",
       url: "#",
       icon: Map,
     },
+    
   ],
 }
 

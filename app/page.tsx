@@ -5,6 +5,8 @@ import PageDashboard from "./dashboard/page";
 import PageLogin from "./login/page";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { SidebarProvider } from "@/app/context/SidebarContext";
+
 
 
 export default function Home() {
@@ -33,6 +35,8 @@ export default function Home() {
   }, []);
 
   return sessionStatus === 200 ? (
-    <PageDashboard/>
+    <SidebarProvider>
+      <PageDashboard/>
+    </SidebarProvider>
   ):( <PageLogin />);
 }

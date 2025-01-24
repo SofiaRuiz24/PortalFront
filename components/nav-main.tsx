@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
+import { useSidebarContext } from "@/app/context/SidebarContext";
 
 import {
   Collapsible,
@@ -32,9 +33,14 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const { setSelectedItem } = useSidebarContext();
+  const handleSidebarMenuClick = (title: string) => {
+    setSelectedItem(title); // Actualizar el estado global con el nombre del ítem
+    console.log('SidebarMenu clicked')
+  }
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Herramientas</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
@@ -56,7 +62,7 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <a href={subItem.url} onClick={() => handleSidebarMenuClick(subItem.title)}>
                           <span>{subItem.title}</span>
                         </a>
                       </SidebarMenuSubButton>

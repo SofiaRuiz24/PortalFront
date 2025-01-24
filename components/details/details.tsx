@@ -1,3 +1,4 @@
+"use client"
 import { Carousel } from "../ui/carousel"
 import {
     Accordion,
@@ -5,16 +6,82 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
-  
+import { Unidades, columns } from "./columns"
+import { DataTable } from "./dataTable" 
+import { Row } from "@tanstack/react-table"
+
+ function getData(): Promise<Unidades[]> {
+    // Fetch data from your API here.
+    return [
+      {
+        patente: "728ed52f",
+        año: 2024,
+        documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+        status: "disponible",
+      },
+      {
+        patente: "728ed52f",
+        año: 2024,
+        documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+        status: "disponible",
+      },
+        {
+            patente: "728ed52f",
+            año: 2024,
+            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+            status: "disponible",
+        },
+        {
+            patente: "728ed52f",
+            año: 2024,
+            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+            status: "disponible",
+        },
+        {
+            patente: "728ed52f",
+            año: 2024,
+            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+            status: "disponible",
+        },
+        {
+            patente: "728ed52f",
+            año: 2024,
+            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+            status: "disponible",
+        },
+        {
+            patente: "728ed52f",
+            año: 2024,
+            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+            status: "disponible",
+        },
+        {
+            patente: "728ed52f",
+            año: 2024,
+            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+            status: "disponible",
+        }
+      // ...
+    ]
+  }
+
+  const renderSubComponent = ({ row }: { row: Row<Unidades> }) => {
+    return (
+      <pre style={{ fontSize: '10px' }}>
+        <code>{JSON.stringify(row.original, null, 2)}</code>
+      </pre>
+    )
+  }
 
 export function Details(props: any, deprecatedLegacyContext?: any) {  
+    const data =  getData()
+
     const producto = {
         nombre: "Producto",
         descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec eros",
         etiquetas: ["Servicio de rotacion", "Servicio de recoleccion", "Servicio de rascado"],
     }
     return(
-        //quiero usar tailwindcss
         <div className="flex flex-col justify-center items-center gap-10">
             <div id="DetailHeader" className="flex lg:flex-row justify-center gap-10 w-full">
                 <div className="w-1/2 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center">
@@ -72,8 +139,9 @@ export function Details(props: any, deprecatedLegacyContext?: any) {
                     </AccordionItem>
                 </Accordion>
             </div>
-            <div id="DateilTable">
-                
+            <div id="DateilTable" className="w-full lg:w-4/5 mt-4 mb-8">
+                <DataTable columns={columns} data={data} getRowCanExpand={() => true}
+      renderSubComponent={renderSubComponent}/>
             </div>
         </div>
     ) 

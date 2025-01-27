@@ -1,25 +1,52 @@
-import { Carousel } from "../ui/carousel"
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
-  
+  import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/ui/carousel"
+import { useEffect } from 'react';
 
 export function Details(props: any, deprecatedLegacyContext?: any) {  
     const producto = {
         nombre: "Producto",
         descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec eros",
         etiquetas: ["Servicio de rotacion", "Servicio de recoleccion", "Servicio de rascado"],
+        imagen:["/images/imagen1.png","/images/imagen2.jpeg"],
     }
+
+
     return(
         //quiero usar tailwindcss
         <div className="flex flex-col justify-center items-center gap-10">
             <div id="DetailHeader" className="flex lg:flex-row justify-center gap-10 w-full">
                 <div className="w-1/2 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center">
-                    <div className="h-[400px] w-[450px] bg-gray-300/70 rounded-xl flex justify-center items-center ">🔄</div>
-                    <Carousel/>
+                    {/*<div className="h-[400px] w-[450px] bg-gray-300/70 rounded-xl flex justify-center items-center ">🔄</div>*/}
+                    <Carousel className="w-full max-w-[600px]">
+                        <CarouselContent>
+                            {producto.imagen.map((img, index) => (
+                                <CarouselItem key={index}>
+                                    <div className="flex justify-center item-center h-[400px] w-full rounded-lg overflow-hidden">
+                                        <img 
+                                            src={img} 
+                                            alt={`Imagen ${index + 1}`} 
+                                            onError={(e) => {
+                                                console.error(`Error al cargar imagen: ${img}`);
+                                            }}
+                                        />
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious />
+                        <CarouselNext />
+                    </Carousel>
                 </div>
                 
                 <div id="DetailTitle" className="w-full lg:w-1/3 text-center lg:text-left flex flex-col gap-4 h-auto lg:h-[400px]">

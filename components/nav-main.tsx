@@ -33,10 +33,12 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const { setSelectedItem } = useSidebarContext();
-  const handleSidebarMenuClick = (title: string) => {
-    setSelectedItem(title); // Actualizar el estado global con el nombre del ítem
-    console.log('SidebarMenu clicked')
+  const { setSelectedItem, setSelectedCategory } = useSidebarContext();
+  
+  const handleSidebarMenuClick = (categoryTitle: string, itemTitle: string) => {
+    setSelectedCategory(categoryTitle);
+    setSelectedItem(itemTitle);
+    console.log('SidebarMenu clicked');
   }
   return (
     <SidebarGroup>
@@ -62,7 +64,7 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url} onClick={() => handleSidebarMenuClick(subItem.title)}>
+                        <a href={subItem.url} onClick={() => handleSidebarMenuClick(item.title, subItem.title)}>
                           <span>{subItem.title}</span>
                         </a>
                       </SidebarMenuSubButton>

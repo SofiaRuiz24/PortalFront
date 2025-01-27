@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar"
 
 export default function Page() {
-  const { selectedItem } = useSidebarContext();
+  const { selectedItem, selectedCategory } = useSidebarContext();
 
 
   return (
@@ -32,13 +32,23 @@ export default function Page() {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink href="#">
-                      Inicio
+                    Inicio
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>{selectedItem}</BreadcrumbPage>
-                </BreadcrumbItem>
+                {selectedCategory && (
+                  <>
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>{selectedCategory}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator className="hidden md:block" />
+                  </>
+                )}
+                {selectedItem && (
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>{selectedItem}</BreadcrumbPage>
+                  </BreadcrumbItem>
+                )}
               </BreadcrumbList>
             </Breadcrumb>
           </div>

@@ -87,7 +87,7 @@ export default function Page() {
           </div>
         </header>
         {selectedSubCategory && selectedItem ? < Details producto= "id"/> : 
-        (selectedCategory || selectedSubCategory ?< SubCatPage /> : (
+        (selectedCategory || selectedSubCategory ? < SubCatPage /> : (
           selectedAdmin === "Usuarios" ? < UserAll /> : (
             selectedAdmin === "Categorias" ? <CategoryAll /> : (
               selectedAdmin === "Productos" ? < ProductAll /> : null

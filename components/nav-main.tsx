@@ -18,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { stringify } from "querystring";
 
 export function NavMain({
   items,
@@ -40,6 +41,11 @@ export function NavMain({
     setSelectedItem(itemTitle);
     console.log('SidebarMenu clicked');
   }
+  const handleSidebarMenu = (categoryTitle: string) => {
+    setSelectedCategory(categoryTitle);
+    setSelectedItem("");
+    console.log('SidebarMenu clicked');
+  }
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Herramientas</SidebarGroupLabel>
@@ -53,7 +59,7 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton tooltip={item.title} onClick={() => handleSidebarMenu(item.title)}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

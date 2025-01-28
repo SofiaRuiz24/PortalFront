@@ -11,17 +11,33 @@ import {
     CarouselNext,
     CarouselPrevious,
   } from "@/components/ui/carousel"
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
+import { useSidebarContext } from "@/app/context/SidebarContext";
+import axios from "axios";
 
 export function Details(props: any, deprecatedLegacyContext?: any) {  
-    const producto = {
+    const { arrayDeProductos } = useSidebarContext(); ;
+    const productos = [{
         nombre: "Producto",
         descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec eros",
         etiquetas: ["Servicio de rotacion", "Servicio de recoleccion", "Servicio de rascado"],
         imagen:["/images/imagen1.png","/images/imagen2.jpeg"],
-    }
+    },{
+        nombre: "Cangrejo",
+        descripcion:"",
+        etiquetas: ["Servicio de rotacion", "Servicio de recoleccion", "Servicio de rascado"],
+        imagen:["/images/imagen1.png","/images/imagen2.jpeg"],
+    }]
 
-
+    useEffect(() => {
+        const aux = productos.map((producto)=>{
+            const idProduct = arrayDeProductos?.find((product) => product.nombre === producto.nombre);
+            if(idProduct){
+                const res = axios.get(`http://localhost:4108/productos/${idProduct.id}`);
+                //TO DO: Guardar la respuesta en un estado
+            }
+        });
+    }, [])
     return(
         //quiero usar tailwindcss
         <div className="flex flex-col justify-center items-center gap-10">

@@ -15,10 +15,37 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import axios from "axios";
+import {  useEffect } from "react"
+
 
 export default function Page() {
-  const { selectedItem, selectedCategory } = useSidebarContext();
-
+  const { selectedItem, selectedCategory ,setSelectedCategory ,setSelectedItem, setArrayDeProductos } = useSidebarContext();
+  const handleIncio = () => {
+    setSelectedCategory("");
+    setSelectedItem("");
+  }
+  interface product {
+    _id: string;
+    nombre: string;
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+          const res = await axios.get('http://localhost:4108/productos');
+          const allProducts =res.data.data.map((producto: { _id: string; nombre: string }) => ({
+            id: producto._id,
+            nombre: producto.nombre,
+          }));
+          console.log("getAllProducts", allProducts);
+          //Almacenar los productos en un contexto global
+          setArrayDeProductos(allProducts);
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+      fetchData();
+    }, []);
 
   return (
     <SidebarProvider>
@@ -31,23 +58,25 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
+                  <BreadcrumbLink href="#" onClick={handleIncio}>
                     Inicio
                   </BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
                 {selectedCategory && (
                   <>
+                  <BreadcrumbSeparator className="hidden md:block" />
                     <BreadcrumbItem>
                       <BreadcrumbPage>{selectedCategory}</BreadcrumbPage>
                     </BreadcrumbItem>
-                    <BreadcrumbSeparator className="hidden md:block" />
                   </>
                 )}
                 {selectedItem && (
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>{selectedItem}</BreadcrumbPage>
-                  </BreadcrumbItem>
+                  <>
+                   <BreadcrumbSeparator className="hidden md:block" />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>{selectedItem}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </> 
                 )}
               </BreadcrumbList>
             </Breadcrumb>

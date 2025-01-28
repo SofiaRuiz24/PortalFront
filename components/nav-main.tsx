@@ -34,16 +34,16 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const { setSelectedItem, setSelectedCategory } = useSidebarContext();
+  const { setSelectedItem, setSelectedCategory, setSelectedSubCategory } = useSidebarContext();
   
   const handleSidebarMenuClick = (categoryTitle: string, itemTitle: string) => {
     setSelectedCategory(categoryTitle);
-    setSelectedItem(itemTitle);
+    setSelectedSubCategory(itemTitle);
     console.log('SidebarMenu clicked');
   }
   const handleSidebarMenu = (categoryTitle: string) => {
     setSelectedCategory(categoryTitle);
-    setSelectedItem("");
+    setSelectedSubCategory("");
     console.log('SidebarMenu clicked');
   }
   return (

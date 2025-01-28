@@ -23,9 +23,10 @@ import { CategoryAll } from "../../components/categorias/categoryAll";
 import { UserAll } from "../../components/usuarios/userAll";
 
 export default function Page() {
-  const { selectedItem, selectedCategory,selectedAdmin ,setSelectedCategory ,setSelectedItem, setArrayDeProductos } = useSidebarContext();
+  const { selectedItem, selectedCategory,selectedAdmin, selectedSubCategory ,setSelectedCategory ,setSelectedItem, setArrayDeProductos , setSelectedSubCategory} = useSidebarContext();
   const handleIncio = () => {
     setSelectedCategory("");
+    setSelectedSubCategory("");
     setSelectedItem("");
   }
   interface product {
@@ -73,11 +74,11 @@ export default function Page() {
                     </BreadcrumbItem>
                   </>
                 )}
-                {selectedItem && (
+                {selectedSubCategory  && (
                   <>
                    <BreadcrumbSeparator className="hidden md:block" />
                     <BreadcrumbItem>
-                      <BreadcrumbPage>{selectedItem}</BreadcrumbPage>
+                      <BreadcrumbPage>{selectedSubCategory}</BreadcrumbPage>
                     </BreadcrumbItem>
                   </> 
                 )}
@@ -85,8 +86,8 @@ export default function Page() {
             </Breadcrumb>
           </div>
         </header>
-        {selectedItem ? < Details producto= "id"/> : 
-        (selectedCategory ?< SubCatPage /> : (
+        {selectedSubCategory && selectedItem ? < Details producto= "id"/> : 
+        (selectedCategory || selectedSubCategory ?< SubCatPage /> : (
           selectedAdmin === "Usuarios" ? < UserAll /> : (
             selectedAdmin === "Categorias" ? <CategoryAll /> : (
               selectedAdmin === "Productos" ? < ProductAll /> : null

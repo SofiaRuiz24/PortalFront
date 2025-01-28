@@ -10,57 +10,21 @@ import { Unidades, columns } from "./columns"
 import { DataTable } from "./dataTable" 
 import { Row } from "@tanstack/react-table"
 
- function getData(): Promise<Unidades[]> {
+ function getData(): Unidades[] {
     // Fetch data from your API here.
     return [
       {
-        patente: "728ed52f",
-        año: 2024,
-        documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+        numeroSerie: "728ed52f",
+        año: 2023,
+        documentos: [{ nombre: "Patente", pdf: Buffer.from("documentos/Ejemplo.pdf") },{ nombre: "Autorizacion", pdf: Buffer.from("documentos/Ejemplo.pdf") }, { nombre: "Certificado", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
         status: "disponible",
       },
       {
-        patente: "728ed52f",
+        numeroSerie: "728ed52f",
         año: 2024,
-        documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
+        documentos: [{ nombre: "Certificado", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
         status: "disponible",
       },
-        {
-            patente: "728ed52f",
-            año: 2024,
-            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-            status: "disponible",
-        },
-        {
-            patente: "728ed52f",
-            año: 2024,
-            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-            status: "disponible",
-        },
-        {
-            patente: "728ed52f",
-            año: 2024,
-            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-            status: "disponible",
-        },
-        {
-            patente: "728ed52f",
-            año: 2024,
-            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-            status: "disponible",
-        },
-        {
-            patente: "728ed52f",
-            año: 2024,
-            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-            status: "disponible",
-        },
-        {
-            patente: "728ed52f",
-            año: 2024,
-            documentos: [{ nombre: "Documento 1", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-            status: "disponible",
-        }
       // ...
     ]
   }

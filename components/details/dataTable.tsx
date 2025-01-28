@@ -44,18 +44,21 @@ export function DataTable<TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                )
+            <TableRow className="flex justify-between" key={headerGroup.id}>
+              {headerGroup.headers.map((header, index) => {
+              return (
+                <TableHead
+                key={header.id}
+                className={index === headerGroup.headers.length - 1 ? "w-1/3" : ""}
+                >
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
+              )
               })}
             </TableRow>
           ))}
@@ -63,18 +66,22 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
+                <TableRow
+                className="flex justify-between"
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                >
+                {row.getVisibleCells().map((cell, index) => (
+                  <TableCell
+                  key={cell.id}
+                  className={index === row.getVisibleCells().length - 1 ? "w-1/3" : ""}
+                  >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
-              </TableRow>
-            ))
-          ) : (
+                </TableRow>
+              ))
+              ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results.

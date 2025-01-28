@@ -5,9 +5,11 @@ interface SidebarContextType {
   selectedItem: string | null; // Nombre del item seleccionado
   selectedCategory: string | null;
   arrayDeProductos: {id: string, nombre: string}[] | null; 
+  selectedAdmin: string | null; // Nombre del item seleccionado
   setArrayDeProductos:(arrayDeProductos: {id: string, nombre: string}[]) => void;
   setSelectedItem: (item: string) => void; // Función para actualizar el ítem seleccionadoo
   setSelectedCategory: (category: string) => void; // Función para actualizar la categoría seleccionada
+  setSelectedAdmin: (admin: string) => void; // Función para actualizar el ítem seleccionadoo
 }
 
 // Crear el contexto
@@ -18,6 +20,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null); //Almacena el ítem del menú actualmente seleccionado.
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null); //Almacena la categoría del menú actualmente seleccionada.
   const [arrayDeProductos, setArrayDeProductos] = useState<{id: string, nombre: string}[] | null>(null);
+  const [selectedAdmin, setSelectedAdmin] = useState<string | null>(null); //Almacena el ítem del menú actualmente seleccionado.
   return (
     <SidebarContext.Provider value={{  // Proporcionar los valores del contexto
       selectedItem, 
@@ -25,7 +28,9 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       selectedCategory,
       setSelectedCategory,
       arrayDeProductos,
-      setArrayDeProductos 
+      setArrayDeProductos,
+      selectedAdmin,
+      setSelectedAdmin,
     }}>
       {children}
     </SidebarContext.Provider>

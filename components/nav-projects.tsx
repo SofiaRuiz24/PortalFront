@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useSidebarContext } from "@/app/context/SidebarContext"
 
 export function NavProjects({
   projects,
@@ -35,13 +36,21 @@ export function NavProjects({
   }[]
 }) {
   const { isMobile } = useSidebar()
+  const { setSelectedAdmin, setSelectedCategory, setSelectedItem } = useSidebarContext();
+    
+    const handleSidebarMenuClick = (adminTitle: string) => {
+      setSelectedAdmin(adminTitle);
+      setSelectedCategory("");
+      setSelectedItem("");
+      console.log('SidebarMenu clicked');
+    }
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Administracion</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
+          <SidebarMenuItem onClick={() => handleSidebarMenuClick(item.name)} key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
                 <item.icon />
@@ -60,16 +69,16 @@ export function NavProjects({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem>
+                <DropdownMenuItem >
                   <Folder className="text-muted-foreground" />
                   <span>Crear</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem >
                   <Forward className="text-muted-foreground" />
                   <span>Editar</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem >
                   <Trash2 className="text-muted-foreground" />
                   <span>Eliminar</span>
                 </DropdownMenuItem>

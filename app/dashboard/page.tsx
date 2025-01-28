@@ -17,10 +17,13 @@ import {
 } from "@/components/ui/sidebar"
 import axios from "axios";
 import {  useEffect } from "react"
-
+import  { SubCatPage }  from "../../components/subCatPage/subCatPage";
+import { ProductAll } from "../../components/productos/productAll";
+import { CategoryAll } from "../../components/categorias/categoryAll";
+import { UserAll } from "../../components/usuarios/userAll";
 
 export default function Page() {
-  const { selectedItem, selectedCategory ,setSelectedCategory ,setSelectedItem, setArrayDeProductos } = useSidebarContext();
+  const { selectedItem, selectedCategory,selectedAdmin ,setSelectedCategory ,setSelectedItem, setArrayDeProductos } = useSidebarContext();
   const handleIncio = () => {
     setSelectedCategory("");
     setSelectedItem("");
@@ -82,28 +85,15 @@ export default function Page() {
             </Breadcrumb>
           </div>
         </header>
-        {selectedItem ? < Details/> :
-        <div className="flex flex-1 flex-col gap-10 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted" />
-            <div className="aspect-video rounded-xl bg-muted" />
-            <div className="aspect-video rounded-xl bg-muted" />
-          </div>
-          <div className="grid auto-rows-min gap-5 md:grid-cols-5">
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-            <div className="aspect-[2/3] rounded-xl bg-muted" />
-          </div>
-        </div>
+        {selectedItem ? < Details producto= "id"/> : 
+        (selectedCategory ?< SubCatPage /> : (
+          selectedAdmin === "Usuarios" ? < UserAll /> : (
+            selectedAdmin === "Categorias" ? <CategoryAll /> : (
+              selectedAdmin === "Productos" ? < ProductAll /> : null
+              )
+            )
+          )
+        )
         }
       </SidebarInset>
     </SidebarProvider>

@@ -1,21 +1,29 @@
-<<<<<<< HEAD
 "use client"
-import { Carousel } from "../ui/carousel"
-=======
->>>>>>> devMartin
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
-<<<<<<< HEAD
+  import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/ui/carousel"
+import { useEffect, useState } from 'react';
+import Product from "../../app/types/productType"; // Adjust the import path as necessary
 import { Unidades, columns } from "./columns"
 import { DataTable } from "./dataTable" 
 import { Row } from "@tanstack/react-table"
+import axios from "axios";
+import { useSidebarContext } from "@/app/context/SidebarContext";
 
- function getData(): Unidades[] {
-    // Fetch data from your API here.
+
+
+function getData(): Unidades[] {
+
     return [
       {
         numeroSerie: "728ed52f",
@@ -29,7 +37,6 @@ import { Row } from "@tanstack/react-table"
         documentos: [{ nombre: "Certificado", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
         status: "disponible",
       },
-      // ...
     ]
   }
 
@@ -41,54 +48,31 @@ import { Row } from "@tanstack/react-table"
     )
   }
 
-export function Details(props: any, deprecatedLegacyContext?: any) {  
-    const data =  getData()
-
-    const producto = {
-=======
-  import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-  } from "@/components/ui/carousel"
-import { use, useEffect } from 'react';
-import { useSidebarContext } from "@/app/context/SidebarContext";
-import axios from "axios";
-
-export function Details(props: any, deprecatedLegacyContext?: any) {  
+export function Details(props: any, producto?: string) {  
     const { arrayDeProductos } = useSidebarContext(); ;
-    const productos = [{
->>>>>>> devMartin
-        nombre: "Producto",
-        descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec eros",
-        etiquetas: ["Servicio de rotacion", "Servicio de recoleccion", "Servicio de rascado"],
-        imagen:["/images/imagen1.png","/images/imagen2.jpeg"],
-    },{
-        nombre: "Cangrejo",
-        descripcion:"",
-        etiquetas: ["Servicio de rotacion", "Servicio de recoleccion", "Servicio de rascado"],
-        imagen:["/images/imagen1.png","/images/imagen2.jpeg"],
-    }]
-
+    const data =  getData()
+    const [product, setProduct] = useState<Product | null>(null);
     useEffect(() => {
-        const aux = productos.map((producto)=>{
-            const idProduct = arrayDeProductos?.find((product) => product.nombre === producto.nombre);
-            if(idProduct){
-                const res = axios.get(`http://localhost:4108/productos/${idProduct.id}`);
+        const fetchProduct = async () => {
+            if(producto){
+                const res = await axios.get(`http://localhost:4108/productos/${producto}`);
                 //TO DO: Guardar la respuesta en un estado
+                
+                setProduct(res.data.data);
+                console.log("Producto", product);
             }
-        });
+        };
+        fetchProduct();
     }, [])
+
+
     return(
         <div className="flex flex-col justify-center items-center gap-10">
             <div id="DetailHeader" className="flex lg:flex-row justify-center gap-10 w-full">
                 <div className="w-1/2 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center">
-                    {/*<div className="h-[400px] w-[450px] bg-gray-300/70 rounded-xl flex justify-center items-center ">🔄</div>*/}
                     <Carousel className="w-full max-w-[600px]">
                         <CarouselContent>
-                            {producto.imagen.map((img, index) => (
+                            {product?.imagen? product.imagen.map((img, index) => (
                                 <CarouselItem key={index}>
                                     <div className="flex justify-center item-center h-[400px] w-full rounded-lg overflow-hidden">
                                         <img 
@@ -100,7 +84,7 @@ export function Details(props: any, deprecatedLegacyContext?: any) {
                                         />
                                     </div>
                                 </CarouselItem>
-                            ))}
+                            )) : <div className="h-[400px] w-[450px] bg-gray-300/70 rounded-xl flex justify-center items-center ">🔄</div>}
                         </CarouselContent>
                         <CarouselPrevious />
                         <CarouselNext />
@@ -108,13 +92,13 @@ export function Details(props: any, deprecatedLegacyContext?: any) {
                 </div>
                 
                 <div id="DetailTitle" className="w-full lg:w-1/3 text-center lg:text-left flex flex-col gap-4 h-auto lg:h-[400px]">
-                    <h2 className="text-2xl font-bold " >{producto.nombre}</h2>
+                    <h2 className="text-2xl font-bold " >{product?.nombre}</h2>
                     <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt--2 ">
-                    {producto.etiquetas.map((etiqueta: string) => (
+                    {product?.etiquetas.map((etiqueta: string) => (
                         <span className="inline-block bg-gray-200 text-gray-700 text-xs font-small px-2 py-0.5 rounded-full ">{etiqueta}</span>))
                     }
                     </div>
-                    <p className="text-gray-500">{producto.descripcion}</p>
+                    <p className="text-gray-500">{product?.descripcion}</p>
                 </div>
             </div>
             <div id="DetailInfo" className=" lg:w-2/3 w-vw mt-4">

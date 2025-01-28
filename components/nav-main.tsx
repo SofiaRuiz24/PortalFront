@@ -18,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { stringify } from "querystring";
 
 export function NavMain({
   items,
@@ -33,10 +34,17 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const { setSelectedItem } = useSidebarContext();
-  const handleSidebarMenuClick = (title: string) => {
-    setSelectedItem(title); // Actualizar el estado global con el nombre del ítem
-    console.log('SidebarMenu clicked')
+  const { setSelectedItem, setSelectedCategory } = useSidebarContext();
+  
+  const handleSidebarMenuClick = (categoryTitle: string, itemTitle: string) => {
+    setSelectedCategory(categoryTitle);
+    setSelectedItem(itemTitle);
+    console.log('SidebarMenu clicked');
+  }
+  const handleSidebarMenu = (categoryTitle: string) => {
+    setSelectedCategory(categoryTitle);
+    setSelectedItem("");
+    console.log('SidebarMenu clicked');
   }
   return (
     <SidebarGroup>
@@ -51,7 +59,7 @@ export function NavMain({
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton tooltip={item.title} onClick={() => handleSidebarMenu(item.title)}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -62,7 +70,7 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url} onClick={() => handleSidebarMenuClick(subItem.title)}>
+                        <a href={subItem.url} onClick={() => handleSidebarMenuClick(item.title, subItem.title)}>
                           <span>{subItem.title}</span>
                         </a>
                       </SidebarMenuSubButton>

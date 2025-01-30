@@ -4,7 +4,7 @@ interface Product {
     nombre: string;
     etiquetas: string[];
     descripcion: string;
-    imagen: string[];
+    imagen: {url:string, nombre:string}[];
     unidades: { nSerie: string, antiguedad: number, documentos: { pdf: string, nombre: string }[] }[];
 }
 export default Product;

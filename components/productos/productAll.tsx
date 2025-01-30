@@ -2,6 +2,7 @@ import React, { useEffect, useState , useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Image } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -36,12 +37,14 @@ import {
   
 import { Pencil, Trash2 } from "lucide-react";
 import axios from "axios";
+import  Documentos  from "../../app/types/documentosType";
 
 export function ProductAll() {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
     const [products, setProducts] = useState<any[]>([]);
     const formRef = useRef<HTMLFormElement>(null); // REF para limpiar el formulario
+    const [ documentosPreview, setDocumentosPreview ] = useState<Documentos[]>([]); // Vista previa de los documentos
 
     //Función para obtener los productos de la API
     const fetchProducts = async () => {
@@ -115,6 +118,17 @@ export function ProductAll() {
         }
     };
 
+    const handleDocs = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+    if (files) {
+        const docs = Array.from(files).map((file) => ({
+            pdf: URL.createObjectURL(file), // Crea una URL temporal para previsualización
+            nombre: file.name,
+        }));
+        setDocumentosPreview(docs);
+    }
+    }
+
     return (
         <div className="flex flex-col gap-8 p-6">
             {/* Formulario de Producto */}
@@ -131,8 +145,7 @@ export function ProductAll() {
                         encType="multipart/form-data" // Necesario para enviar archivos
                         className="space-y-6"
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
+                        <div className="space-y-2 w-1/2">
                                 <Label htmlFor="nombre">Nombre del Producto</Label>
                                 <Input
                                     id="nombre"
@@ -140,8 +153,9 @@ export function ProductAll() {
                                     placeholder="Ingrese el nombre del producto"
                                     required
                                 />
-                            </div>
+                        </div>
 
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <Label htmlFor="categoria">Categoría</Label>
                                 <Select name="categoria">
@@ -158,6 +172,15 @@ export function ProductAll() {
                                     </SelectContent>
                                 </Select>
                             </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="subcategoria">Subcategoria</Label>
+                                <Input
+                                    id="subcategoria"
+                                    name="subcategoria"
+                                    placeholder="Ingrese la Subcategoria del producto"
+                                    required
+                                />
+                        </div>
                         </div>
 
                         <div className="space-y-2">
@@ -170,15 +193,7 @@ export function ProductAll() {
                                 required
                             />
                         </div>
-                        <div className="space-y-2">
-                                <Label htmlFor="subcategoria">Subcategoria</Label>
-                                <Input
-                                    id="subcategoria"
-                                    name="subcategoria"
-                                    placeholder="Ingrese la Subcategoria del producto"
-                                    required
-                                />
-                            </div>
+                        
 
                         <div className="space-y-2">
                             <Label htmlFor="imagen">Imagen del Producto</Label>
@@ -188,17 +203,23 @@ export function ProductAll() {
                                 type="file"
                                 accept="image/*"
                                 multiple
-                                className="cursor-pointer"
-                            
+                                className="cursor-pointer min-h-[50px] pt-3"
+                                onChange={handleDocs}
                             />
-                            
-                            <div className="mt-2 hidden">
-                                <img
-                                    src=""
-                                    alt="Vista previa"
-                                    className="max-w-xs rounded-lg"
-                                />
-                            </div>
+                            {documentosPreview.length > 0 && (
+                                <div className="mt-2 space-y-2">
+                                    <ul className="list-disc pl-4">
+                                        {documentosPreview.map((doc, index) => (
+                                            <li key={index} className="flex items-center space-x-2">
+                                                <Image />
+                                                <a href={doc.pdf} target="_blank" rel="noopener noreferrer" className="text-black-200 hover:underline text-sm  hover:text-blue-700">
+                                                    {doc.nombre}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
 
                         <Button 

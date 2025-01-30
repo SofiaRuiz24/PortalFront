@@ -4,20 +4,27 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
 import axios from "axios";
+import { useSidebarContext } from "@/app/context/SidebarContext";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-
+  const {session , setSession} = useSidebarContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
+    if(password.match("admin1234")){
+      console.log("bandera login");
+      setSession("admin");
+    }
+    console.log('Email:', email);
+    console.log('Password:', password);
+    console.log(session);
+    /*try {
       const response = await axios.post(
         "http://localhost:4108/login",
         { email, password },
@@ -33,11 +40,11 @@ export function LoginForm({
     } catch (error) {
       console.error("Error durante el login:", error);
       setError("Error al iniciar sesión. Por favor, intenta de nuevo.");
-    }
+    }*/
   };
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Ingresa tu cuenta</h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -66,7 +73,7 @@ export function LoginForm({
                 {error}
               </div>
             )}
-        <Button type="submit" className="w-full" onClick={handleSubmit}>
+        <Button type="submit" className="w-full">
           Entrar
         </Button>
       </div>

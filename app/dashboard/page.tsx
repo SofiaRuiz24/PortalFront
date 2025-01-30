@@ -86,7 +86,7 @@ export default function Page() {
             </Breadcrumb>
           </div>
         </header>
-        {selectedSubCategory && selectedItem ? <Details producto={selectedItem}/> : 
+        { selectedItem ? <Details /> : 
         (selectedCategory || selectedSubCategory ? < SubCatPage /> : (
           selectedAdmin === "Usuarios" ? < UserAll /> : (
             selectedAdmin === "Categorias" ? <CategoryAll /> : (

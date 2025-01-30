@@ -5,25 +5,25 @@ import { ColumnDef } from "@tanstack/react-table"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Unidades = {
-  numeroSerie: string
-  año: number
-  status: "disponible" | "reservado" | "vendido"
-  documentos: Array<{ nombre: string; pdf: Buffer }>
+  nSerie: string
+  antiguedad: number
+ // status: "disponible" | "reservado" | "vendido"
+  documentos: Array<{ nombre: string; pdf: string }>
 }
 
 export const columns: ColumnDef<Unidades>[] = [
     {
-    accessorKey: "numeroSerie",
+    accessorKey: "nSerie",
     header: "Numero de serie",
     },
     {
-    accessorKey: "año",
+    accessorKey: "antiguedad",
     header: "Año",
     },
-    {
-        accessorKey: "status",
-        header: "Status",
-    },
+    /*{
+      accessorKey: "status",
+      header: "Status",
+    },*/
     {
     accessorKey: "documentos",
     header: "Documentos",
@@ -31,7 +31,7 @@ export const columns: ColumnDef<Unidades>[] = [
       const documentos = row.original.documentos;
       return (
         <div className="flex gap-2 ">
-          {documentos.map((doc, index) => (
+          {documentos?.map((doc, index) => (
             <button
               key={index}
               onClick={() => {
@@ -45,7 +45,7 @@ export const columns: ColumnDef<Unidades>[] = [
                 className="flex flex-col w-[100px]  items-center gap-2"
               >
               <span>📄</span>
-              <span>{doc.nombre}</span> 
+              <span>{doc.nombre.split(".pdf")}</span> 
             </button>
           ))}
         </div>

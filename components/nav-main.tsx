@@ -39,11 +39,13 @@ export function NavMain({
   const handleSidebarMenuClick = (categoryTitle: string, itemTitle: string) => {
     setSelectedCategory(categoryTitle);
     setSelectedSubCategory(itemTitle);
+    setSelectedItem("");
     console.log('SidebarMenu clicked');
   }
   const handleSidebarMenu = (categoryTitle: string) => {
     setSelectedCategory(categoryTitle);
     setSelectedSubCategory("");
+    setSelectedItem("");
     console.log('SidebarMenu clicked');
   }
   return (
@@ -54,7 +56,7 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
+            //defaultOpen={item.isActive}
             className="group/collapsible"
           >
             <SidebarMenuItem>

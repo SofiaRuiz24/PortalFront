@@ -1,5 +1,4 @@
 "use client"
-
 import {
   ColumnDef,
   flexRender,
@@ -8,7 +7,6 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table"
-
 import {
   Table,
   TableBody,
@@ -17,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-
 interface DataTableProps<TData, TValue> {
     data: TData[]
     columns: ColumnDef<TData, TValue>[]
@@ -38,7 +35,7 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
   })
-
+  console.log("Table", data)
   return (
     <div className="rounded-md border">
       <Table>

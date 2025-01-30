@@ -20,64 +20,63 @@ import { Row } from "@tanstack/react-table"
 import axios from "axios";
 import { useSidebarContext } from "@/app/context/SidebarContext";
 
-
-
-function getData(): Unidades[] {
-
-    return [
-      {
-        numeroSerie: "728ed52f",
-        año: 2023,
-        documentos: [{ nombre: "Patente", pdf: Buffer.from("documentos/Ejemplo.pdf") },{ nombre: "Autorizacion", pdf: Buffer.from("documentos/Ejemplo.pdf") }, { nombre: "Certificado", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-        status: "disponible",
-      },
-      {
-        numeroSerie: "728ed52f",
-        año: 2024,
-        documentos: [{ nombre: "Certificado", pdf: Buffer.from("documentos/Ejemplo.pdf") }],
-        status: "disponible",
-      },
-    ]
-  }
-
-  const renderSubComponent = ({ row }: { row: Row<Unidades> }) => {
+const renderSubComponent = ({ row }: { row: Row<Unidades> }) => {
     return (
       <pre style={{ fontSize: '10px' }}>
         <code>{JSON.stringify(row.original, null, 2)}</code>
       </pre>
     )
-  }
+}
 
-export function Details(props: any, producto?: string) {  
-    const { arrayDeProductos } = useSidebarContext(); ;
-    const data =  getData()
+async function madeData(data: Unidades[]) {
+    
+    const datas = data.map((unidad) => ({
+        nSerie: unidad.nSerie,
+        antiguedad: unidad.antiguedad,
+        documentos: unidad.documentos,
+    }))
+    
+    return datas;
+}
+export function Details(props: any) {  
+    const { arrayDeProductos, selectedItem } = useSidebarContext(); ;
+    const [selectedData, setSelectedData] = useState<Unidades[]>([]);
     const [product, setProduct] = useState<Product | null>(null);
+    
+
     useEffect(() => {
         const fetchProduct = async () => {
-            if(producto){
-                const res = await axios.get(`http://localhost:4108/productos/${producto}`);
+            if(selectedItem){
+                const res = await axios.get(`http://localhost:4108/productos/${selectedItem}`);
                 //TO DO: Guardar la respuesta en un estado
+                console.log("Response", res.data.updatedProduct);
+                setProduct(res.data.updatedProduct);
                 
-                setProduct(res.data.data);
-                console.log("Producto", product);
             }
         };
         fetchProduct();
+        
     }, [])
+
+    useEffect(() => {
+        setSelectedData(product?.unidades || []);
+        const data = madeData(selectedData);
+        
+    }, [product])
 
 
     return(
         <div className="flex flex-col justify-center items-center gap-10">
             <div id="DetailHeader" className="flex lg:flex-row justify-center gap-10 w-full">
                 <div className="w-1/2 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center">
-                    <Carousel className="w-full max-w-[600px]">
+                    <Carousel className="w-2/3 max-w-[600px]">
                         <CarouselContent>
                             {product?.imagen? product.imagen.map((img, index) => (
                                 <CarouselItem key={index}>
                                     <div className="flex justify-center item-center h-[400px] w-full rounded-lg overflow-hidden">
                                         <img 
-                                            src={img} 
-                                            alt={`Imagen ${index + 1}`} 
+                                            src={img.url} 
+                                            alt={`Imagen ${index + 1}, nombre: ${img.nombre}`} 
                                             onError={(e) => {
                                                 console.error(`Error al cargar imagen: ${img}`);
                                             }}
@@ -86,15 +85,15 @@ export function Details(props: any, producto?: string) {
                                 </CarouselItem>
                             )) : <div className="h-[400px] w-[450px] bg-gray-300/70 rounded-xl flex justify-center items-center ">🔄</div>}
                         </CarouselContent>
-                        <CarouselPrevious />
-                        <CarouselNext />
+                        <CarouselPrevious  className="bg-muted/50"/>
+                        <CarouselNext className="bg-muted/50"/>
                     </Carousel>
                 </div>
                 
                 <div id="DetailTitle" className="w-full lg:w-1/3 text-center lg:text-left flex flex-col gap-4 h-auto lg:h-[400px]">
                     <h2 className="text-2xl font-bold " >{product?.nombre}</h2>
                     <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt--2 ">
-                    {product?.etiquetas.map((etiqueta: string) => (
+                    {product?.etiquetas?.map((etiqueta: string) => (
                         <span className="inline-block bg-gray-200 text-gray-700 text-xs font-small px-2 py-0.5 rounded-full ">{etiqueta}</span>))
                     }
                     </div>
@@ -142,7 +141,7 @@ export function Details(props: any, producto?: string) {
                 </Accordion>
             </div>
             <div id="DateilTable" className="w-full lg:w-4/5 mt-4 mb-8">
-                <DataTable columns={columns} data={data} getRowCanExpand={() => true}
+                <DataTable columns={columns} data={selectedData} getRowCanExpand={() => true}
       renderSubComponent={renderSubComponent}/>
             </div>
         </div>

@@ -203,7 +203,7 @@ export function ProductAll() {
 
                         <Button 
                             type="submit" 
-                            className={`w-full ${isSuccess ? 'bg-green-500' : ''}`}
+                            className={`w-auto px-4 py-2 text-sm ${isSuccess ? 'bg-green-500' : ''} mx-auto block`}
                         >
                             Guardar Producto
                         </Button>
@@ -229,7 +229,7 @@ export function ProductAll() {
                         <TableBody>
                             {/* Ejemplo de fila - Esto se reemplazará con datos reales */}
                                 {products?.map((product: any) => (
-                                <TableRow>
+                                <TableRow >
                                  <TableCell>{product.nombre}</TableCell>
                                  <TableCell>
                                     {
@@ -283,7 +283,7 @@ export function ProductAll() {
                                             />
                                         </div>
                                             <DialogFooter>
-                                                <DialogClose>
+                                                <DialogClose asChild>
                                                     <Button type="submit">Confirmar</Button>
                                                 </DialogClose>
                                             </DialogFooter>   

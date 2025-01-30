@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -40,21 +40,25 @@ import axios from "axios";
 export function ProductAll() {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState<any[]>([]);
+    const formRef = useRef<HTMLFormElement>(null); // REF para limpiar el formulario
 
+    //Función para obtener los productos de la API
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get("http://localhost:4108/productos");
+            console.log("Productos cargados:", response.data.data); // Debug
+            setProducts(response.data.data);
+        } catch (error) {
+            console.error("Error al obtener los productos:", error);
+        }
+    };
+
+    //Ejecuta fetchProducts cuando isSuccess cambia
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get("http://localhost:4108/productos");
-                setProducts(response.data.data);
-            } catch (error) {
-                console.error("Error al obtener los productos:", error);
-            }
-        };
-
         fetchProducts();
-    }, []);
-
+    }, [isSuccess]);
+   
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Evita la recarga de la página y la redirección automática
         setIsSuccess(false);
@@ -66,9 +70,29 @@ export function ProductAll() {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("Respuesta:", response);
-            alert("Producto guardado correctamente");
-            setIsSuccess(true);
+
+            /* Si response.data y response.data.data existen (es decir, no son null, undefined ni falsos)
+             entonces ejecuta la función fetchProducts()*/ 
+
+            if (response.data && response.data.data) {
+                // Volver a cargar los productos desde el servidor para asegurar de tener la lista actualizada
+                fetchProducts();
+            } else {
+                console.error("Error: la respuesta del servidor no contiene datos válidos.");
+            }
+             
+            
+            //Limpiar el formulario
+            setTimeout(() => {
+                if (formRef.current) {
+                    formRef.current.reset();
+                }
+            }, 1000);
+  
+            //Resetear estado del botón después de éxito
+              setIsSuccess(true);
+              setTimeout(() => setIsSuccess(false), 1000);
+
         } catch (error) {
             console.error("Error:", error);
         }
@@ -100,6 +124,7 @@ export function ProductAll() {
                 </CardHeader>
                 <CardContent>
                     <form 
+                        ref={formRef}
                         onSubmit={handleSubmit}
                         action="http://localhost:4108/productos" // URL de la API
                         method="post" 

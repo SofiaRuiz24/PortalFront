@@ -66,7 +66,14 @@ export function ProductAll() {
         e.preventDefault(); // Evita la recarga de la página y la redirección automática
         setIsSuccess(false);
         const formData = new FormData(e.currentTarget); // Captura todos los datos del formulario
-        
+
+        const files = e.currentTarget["product-img"].files; //Acceder correctamente
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+            formData.append("product-img", files[i]); //Coincidir con Multer
+             }
+        }
+
         try {
             const response = await axios.post("http://localhost:4108/productos", formData, {
                 headers: {
@@ -120,14 +127,18 @@ export function ProductAll() {
 
     const handleDocs = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
-    if (files) {
-        const docs = Array.from(files).map((file) => ({
-            pdf: URL.createObjectURL(file), // Crea una URL temporal para previsualización
-            nombre: file.name,
-        }));
-        setDocumentosPreview(docs);
-    }
-    }
+        if (files) {
+            // Convertir los archivos a una lista y luego agregar los nuevos archivos a los existentes
+            const docs = Array.from(files).map((file) => ({
+                pdf: URL.createObjectURL(file), // Crea una URL temporal para previsualización
+                nombre: file.name,
+            }));
+    
+            // Aquí combinamos los archivos anteriores con los nuevos
+            setDocumentosPreview(prevDocs => [...prevDocs, ...docs]);
+        }
+    };
+    
 
     return (
         <div className="flex flex-col gap-8 p-6">
@@ -212,7 +223,7 @@ export function ProductAll() {
                                         {documentosPreview.map((doc, index) => (
                                             <li key={index} className="flex items-center space-x-2">
                                                 <Image />
-                                                <a href={doc.pdf} target="_blank" rel="noopener noreferrer" className="text-black-200 hover:underline text-sm  hover:text-blue-700">
+                                                <a href={doc.pdf} target="_blank" rel="noopener noreferrer" className="text-black-200 hover:underline text-sm hover:text-blue-700">
                                                     {doc.nombre}
                                                 </a>
                                             </li>
@@ -220,6 +231,7 @@ export function ProductAll() {
                                     </ul>
                                 </div>
                             )}
+
                         </div>
 
                         <Button 

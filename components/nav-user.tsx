@@ -7,6 +7,8 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  CircleHelp ,
+  SquareUserRound 
 } from "lucide-react"
 
 import {
@@ -93,15 +95,15 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <BadgeCheck />
+                <SquareUserRound  />
                 Perfil
               </DropdownMenuItem>
-              <DropdownMenuItem>
+             {/*} <DropdownMenuItem>
                 <CreditCard />
                 En Alquiler
-              </DropdownMenuItem>
+              </DropdownMenuItem>*/}
               <DropdownMenuItem>
-              <Sparkles />
+              <CircleHelp  />
                 Contacto / Ayuda
               </DropdownMenuItem>
             </DropdownMenuGroup>

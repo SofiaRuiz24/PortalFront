@@ -36,11 +36,12 @@ export function NavProjects({
   }[]
 }) {
   const { isMobile } = useSidebar()
-  const { setSelectedAdmin, setSelectedCategory, setSelectedItem } = useSidebarContext();
+  const { setSelectedAdmin, setSelectedCategory, setSelectedItem, setSelectedSubCategory } = useSidebarContext();
     
     const handleSidebarMenuClick = (adminTitle: string) => {
       setSelectedAdmin(adminTitle);
       setSelectedCategory("");
+      setSelectedSubCategory("");
       setSelectedItem("");
       console.log('SidebarMenu clicked');
     }

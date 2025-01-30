@@ -11,7 +11,14 @@ import {
   Map,
   PieChart,
   Settings2,
-  SquareTerminal,
+  Shrink ,
+  Hammer ,
+  Package ,
+  RefreshCw ,
+  Fan ,
+  Webhook ,
+  UsersRound ,
+  PencilRuler ,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -49,7 +56,7 @@ const data = {
     {
       title: "Pesca",
       url: "#",
-      icon: SquareTerminal,
+      icon: Webhook ,
       isActive: true,
       items: [
         {
@@ -65,7 +72,7 @@ const data = {
     {
       title: "Corte",
       url: "#",
-      icon: Bot,
+      icon: Fan ,
       items: [
         {
           title: "Cortador mecanico interior",
@@ -80,7 +87,7 @@ const data = {
     {
       title: "Impacto",
       url: "#",
-      icon: BookOpen,
+      icon: Shrink,
       items: [
         {
           title: "Intensificador de golpe hidraulico",
@@ -95,7 +102,7 @@ const data = {
     {
       title: "Reparacion",
       url: "#",
-      icon: Settings2,
+      icon: Hammer,
       items: [
         {
           title: "Impresor de plomo",
@@ -110,7 +117,7 @@ const data = {
     {
           title: "Recoleccion",
           url: "#",
-          icon: Settings2,
+          icon: Package ,
           items: [
             {
               title: "Pescador Arpon",
@@ -125,7 +132,7 @@ const data = {
     {
       title: "Rotacion",
       url: "#",
-      icon: Settings2,
+      icon: RefreshCw ,
       items: [
         {
           title: "Fresa canónica",
@@ -142,17 +149,17 @@ const data = {
     {
       name: "Usuarios",
       url: "#",
-      icon: Frame,
+      icon: UsersRound ,
     },
     {
       name: "Productos",
       url: "#",
-      icon: PieChart,
+      icon: PencilRuler,
     },
     {
       name: "Categorias",
       url: "#",
-      icon: Map,
+      icon: Frame,
     },
     
   ],

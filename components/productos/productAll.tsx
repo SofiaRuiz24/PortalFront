@@ -277,7 +277,7 @@ export function ProductAll() {
                                  </TableCell>
                                  <TableCell>
                                  <Dialog>
-                                    <DialogTrigger><Button variant='outline'>Agregar Unidades</Button></DialogTrigger>
+                                    <DialogTrigger variant='outline' className="bg-accent/80 text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">Agregar Unidades</DialogTrigger>
                                     <DialogContent className="sm:max-w-[425px]">
                                         <DialogHeader>
                                         <DialogTitle>Editar unidades</DialogTitle>

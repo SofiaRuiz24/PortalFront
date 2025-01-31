@@ -35,7 +35,7 @@ export function NavMain({
   }[]
 }) {
   const { setSelectedItem, setSelectedCategory, setSelectedSubCategory } = useSidebarContext();
-  
+  console.log('NavMain'+JSON.stringify(items,null, 2)); // Usar JSON.stringify para imprimir los objetos de manera legible);
   const handleSidebarMenuClick = (categoryTitle: string, itemTitle: string) => {
     setSelectedCategory(categoryTitle);
     setSelectedSubCategory(itemTitle);

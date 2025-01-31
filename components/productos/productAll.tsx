@@ -94,7 +94,6 @@ export function ProductAll() {
                     title: "Éxito",
                     description: "Producto guardado correctamente",
                     variant: "default",
-                    className: "bg-green-500 text-white border-green-600",
                     duration: 5000,
                 });
     
@@ -257,7 +256,7 @@ export function ProductAll() {
 
                         <Button 
                             type="submit" 
-                            className={`w-auto px-4 py-2 text-sm ${isSuccess ? 'bg-green-500' : ''} mx-auto block`}
+                            className={`w-auto px-4 py-2 text-sm mx-auto block`}
                         >
                             Guardar Producto
                         </Button>
@@ -298,7 +297,7 @@ export function ProductAll() {
                                  </TableCell>
                                  <TableCell>
                                  <Dialog>
-                                    <DialogTrigger variant='outline' className="bg-accent/80 text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">Agregar Unidades</DialogTrigger>
+                                    <DialogTrigger  className="bg-accent/80 text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">Agregar Unidades</DialogTrigger>
                                     <DialogContent className="sm:max-w-[425px]">
                                         <DialogHeader>
                                         <DialogTitle>Editar unidades</DialogTitle>

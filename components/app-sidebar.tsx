@@ -57,7 +57,6 @@ const data = {
       title: "Pesca",
       url: "#",
       icon: Webhook ,
-      isActive: true,
       items: [
         {
           title: "Externa",

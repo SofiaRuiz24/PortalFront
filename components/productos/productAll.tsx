@@ -2,6 +2,7 @@ import React, { useEffect, useState , useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast"
 import { Image } from 'lucide-react';
 import {
   Select,
@@ -40,6 +41,7 @@ import axios from "axios";
 import  Documentos  from "../../app/types/documentosType";
 
 export function ProductAll() {
+    const { toast } = useToast();
     const [selectedCategory, setSelectedCategory] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
     const [products, setProducts] = useState<any[]>([]);
@@ -63,50 +65,66 @@ export function ProductAll() {
     }, [isSuccess]);
    
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Evita la recarga de la página y la redirección automática
+        e.preventDefault();
         setIsSuccess(false);
-        const formData = new FormData(e.currentTarget); // Captura todos los datos del formulario
-
-        const files = e.currentTarget["product-img"].files; //Acceder correctamente
-        if (files) {
-            for (let i = 0; i < files.length; i++) {
-            formData.append("product-img", files[i]); //Coincidir con Multer
-             }
-        }
-
+    
+        const formData = new FormData(e.currentTarget);
+    
         try {
+
+            formData.delete("product-img");
+
+            // Agregar documentos si existen
+            await Promise.all(documentosPreview.map(async (doc) => {
+                const response = await fetch(doc.pdf);
+                const blob = await response.blob();
+                const file = new File([blob], doc.nombre, { type: "image/*" });
+                formData.append("product-img", file);
+            }));
+    
             const response = await axios.post("http://localhost:4108/productos", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+                headers: { "Content-Type": "multipart/form-data" },
             });
-
-            /* Si response.data y response.data.data existen (es decir, no son null, undefined ni falsos)
-             entonces ejecuta la función fetchProducts()*/ 
-
-            if (response.data && response.data.data) {
-                // Volver a cargar los productos desde el servidor para asegurar de tener la lista actualizada
-                fetchProducts();
+    
+            console.log("Respuesta del servidor:", response);
+    
+            // Validar por status en lugar de response.data.data
+            if (response.status >= 200 && response.status < 300) { 
+                toast({
+                    title: "Éxito",
+                    description: "Producto guardado correctamente",
+                    variant: "default",
+                    className: "bg-green-500 text-white border-green-600",
+                    duration: 5000,
+                });
+    
+                setIsSuccess(true);
+                fetchProducts(); 
+    
+                // Limpiar formulario
+                setTimeout(() => {
+                    formRef.current?.reset();
+                    setDocumentosPreview([]);
+                    setIsSuccess(false);
+                }, 1000);
+    
             } else {
-                console.error("Error: la respuesta del servidor no contiene datos válidos.");
+                throw new Error("Respuesta inesperada del servidor");
             }
-             
             
-            //Limpiar el formulario
-            setTimeout(() => {
-                if (formRef.current) {
-                    formRef.current.reset();
-                }
-            }, 1000);
-  
-            //Resetear estado del botón después de éxito
-              setIsSuccess(true);
-              setTimeout(() => setIsSuccess(false), 1000);
-
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error al guardar el producto:", error);
+    
+            toast({
+                title: "Error",
+                description: "Error al guardar el producto",
+                variant: "destructive",
+                duration: 5000,
+            });
         }
     };
+    
+    
 
     const handleSubmitUnidades = async (e: React.FormEvent<HTMLFormElement>, producto:string) => {
         e.preventDefault(); // Evita la recarga de la página y la redirección automática
@@ -124,20 +142,23 @@ export function ProductAll() {
             console.error("Error:", error);
         }
     };
-
     const handleDocs = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files) {
-            // Convertir los archivos a una lista y luego agregar los nuevos archivos a los existentes
-            const docs = Array.from(files).map((file) => ({
-                pdf: URL.createObjectURL(file), // Crea una URL temporal para previsualización
+            const newDocs = Array.from(files).map((file) => ({
+                pdf: URL.createObjectURL(file),
                 nombre: file.name,
             }));
     
-            // Aquí combinamos los archivos anteriores con los nuevos
-            setDocumentosPreview(prevDocs => [...prevDocs, ...docs]);
+            // Evitar duplicados: Filtrar los archivos que ya están en la lista
+            setDocumentosPreview(prevDocs => {
+                const existingNames = new Set(prevDocs.map(doc => doc.nombre));
+                const filteredDocs = newDocs.filter(doc => !existingNames.has(doc.nombre));
+                return [...prevDocs, ...filteredDocs];
+            });
         }
     };
+    
     
 
     return (
@@ -316,8 +337,8 @@ export function ProductAll() {
                                             />
                                         </div>
                                             <DialogFooter>
-                                                <DialogClose asChild>
-                                                    <Button type="submit">Confirmar</Button>
+                                                <DialogClose type="submit" className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/70 transition-all">
+                                                    Confirmar
                                                 </DialogClose>
                                             </DialogFooter>   
                                         </form>

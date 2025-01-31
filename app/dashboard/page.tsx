@@ -21,6 +21,7 @@ import  { SubCatPage }  from "../../components/subCatPage/subCatPage";
 import { ProductAll } from "../../components/productos/productAll";
 import { CategoryAll } from "../../components/categorias/categoryAll";
 import { UserAll } from "../../components/usuarios/userAll";
+import { Toaster } from "@/components/ui/toaster"
 
 export default function Page() {
   const { selectedItem, selectedCategory,selectedAdmin, selectedSubCategory ,setSelectedCategory ,setSelectedItem, setArrayDeProductos , setSelectedSubCategory} = useSidebarContext();
@@ -97,6 +98,7 @@ export default function Page() {
         )
         }
       </SidebarInset>
+      <Toaster />
     </SidebarProvider>
   )
 }

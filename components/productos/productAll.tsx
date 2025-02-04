@@ -104,6 +104,7 @@ export function ProductAll() {
                 setTimeout(() => {
                     formRef.current?.reset();
                     setDocumentosPreview([]);
+                    setSelectedCategory("");
                     setIsSuccess(false);
                 }, 1000);
     
@@ -126,8 +127,8 @@ export function ProductAll() {
     
 
     const handleSubmitUnidades = async (e: React.FormEvent<HTMLFormElement>, producto:string) => {
-        e.preventDefault(); // Evita la recarga de la página y la redirección automática
-        const formData = new FormData(e.currentTarget); // Captura todos los datos del formulario
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
         formData.append("producto", producto);
         try {
             const response = await axios.post("http://localhost:4108/unidades", formData, {
@@ -135,10 +136,28 @@ export function ProductAll() {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("Respuesta:", response);
-            alert("Unidades guardadas correctamente");
+
+            if (response.status >= 200 && response.status < 300) {
+                toast({
+                    title: "Éxito",
+                    description: "Unidades guardadas correctamente",
+                    variant: "default",
+                    duration: 5000,
+                });
+
+                // Limpiar formulario
+                e.currentTarget.reset();
+            } else {
+                throw new Error("Respuesta inesperada del servidor");
+            }
         } catch (error) {
             console.error("Error:", error);
+            toast({
+                title: "Error",
+                description: "Error al guardar las unidades",
+                variant: "destructive",
+                duration: 5000,
+            });
         }
     };
     const handleDocs = (event: React.ChangeEvent<HTMLInputElement>) => {

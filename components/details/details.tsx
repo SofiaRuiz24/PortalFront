@@ -66,16 +66,16 @@ export function Details(props: any) {
 
 
     return(
-        <div className="flex flex-col justify-center items-center gap-10">
+        <div className="flex flex-col justify-center items-center gap-10 bg-white pt-4">
             <div id="DetailHeader" className="flex lg:flex-row justify-center gap-10 w-full">
                 <div className="w-1/2 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center">
                     <Carousel className="w-2/3 max-w-[600px]">
                         <CarouselContent>
-                            {product?.imagen? product.imagen.map((img, index) => (
+                            {product?.imagen[0]? product.imagen.map((img, index) => (
                                 <CarouselItem key={index}>
-                                    <div className="flex justify-center item-center h-[400px] w-full rounded-lg overflow-hidden">
+                                    <div className="flex justify-center item-center h-[400px] w-full rounded-lg overflow-hidden bg-white">
                                         <img 
-                                            src={img.url} 
+                                            src={img.url? img.url : "/images/placeholder.jpeg"} 
                                             alt={`Imagen ${index + 1}, nombre: ${img.nombre}`} 
                                             onError={(e) => {
                                                 console.error(`Error al cargar imagen: ${img}`);
@@ -83,7 +83,11 @@ export function Details(props: any) {
                                         />
                                     </div>
                                 </CarouselItem>
-                            )) : <div className="h-[400px] w-[450px] bg-gray-300/70 rounded-xl flex justify-center items-center ">🔄</div>}
+                            )) : <CarouselItem >
+                                <div className="h-[400px] w-full rounded-lg flex overflow-hidden bg-white justify-center items-center ">
+                                    <img src="/images/placeholder.png" alt="placeholderImg" />
+                                </div>
+                                </CarouselItem>}
                         </CarouselContent>
                         <CarouselPrevious  className="bg-muted/50"/>
                         <CarouselNext className="bg-muted/50"/>

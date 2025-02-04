@@ -22,12 +22,14 @@ import { ProductAll } from "../../components/productos/productAll";
 import { CategoryAll } from "../../components/categorias/categoryAll";
 import { UserAll } from "../../components/usuarios/userAll";
 import { Toaster } from "@/components/ui/toaster"
+import { HomePage } from "@/components/homePage";
 
 export default function Page() {
-  const { selectedItem, selectedCategory,selectedAdmin, selectedSubCategory ,setSelectedCategory ,setSelectedItem, setArrayDeProductos , setSelectedSubCategory} = useSidebarContext();
+  const { selectedItem, selectedCategory,selectedAdmin, selectedSubCategory, setSelectedAdmin ,setSelectedCategory ,setSelectedItem, setArrayDeProductos , setSelectedSubCategory} = useSidebarContext();
   const handleIncio = () => {
     setSelectedCategory("");
     setSelectedSubCategory("");
+    setSelectedAdmin("");
     setSelectedItem("");
   }
   interface product {
@@ -91,7 +93,7 @@ export default function Page() {
         (selectedCategory || selectedSubCategory ? < SubCatPage /> : (
           selectedAdmin === "Usuarios" ? < UserAll /> : (
             selectedAdmin === "Categorias" ? <CategoryAll /> : (
-              selectedAdmin === "Productos" ? < ProductAll /> : null
+              selectedAdmin === "Productos" ? < ProductAll /> : <HomePage />
               )
             )
           )

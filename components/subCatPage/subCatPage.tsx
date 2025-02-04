@@ -62,7 +62,7 @@ export function SubCatPage(props: any) {
             {
               productsCategory.map((product) => (
                 <button onClick={(e) => handleSelectedProduct(e, product._id)} key={product._id} className="relative aspect-[2/3] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg" >
-                  <img src={product.imagen[0]?.url} alt={product.imagen[0]?.nombre} className="h-full w-full object-cover"/>
+                  <img src={product.imagen[0]?.url ? product.imagen[0].url : "/images/placeholder.jpeg"} alt={product.imagen[0]?.nombre} className="h-full w-full object-cover"/>
                   <span className="absolute bottom-0 left-0 w-full bg-black/60 text-white p-2 text-center text-sm truncate">{product.nombre}</span>
                 </button>
               ))

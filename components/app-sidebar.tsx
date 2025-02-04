@@ -176,7 +176,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }>({
     user: {name: "Admin",
       email: "admin@admin.com",
-      avatar: "/avatars/shadcn.jpg",},
+      avatar: " ",},
     teams: [{
       name: "ORTUBIA",
       logo: GalleryVerticalEnd,

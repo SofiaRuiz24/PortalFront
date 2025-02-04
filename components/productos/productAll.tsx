@@ -42,7 +42,7 @@ import  Documentos  from "../../app/types/documentosType";
 
 export function ProductAll() {
     const { toast } = useToast();
-    const [selectedCategory, setSelectedCategory] = useState("");
+    //const [selectedCategory, setSelectedCategory] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
     const [products, setProducts] = useState<any[]>([]);
     const formRef = useRef<HTMLFormElement>(null); // REF para limpiar el formulario
@@ -200,6 +200,9 @@ export function ProductAll() {
                                         <SelectItem value="reparacion">Reparación</SelectItem>
                                         <SelectItem value="recoleccion">Recolección</SelectItem>
                                         <SelectItem value="rotacion">Rotación</SelectItem>
+                                        <SelectItem value="remediacion">Remediacion</SelectItem>
+                                        <SelectItem value="accesorios">Accesorios</SelectItem>
+                                        <SelectItem value="diagnostico">Diagnostico</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -282,7 +285,7 @@ export function ProductAll() {
                         <TableBody>
                             {/* Ejemplo de fila - Esto se reemplazará con datos reales */}
                                 {products?.map((product: any) => (
-                                <TableRow >
+                                <TableRow key={product._id}>
                                  <TableCell>{product.nombre}</TableCell>
                                  <TableCell>
                                     {
@@ -298,7 +301,7 @@ export function ProductAll() {
                                  <TableCell>
                                  <Dialog>
                                     <DialogTrigger  className="bg-accent/80 text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">Agregar Unidades</DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
+                                    <DialogContent className="sm:max-w-[425px] bg-white p-8">
                                         <DialogHeader>
                                         <DialogTitle>Editar unidades</DialogTitle>
                                         <DialogDescription>

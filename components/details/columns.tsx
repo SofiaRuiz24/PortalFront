@@ -15,6 +15,14 @@ export const columns: ColumnDef<Unidades>[] = [
     {
     accessorKey: "nSerie",
     header: "Numero de serie",
+    cell:
+      ({ row }) => {
+        return (
+         <div className="w-[100px]">
+          <span>{row.original.nSerie}</span>
+         </div>
+        );
+      },
     },
     {
     accessorKey: "antiguedad",
@@ -30,7 +38,7 @@ export const columns: ColumnDef<Unidades>[] = [
     cell: ({ row }) => {
       const documentos = row.original.documentos;
       return (
-        <div className="flex gap-2 ">
+        <div className="flex gap-2 justify-center ">
           {documentos?.map((doc, index) => (
             <button
               key={index}
@@ -42,10 +50,10 @@ export const columns: ColumnDef<Unidades>[] = [
                 link.click();
                 URL.revokeObjectURL(url);
                 }}
-                className="flex flex-col w-[100px]  items-center gap-2"
+                className="flex flex-col w-[100px] justify-center items-center gap-2"
               >
               <span>📄</span>
-              <span>{doc.nombre.split(".pdf")}</span> 
+              <span className="w-[80px] ">{doc.nombre.split(".pdf")}</span> 
             </button>
           ))}
         </div>

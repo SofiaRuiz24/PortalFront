@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
-import axios from "axios";
+import Image from "next/image";
+//import axios from "axios";
 import { useSidebarContext } from "@/app/context/SidebarContext";
 
 export function LoginForm({
@@ -17,7 +18,7 @@ export function LoginForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(password.match("admin1234")){
+    if(password.match("nomade")){
       console.log("bandera login");
       setSession("admin");
     }
@@ -46,10 +47,11 @@ export function LoginForm({
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Ingresa tu cuenta</h1>
+        <Image src="/images/logo---ortubia.png" alt="Logo" width={200} height={200} />
+        {/*<h1 className="text-2xl font-bold">Ingresa tu cuenta</h1>
         <p className="text-balance text-sm text-muted-foreground">
           Ingrese el correo electrónico asociado a su cuenta.
-        </p>
+        </p>*/}
       </div>
       <div className="grid gap-6">
         <div className="grid gap-2">
@@ -61,7 +63,7 @@ export function LoginForm({
             <Label htmlFor="password">Contraseña</Label>
             <a
               href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
+              className="ml-auto text-sm underline-offset-4 hover:underline hover:text-orange-600"
             >
               ¿Olvidó su contraseña?
             </a>
@@ -73,13 +75,13 @@ export function LoginForm({
                 {error}
               </div>
             )}
-        <Button type="submit" className="w-full">
-          Entrar
+        <Button type="submit" className="w-full bg-orange-700 hover:bg-orange-800">
+          Ingresar
         </Button>
       </div>
       <div className="text-center text-sm">
         ¿No tiene cuenta?{" "}
-        <a href="#" className="underline underline-offset-4">
+        <a href="#" className="hover:underline underline-offset-4 hover:text-orange-600">
           Solicitar registro
         </a>
       </div>

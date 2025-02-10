@@ -39,6 +39,8 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import axios from "axios";
 import  Documentos  from "../../app/types/documentosType";
+import ProductEdit from "./productEdit";
+import { useSidebarContext } from "@/app/context/SidebarContext";
 
 export function ProductAll() {
     const { toast } = useToast();
@@ -47,6 +49,7 @@ export function ProductAll() {
     const [products, setProducts] = useState<any[]>([]);
     const formRef = useRef<HTMLFormElement>(null); // REF para limpiar el formulario
     const [ documentosPreview, setDocumentosPreview ] = useState<Documentos[]>([]); // Vista previa de los documentos
+    const { crudProduct } = useSidebarContext();
 
     //Función para obtener los productos de la API
     const fetchProducts = async () => {
@@ -160,7 +163,7 @@ export function ProductAll() {
     
     
 
-    return (
+    return ( crudProduct?.includes("productos") ? (
         <div className="flex flex-col gap-8 p-6">
             {/* Formulario de Producto */}
             <Card>
@@ -354,5 +357,6 @@ export function ProductAll() {
                 </CardContent>
             </Card>
         </div>
-    );
+    )
+: (crudProduct?.includes("editar") ? < ProductEdit/> : null));
 }

@@ -1,4 +1,5 @@
 "use client"
+import React from "react";
 
 import {
   Folder,
@@ -36,7 +37,7 @@ export function NavProjects({
   }[]
 }) {
   const { isMobile } = useSidebar()
-  const { setSelectedAdmin, setSelectedCategory, setSelectedItem, setSelectedSubCategory } = useSidebarContext();
+  const { setSelectedAdmin, setSelectedCategory,setCrudProduct, setSelectedItem, setSelectedSubCategory } = useSidebarContext();
     
     const handleSidebarMenuClick = (adminTitle: string) => {
       setSelectedAdmin(adminTitle);
@@ -44,6 +45,13 @@ export function NavProjects({
       setSelectedSubCategory("");
       setSelectedItem("");
       console.log('SidebarMenu clicked');
+      setCrudProduct(adminTitle.toLowerCase());
+    }
+
+    const handleSidebarSubMenuClick = (type: string, adminTitle: string) => {
+      setSelectedAdmin(adminTitle);
+      setCrudProduct(type.toLowerCase());
+      console.log('SidebarSubMenu clicked: ' + type);
     }
 
   return (
@@ -51,8 +59,8 @@ export function NavProjects({
       <SidebarGroupLabel>Administracion</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
-          <SidebarMenuItem onClick={() => handleSidebarMenuClick(item.name)} key={item.name}>
-            <SidebarMenuButton asChild>
+          <SidebarMenuItem  key={item.name}>
+            <SidebarMenuButton onClick={() => handleSidebarMenuClick(item.name)} asChild>
               <a href={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
@@ -74,9 +82,11 @@ export function NavProjects({
                   <Folder className="text-muted-foreground" />
                   <span>Crear</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem >
+                <DropdownMenuItem  >
+                  <button onClick={() => handleSidebarSubMenuClick("editar", item.name)} className="flex flex-row gap-2 items-center text-left">
                   <Forward className="text-muted-foreground" />
                   <span>Editar</span>
+                  </button>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem >

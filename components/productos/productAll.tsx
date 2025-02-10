@@ -41,6 +41,8 @@ import axios from "axios";
 import  Documentos  from "../../app/types/documentosType";
 import  Category  from "../../app/types/categoryType";
 import SubCategory from "@/app/types/subCategoryType";
+import ProductEdit from "./productEdit";
+import { useSidebarContext } from "@/app/context/SidebarContext";
 
 export function ProductAll() {
     //Estado para el manejo de categorias
@@ -77,6 +79,7 @@ export function ProductAll() {
          console.log("Subcategorias cargadas:", categoriaSeleccionada?.subcategorias); // Debug
     }, [categoriaSeleccionada]);
     
+    const { crudProduct } = useSidebarContext();
 
     //Función para obtener los productos de la API
     const fetchProducts = async () => {
@@ -274,7 +277,7 @@ export function ProductAll() {
         console.log("Categoria seleccionada:", value);
     }
 
-    return (
+    return ( crudProduct?.includes("productos") ? (
         <div className="flex flex-col gap-8 p-6">
             {/* Formulario de Producto */}
             <Card>
@@ -599,5 +602,6 @@ export function ProductAll() {
                 </CardContent>
             </Card>
         </div>
-    );
+    )
+: (crudProduct?.includes("editar") ? < ProductEdit/> : null));
 }

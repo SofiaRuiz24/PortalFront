@@ -8,12 +8,14 @@ interface SidebarContextType {
   arrayDeProductos: {id: string, nombre: string}[] | null; 
   selectedAdmin: string | null; // Nombre del item seleccionado
   session:string | null;
-  setArrayDeProductos:(arrayDeProductos: {_id: string, nombre: string}[]) => void;
+  crudProduct: string | null; // Nombre del crud seleccionado
+  setArrayDeProductos: React.Dispatch<React.SetStateAction<{id: string, nombre: string}[] | null>>;
   setSelectedItem: (item: string) => void; // Función para actualizar el ítem seleccionadoo
   setSelectedCategory: (category: string) => void; // Función para actualizar la categoría seleccionada
   setSelectedAdmin: (admin: string) => void; // Función para actualizar el ítem seleccionado
   setSelectedSubCategory: (subCategory: string) => void; // Función para actualizar la subcategoría seleccionada
   setSession: (session: string) => void;
+  setCrudProduct: (crudProduct: string) => void; // Función para actualizar el crud seleccionado
 }
 
 // Crear el contexto
@@ -27,6 +29,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [selectedAdmin, setSelectedAdmin] = useState<string | null>(null); //Almacena el ítem del menú actualmente seleccionado.
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null); //Almacena la subcategoría del menú actualmente seleccionada.
   const [session, setSession] = useState<string | null>(null); //Almacena la sesion del usuario.
+  const [crudProduct, setCrudProduct] = useState<string | null>(null); //Almacena el crud del producto actualmente seleccionado.
   return (
     <SidebarContext.Provider value={{  // Proporcionar los valores del contexto
       session,
@@ -40,7 +43,9 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       selectedAdmin,
       setSelectedAdmin,
       selectedSubCategory,
-      setSelectedSubCategory
+      setSelectedSubCategory,
+      crudProduct,
+      setCrudProduct
     }}>
       {children}
     </SidebarContext.Provider>

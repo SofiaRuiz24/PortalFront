@@ -41,12 +41,12 @@ export function DataTable<TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow className="flex justify-between" key={headerGroup.id}>
+            <TableRow className="" key={headerGroup.id}>
               {headerGroup.headers.map((header, index) => {
               return (
                 <TableHead
                 key={header.id}
-                className={index === headerGroup.headers.length - 1 ? "w-1/3" : ""}
+                className=" text-center font-bold text-black"
                 >
                 {header.isPlaceholder
                   ? null
@@ -64,14 +64,14 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
                 <TableRow
-                className="flex justify-between"
+                className="" 
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 >
                 {row.getVisibleCells().map((cell, index) => (
                   <TableCell
                   key={cell.id}
-                  className={index === row.getVisibleCells().length - 1 ? "w-1/3" : ""}
+                  
                   >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
@@ -81,7 +81,7 @@ export function DataTable<TData, TValue>({
               ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No hay unidades.
               </TableCell>
             </TableRow>
           )}

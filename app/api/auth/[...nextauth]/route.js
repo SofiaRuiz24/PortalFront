@@ -29,18 +29,23 @@ export const authOptions={
                 token.accessToken = account.access-token;
                 token.name = account.name;
                 token.email = account.email;
+                token.role = account.groups[0];
                 //token.image = account.image;
+                
             }else if(nowTimeStamp < token.expires_token){
+
                 //Si el token no ha expirado, devuelve el token
                 return token;
             }else{
+
                 //Si el token ha expirado, devuelve un token vacío
-               console.log("Token Expirado")
+               console.log("Token Expirado. Refrescando Token...");
+               //TO DO : Refresh Token
             return token;
             }
         },
         async session ({session,token}){
-            
+            session.role = token.role
             return session;
         }
     }

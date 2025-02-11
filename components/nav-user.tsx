@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/sidebar"
 import axios from "axios"
 import { useSidebarContext } from "@/app/context/SidebarContext"
-import { signIn } from "next-auth/react"
+import { signOut } from "next-auth/react"
 
 export function NavUser({
   user,
@@ -110,7 +110,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => {
-              signIn("keycloak");
+              signOut({ callbackUrl: '/' });
 
               /*console.log('Logging out');
               setSession("");

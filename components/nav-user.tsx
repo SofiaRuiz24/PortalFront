@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/sidebar"
 import axios from "axios"
 import { useSidebarContext } from "@/app/context/SidebarContext"
+import { signIn } from "next-auth/react"
 
 export function NavUser({
   user,
@@ -109,14 +110,16 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => {
-              console.log('Logging out');
+              signIn("keycloak");
+
+              /*console.log('Logging out');
               setSession("");
               window.location.replace("/");
              const response = axios.post('http://localhost:4108/login/logout' ,{}, // Cuerpo vacío
               {
                   withCredentials: true // Habilita el envío de cookies
               });
-            }}>
+            }*/}}>
               <LogOut  />
               Cerrar Sesión
             </DropdownMenuItem>

@@ -78,7 +78,7 @@ export const columns: ColumnDef<Unidades>[] = [
       return (
        <div className="flex justify-center ">
         {documentos?.map((doc, index) => {
-          if (doc.nombre.includes("Patente")) {
+          if (doc.nombre.includes("patente")) {
             return (
               <button
                 key={index}
@@ -100,7 +100,7 @@ export const columns: ColumnDef<Unidades>[] = [
             //return null;
           
             //si no hay documentos de patente que se muestre una solo X
-            if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("Patente"))) {
+            if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("patente"))) {
             return (
               <div className="flex flex-col w-1/6 justify-center items-center gap-2">
               <FileX size={24} />
@@ -122,7 +122,7 @@ export const columns: ColumnDef<Unidades>[] = [
         return (
          <div className="flex justify-center">
           {documentos?.map((doc, index) => {
-            if (doc.nombre.includes("Ejemplo")) {
+            if (doc.nombre.includes("certificadoA")) {
               return (
                 <button
                   key={index}
@@ -141,7 +141,7 @@ export const columns: ColumnDef<Unidades>[] = [
                 </button>
               );
             } else {
-              if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("Ejemplo"))) {
+              if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("certificadoA"))) {
                 return (
                   <div className="flex flex-col w-1/6 justify-center items-center gap-2">
                   <FileX size={24} />
@@ -163,7 +163,7 @@ export const columns: ColumnDef<Unidades>[] = [
           return (
            <div className="flex justify-center">
             {documentos?.map((doc, index) => {
-              if (doc.nombre.includes("Certificado")) {
+              if (doc.nombre.includes("certificadoB")) {
                 return (
                   <button
                     key={index}
@@ -182,7 +182,7 @@ export const columns: ColumnDef<Unidades>[] = [
                   </button>
                 );
               } else {
-                if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("Certificado"))) {
+                if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("certificadoB"))) {
                   return (
                     <div className="flex flex-col w-1/6 justify-center items-center gap-2">
                     <FileX size={24} />
@@ -204,7 +204,7 @@ export const columns: ColumnDef<Unidades>[] = [
             return (
              <div className="flex justify-center">
               {documentos?.map((doc, index) => {
-                if (doc.nombre.includes("Documento")) {
+                if (doc.nombre.includes("certificadoC")) {
                   return (
                     <button
                       key={index}
@@ -223,7 +223,7 @@ export const columns: ColumnDef<Unidades>[] = [
                     </button>
                   );
                 } else {
-                  if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("Documento"))) {
+                  if (index === documentos.length - 1 && !documentos.some(doc => doc.nombre.includes("certificadoC"))) {
                     return (
                       <div className="flex flex-col w-1/6 justify-center items-center gap-2">
                       <FileX size={24} />

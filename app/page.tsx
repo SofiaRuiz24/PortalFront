@@ -1,6 +1,6 @@
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+
 import AppPage from "./appPage/appPage";
 import { SidebarProvider } from "@/app/context/SidebarContext";
 

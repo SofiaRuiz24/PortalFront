@@ -45,7 +45,7 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const { setSession } = useSidebarContext();
+  //const { setSession } = useSidebarContext();
 
   return (
     <SidebarMenu>

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react";
 import Image from "next/image";
+import User from "@/app/types/userType";
 //import axios from "axios";
 import { useSidebarContext } from "@/app/context/SidebarContext";
 
@@ -11,7 +12,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-  const {session , setSession} = useSidebarContext();
+  const {sesion , setSesion} = useSidebarContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,11 +21,16 @@ export function LoginForm({
     e.preventDefault();
     if(password.match("nomade")){
       console.log("bandera login");
-      setSession("admin");
+      const newUser: User = {
+        name: "Admin",
+        email: email,
+        role: "admin"
+      }
+      setSesion(newUser);
     }
     console.log('Email:', email);
     console.log('Password:', password);
-    console.log(session);
+    console.log(sesion);
     /*try {
       const response = await axios.post(
         "http://localhost:4108/login",

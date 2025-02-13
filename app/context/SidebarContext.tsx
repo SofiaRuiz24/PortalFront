@@ -15,7 +15,7 @@ interface SidebarContextType {
   setSelectedCategory: (category: string) => void; // Función para actualizar la categoría seleccionada
   setSelectedAdmin: (admin: string) => void; // Función para actualizar el ítem seleccionado
   setSelectedSubCategory: (subCategory: string) => void; // Función para actualizar la subcategoría seleccionada
-  setSesion: (session: User) => void;
+  setSesion: (sesion: User) => void;
   setCrudProduct: (crudProduct: string) => void; // Función para actualizar el crud seleccionado
 }
 

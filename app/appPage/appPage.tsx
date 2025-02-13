@@ -1,6 +1,6 @@
 import React from "react";
 import PageDashboard from "../dashboard/page";
-import PageLogin from "../login/page";
+import LoginPage from "../login/page";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSidebarContext } from "@/app/context/SidebarContext";
@@ -31,14 +31,14 @@ export default function AppPage() {
       }
     }, [session]);
 
-    if (!sesion) {
+    if (status === "loading") {
       return <div>Cargando...</div>;
       
     } else if (session && session.user) {
         return sesion?.role?.includes("admin")? (
             <PageDashboard/>
         ) : (
-            <PageLogin/>
+            <LoginPage/>
         );
     } else {
       return (

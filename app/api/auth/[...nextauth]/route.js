@@ -82,14 +82,18 @@ export const authOptions = {
     ],
     callbacks: {
         async jwt({ token, account }) {
-            console.log("Token:", token);
+            //console.log("Token:", token);
             token.accessToken = account.access_token;
+            console.log("Account:", account);
             token.userProp = account.userProp;
             token.email = account.email;
             token.name = account.name;
             return token;
         },
         async session({ session, token }) {
+            console.log("Session:", session);
+            session.accessToken = token.accessToken;
+            console.log("Token:", token);
             session.user.email = token.email;
             session.user.name = token.name;
             return session;

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import User from "../types/userType";
 
 // Definir los tipos para el contexto
 interface SidebarContextType {
@@ -7,14 +8,14 @@ interface SidebarContextType {
   selectedSubCategory: string | null;
   arrayDeProductos: {id: string, nombre: string}[] | null; 
   selectedAdmin: string | null; // Nombre del item seleccionado
-  session:string | null;
+  sesion:User | null;
   crudProduct: string | null; // Nombre del crud seleccionado
   setArrayDeProductos: React.Dispatch<React.SetStateAction<{id: string, nombre: string}[] | null>>;
   setSelectedItem: (item: string) => void; // Función para actualizar el ítem seleccionadoo
   setSelectedCategory: (category: string) => void; // Función para actualizar la categoría seleccionada
   setSelectedAdmin: (admin: string) => void; // Función para actualizar el ítem seleccionado
   setSelectedSubCategory: (subCategory: string) => void; // Función para actualizar la subcategoría seleccionada
-  setSession: (session: string) => void;
+  setSesion: (session: User) => void;
   setCrudProduct: (crudProduct: string) => void; // Función para actualizar el crud seleccionado
 }
 
@@ -28,12 +29,12 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [arrayDeProductos, setArrayDeProductos] = useState<{id: string, nombre: string}[] | null>(null);
   const [selectedAdmin, setSelectedAdmin] = useState<string | null>(null); //Almacena el ítem del menú actualmente seleccionado.
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null); //Almacena la subcategoría del menú actualmente seleccionada.
-  const [session, setSession] = useState<string | null>(null); //Almacena la sesion del usuario.
+  const [sesion, setSesion] = useState<User | null>(null); //Almacena la sesion del usuario.
   const [crudProduct, setCrudProduct] = useState<string | null>(null); //Almacena el crud del producto actualmente seleccionado.
   return (
     <SidebarContext.Provider value={{  // Proporcionar los valores del contexto
-      session,
-      setSession,
+      sesion,
+      setSesion,
       selectedItem, 
       setSelectedItem,
       selectedCategory,

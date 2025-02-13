@@ -1,7 +1,9 @@
 "use client"
 import { GalleryVerticalEnd } from "lucide-react"
-
+import Image from "next/image";
 import { LoginForm } from "@/components/login-form"
+import { Button } from "@/components/ui/button"
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   return (
@@ -16,8 +18,19 @@ export default function LoginPage() {
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center ">
-          <div className="w-full max-w-xs text-sidebar-foreground ">
-            <LoginForm />
+          <div className="w-full max-w-xs text-sidebar-foreground flex flex-col items-center gap-8 text-center">
+            {/*<LoginForm />*/}
+            <Image className="mb-6 ml-[-15px]" src="/images/logo---ortubia.png" alt="Logo" width={200} height={200} />
+            
+            <Button onClick={()=>{signIn("keycloak", {callbackUrl:"/"})}} className="w-2/3 bg-orange-700 hover:bg-orange-800">
+               Ingresar
+            </Button>
+            <div className="text-center text-sm">
+              ¿No tiene cuenta?{" "}
+              <a href="#" className="hover:underline underline-offset-4 hover:text-orange-600">
+               Solicitar registro
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/sidebar"
 import axios from "axios"
 import { useSidebarContext } from "@/app/context/SidebarContext"
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 export function NavUser({
   user,
@@ -44,9 +44,19 @@ export function NavUser({
     avatar: string
   }
 }) {
+  const {status} = useSession() 
   const { isMobile } = useSidebar()
   //const { setSession } = useSidebarContext();
-
+  const handleLogout = async () => {
+    try {
+      const keycloakLogoutUrl = `http://localhost:8080/realms/sasha/protocol/openid-connect/logout?redirect_uri=${encodeURIComponent(window.location.origin)}`;
+      await signOut({ redirect: false }); // Cierra sesión en NextAuth
+      window.location.href = keycloakLogoutUrl; // Redirige a Keycloak para cerrar sesión globalmente
+      //setSession(null);
+    } catch (error) {
+      console.error("Failed to logout", error)
+    }
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -109,19 +119,9 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {
-              signOut({ callbackUrl: '/' });
-
-              /*console.log('Logging out');
-              setSession("");
-              window.location.replace("/");
-             const response = axios.post('http://localhost:4108/login/logout' ,{}, // Cuerpo vacío
-              {
-                  withCredentials: true // Habilita el envío de cookies
-              });
-            }*/}}>
-              <LogOut  />
-              Cerrar Sesión
+            <DropdownMenuItem  onClick={handleLogout}>
+               <LogOut/>
+                Cerrar Sesión
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

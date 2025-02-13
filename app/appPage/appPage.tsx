@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import PageDashboard from "../dashboard/page";
 import LoginPage from "../login/page";
@@ -5,10 +7,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSidebarContext } from "@/app/context/SidebarContext";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
+import { LogOut } from "lucide-react";
+import User from "../types/userType";
 
 export default function AppPage() {
     //const [sessionStatus, setSessionStatus] = useState(0); // Estado para almacenar el estado de la sesión
     const {sesion , setSesion} = useSidebarContext();
+    //const sesionUser = getSession();
     const { status, data: session } = useSession();
     
     const sesionUsuario = async () => {
@@ -19,17 +25,31 @@ export default function AppPage() {
           },
         });
         console.log(response.data);
-        setSesion(response.data);
+        const auxUser = response.data.user;
+        console.log(auxUser);
+        const user1: User = { 
+          email: auxUser.email,
+          role: auxUser.rol,
+          name: auxUser.nombre,
+        }
+        setSesion(user1);
+        
       } catch (error) {
         console.log("Error al verificar la sesión");
         console.log(error);     
       }
     };
     useEffect(() => {
-      if (session?.user?.email) {
-        sesionUsuario();
-      }
-    }, [session]);
+      const fetchSession = async () => {
+        console.log(session);
+        //console.log(token);
+        if (session?.user?.email) {
+          await sesionUsuario();
+        }
+      };
+      fetchSession();
+      console.log("Sesion ingresada: ",sesion?.role);
+    }, [status]);
 
     if (status === "loading") {
       return <div>Cargando...</div>;
@@ -37,12 +57,16 @@ export default function AppPage() {
     } else if (session && session.user) {
         return sesion?.role?.includes("admin")? (
             <PageDashboard/>
-        ) : (
-            <LoginPage/>
+        ) : /*status === "authenticated"?  <p>autentificado</p>:*/(
+          <>
+          Signed in as {session.user.email} <br />
+          <button onClick={() => signOut()}>Sign out</button>
+          </>
+            //<LoginPage/>
         );
     } else {
       return (
-        <section className="bg-white dark:bg-gray-900">
+        /*<section className="bg-white dark:bg-gray-900">
           <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
               <div className="mx-auto max-w-screen-sm text-center">
                   <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary2-600 dark:text-primary2-500">404</h1>
@@ -51,7 +75,8 @@ export default function AppPage() {
                   <button onClick={()=>{signIn("keycloak", {callbackUrl:"/"})}} className="inline-flex text-white bg-primary2-600 hover:bg-primary2-800 focus:ring-4 focus:outline-none focus:ring-primary2-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary2-900 my-4">Ingresar</button>
               </div>   
           </div>
-        </section>
+        </section>*/
+        <LoginPage/>  
       );
     }
 }

@@ -89,6 +89,7 @@ export const authOptions = {
                 console.log("Account:", account);
                 console.log("user", user);
                 token.accessToken = account.access_token;
+
                 //token.email = account.email;
                 //token.name = account.name;
             }
@@ -97,8 +98,6 @@ export const authOptions = {
         async session({ session, token, user }) {
             session.accessToken = token.accessToken;
             session.id = token.id;
-            console.log("Usuario:", user);
-            console.log("Token:", token);
             console.log("Session:", session);
             //session.user.email = token.email;
             //session.user.name = token.name;

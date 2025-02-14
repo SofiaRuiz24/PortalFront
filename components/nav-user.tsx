@@ -34,7 +34,7 @@ import {
 import axios from "axios"
 import { useSidebarContext } from "@/app/context/SidebarContext"
 import { signOut, useSession } from "next-auth/react"
-
+import "dotenv/config";
 export function NavUser({
   user,
 }: {
@@ -44,19 +44,34 @@ export function NavUser({
     avatar: string
   }
 }) {
-  const {status} = useSession() 
+  const {status , data: session} = useSession() as { status: string, data: { accessToken: string } | null }
   const { isMobile } = useSidebar()
   //const { setSession } = useSidebarContext();
   const handleLogout = async () => {
     try {
-      const keycloakLogoutUrl = `http://localhost:8080/realms/sasha/protocol/openid-connect/logout?redirect_uri=${encodeURIComponent(window.location.origin)}`;
-      await signOut({ redirect: false }); // Cierra sesión en NextAuth
-      window.location.href = keycloakLogoutUrl; // Redirige a Keycloak para cerrar sesión globalmente
-      //setSession(null);
+      // Cierra la sesión en NextAuth
+      await signOut({ redirect: false });
+  
+      const idToken = localStorage.getItem("id_token") || sessionStorage.getItem("id_token");
+
+      console.log(localStorage.getItem("id_token"));
+      console.log(sessionStorage.getItem("id_token"));
+
+      let keycloakLogoutUrl = `http://localhost:8080/realms/sasha/protocol/openid-connect/logout?client_id=sasha-cliente&post_logout_redirect_uri=http://localhost:3000/`;
+      
+      if (idToken) {
+          keycloakLogoutUrl += `&id_token_hint=${idToken}`;
+      }
+      
+      
+     
+      // Redirige directamente a la pantalla de login sin la página de confirmación de Keycloak
+      window.location.href = keycloakLogoutUrl;
     } catch (error) {
-      console.error("Failed to logout", error)
+      console.error("Failed to logout", error);
     }
-  }
+  };
+  
   return (
     <SidebarMenu>
       <SidebarMenuItem>

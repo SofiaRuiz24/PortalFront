@@ -65,7 +65,7 @@ export function ProductAll() {
         const fetchCategorias = async () => {
             try {
                 const response = await axios.get("http://localhost:4108/catGeneral");
-                console.log("Categorias cargadas:", response.data.data); // Debug
+                //console.log("Categorias cargadas:", response.data.data); // Debug
                 setCategorias(response.data.data);
             } catch (error) {
                 console.error("Error al obtener las categorias:", error);
@@ -76,7 +76,7 @@ export function ProductAll() {
 
     useEffect(() => {
          setSubcategorias(categoriaSeleccionada?.subcategorias || []);
-         console.log("Subcategorias cargadas:", categoriaSeleccionada?.subcategorias); // Debug
+         //console.log("Subcategorias cargadas:", categoriaSeleccionada?.subcategorias); // Debug
     }, [categoriaSeleccionada]);
     
     const { crudProduct } = useSidebarContext();
@@ -120,7 +120,7 @@ export function ProductAll() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
     
-            console.log("Respuesta del servidor:", response);
+           //console.log("Respuesta del servidor:", response);
     
             // Validar por status en lugar de response.data.data
             if (response.status >= 200 && response.status < 300) { 
@@ -274,7 +274,7 @@ export function ProductAll() {
     const handleCategoriaSeleccionada = (value: string) => {
         const categoria = categorias.find((categoria) => categoria.nombre === value);
         setCategoriaSeleccionada(categoria || null);
-        console.log("Categoria seleccionada:", value);
+        //console.log("Categoria seleccionada:", value);
     }
 
     return ( crudProduct?.includes("productos") ? (

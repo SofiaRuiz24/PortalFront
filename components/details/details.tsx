@@ -38,32 +38,27 @@ async function madeData(data: Unidades[]) {
     
     return datas;
 }
-export function Details(props: any) {  
-    const { arrayDeProductos, selectedItem } = useSidebarContext(); ;
+export function Details() {  
+    const { arrayDeProductos, selectedItem } = useSidebarContext();
     const [selectedData, setSelectedData] = useState<Unidades[]>([]);
     const [product, setProduct] = useState<Product | null>(null);
     
-
     useEffect(() => {
         const fetchProduct = async () => {
             if(selectedItem){
                 const res = await axios.get(`http://localhost:4108/productos/${selectedItem}`);
                 //TO DO: Guardar la respuesta en un estado
-                console.log("Response", res.data.updatedProduct);
+                //console.log("Response", res.data.updatedProduct);
                 setProduct(res.data.updatedProduct);
-                
             }
         };
         fetchProduct();
-        
-    }, [])
+    }, [selectedItem])
 
     useEffect(() => {
         setSelectedData(product?.unidades || []);
         const data = madeData(selectedData);
-        
-    }, [product])
-
+    }, [product, selectedData])
 
     return(
         <div className="flex flex-col justify-center items-center gap-10 bg-white pt-4">

@@ -20,7 +20,7 @@ export function LoginForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if(password.match("nomade")){
-      console.log("bandera login");
+      //console.log("bandera login");
       const newUser: User = {
         name: "Admin",
         email: email,
@@ -28,9 +28,9 @@ export function LoginForm({
       }
       setSesion(newUser);
     }
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log(sesion);
+    //console.log('Email:', email);
+    //console.log('Password:', password);
+    //console.log(sesion);
     /*try {
       const response = await axios.post(
         "http://localhost:4108/login",

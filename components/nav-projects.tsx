@@ -44,14 +44,14 @@ export function NavProjects({
       setSelectedCategory("");
       setSelectedSubCategory("");
       setSelectedItem("");
-      console.log('SidebarMenu clicked');
+      //console.log('SidebarMenu clicked');
       setCrudProduct(adminTitle.toLowerCase());
     }
 
     const handleSidebarSubMenuClick = (type: string, adminTitle: string) => {
       setSelectedAdmin(adminTitle);
       setCrudProduct(type.toLowerCase());
-      console.log('SidebarSubMenu clicked: ' + type);
+      //console.log('SidebarSubMenu clicked: ' + type);
     }
 
   return (

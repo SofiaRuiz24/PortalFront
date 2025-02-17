@@ -26,12 +26,12 @@ export function SubCatPage(props: any) {
     // Lógica para obtener los productos de la categoría seleccionada
     const fetchProducts = async () => {
      const res = await axios.get('http://localhost:4108/productos');
-     console.log("Productos", res.data.data);
+     //console.log("Productos", res.data.data);
      const products = res.data.data;
      setProductos(products);
      const filterProducts = products.filter((product: { categoria: string }) => product.categoria === selectedCategory?.toLowerCase());
      setProductsCategory(filterProducts);
-     console.log("Productos de la categoria", filterProducts);
+     //console.log("Productos de la categoria", filterProducts);
     };
       fetchProducts();
   }, [selectedCategory, selectedSubCategory]);
@@ -39,7 +39,7 @@ export function SubCatPage(props: any) {
   useEffect(() => {
     // Logica para filtrar por subcategoria
     if (selectedSubCategory) {
-      console.log("Subcategoria seleccionada", selectedSubCategory);
+      //console.log("Subcategoria seleccionada", selectedSubCategory);
       const filterProducts = productos?.filter((product: { categoria: string }) => product.categoria === selectedCategory?.toLowerCase());
       const filteredSubProducts = filterProducts.filter((product: { subcategoria: string }) => product.subcategoria === selectedSubCategory?.toLowerCase());
       setProductsCategory(filteredSubProducts);
@@ -49,7 +49,7 @@ export function SubCatPage(props: any) {
 
   const handleSelectedProduct = (e: React.MouseEvent<HTMLButtonElement>, product: string) => {
       // Lógica para seleccionar un producto
-      console.log("Producto seleccionado", product);
+      //console.log("Producto seleccionado", product);
       setSelectedItem(product);
   };
 

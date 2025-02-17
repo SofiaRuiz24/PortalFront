@@ -13,9 +13,10 @@ import User from "../types/userType";
 
 export default function AppPage() {
     //const [sessionStatus, setSessionStatus] = useState(0); // Estado para almacenar el estado de la sesión
-    const {sesion , setSesion} = useSidebarContext();
+    const {empresas, sesion , setSesion, setEmpresas ,setSelectedEmpresa } = useSidebarContext();
     //const sesionUser = getSession();
     const { status, data: session } = useSession();
+  
     
     const sesionUsuario = async () => {
       try {
@@ -24,9 +25,9 @@ export default function AppPage() {
             email: session?.user?.email,
           },
         });
-        console.log(response.data);
+        //console.log(response.data);
         const auxUser = response.data.user;
-        console.log(auxUser);
+        //console.log(auxUser);
         const user1: User = { 
           email: auxUser.email,
           role: auxUser.rol,
@@ -39,16 +40,36 @@ export default function AppPage() {
         console.log(error);     
       }
     };
+
+    useEffect(() => {
+      const fetchEmpresas = async () => {
+      try {
+        const response = await axios.get("http://localhost:4108/empresas");
+        //const companyNames = response.data.data.map((company: any) => company.nombre);
+        const companyNames = response.data.data;
+        setEmpresas(companyNames);
+        //console.log("Nombre de la empresa: ",companyNames);
+      } catch (error) {
+        console.log("Error fetching companies", error);
+      }
+      };
+      fetchEmpresas();
+    }, []);
+
+    useEffect(() => {
+      setSelectedEmpresa(empresas? empresas[0].nombre  : "");
+    },[empresas]);
+
     useEffect(() => {
       const fetchSession = async () => {
-        console.log(session);
+        //console.log(session);
         //console.log(token);
         if (session?.user?.email) {
           await sesionUsuario();
         }
       };
       fetchSession();
-      console.log("Sesion ingresada: ",sesion?.role);
+      //console.log("Sesion ingresada: ",sesion?.role);
     }, [status]);
 
     if (status === "loading") {
@@ -81,4 +102,8 @@ export default function AppPage() {
     }
 }
 
+
+function setEmpresas(company: any) {
+  throw new Error("Function not implemented.");
+}
   

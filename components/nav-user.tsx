@@ -54,8 +54,8 @@ export function NavUser({
   
       const idToken = localStorage.getItem("id_token") || sessionStorage.getItem("id_token");
 
-      console.log(localStorage.getItem("id_token"));
-      console.log(sessionStorage.getItem("id_token"));
+      //console.log(localStorage.getItem("id_token"));
+      //console.log(sessionStorage.getItem("id_token"));
 
       let keycloakLogoutUrl = `http://localhost:8080/realms/sasha/protocol/openid-connect/logout?client_id=sasha-cliente&post_logout_redirect_uri=http://localhost:3000/`;
       

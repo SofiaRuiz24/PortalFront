@@ -44,7 +44,7 @@ export default function Page() {
             id: producto._id,
             nombre: producto.nombre,
           }));
-          console.log("getAllProducts", allProducts);
+          //console.log("getAllProducts", allProducts);
           //Almacenar los productos en un contexto global
           setArrayDeProductos(allProducts);
         } catch (error) {
@@ -92,7 +92,7 @@ export default function Page() {
         { selectedItem ? <Details /> : 
         (selectedCategory || selectedSubCategory ? < SubCatPage /> : (
           selectedAdmin === "Usuarios" ? < UserAll /> : (
-            selectedAdmin === "Categorias" ? <CategoryAll /> : (
+            selectedAdmin === "Configuración" ? <CategoryAll /> : (
               selectedAdmin === "Productos" ? < ProductAll /> : <HomePage />
               )
             )

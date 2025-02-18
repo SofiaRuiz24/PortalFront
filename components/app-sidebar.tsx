@@ -36,8 +36,7 @@ import {
 import { useSidebarContext } from "@/app/context/SidebarContext";
 
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  
+export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sidebar>) {
   const { empresas , selectedEmpresa } = useSidebarContext();
   const [data, setData] = useState<{
     user: { name: string; email: string; avatar: string };
@@ -120,7 +119,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="overflow-y-auto scrollbar-hide "> {/*hover:scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300*/}
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {role === "admin" && <NavProjects projects={data.projects} />}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

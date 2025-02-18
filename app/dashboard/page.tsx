@@ -60,7 +60,7 @@ export default function Page({ role }: PageProps) {
 
   return (
     <SidebarProvider>
-      <AppSidebar  className="bg-new-background-1"/>
+      <AppSidebar role={role} className="bg-new-background-1"/>
       <SidebarInset>
         <header className="sticky top-0 z-10 bg-background flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

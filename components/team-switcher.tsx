@@ -33,7 +33,7 @@ export function TeamSwitcher({
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
   const { setSelectedEmpresa } = useSidebarContext();
   const variasEmpresas: boolean = teams.length > 1;
-
+  const [empresasTeams, setEmpresasTeams] = React.useState(teams);
   const handleActiveTeamChange = (team: { name: string; logo: React.ElementType; plan: string }) => {
     setActiveTeam(team);
     setSelectedEmpresa(team.name)
@@ -41,6 +41,10 @@ export function TeamSwitcher({
   useEffect(() => {
     setSelectedEmpresa(activeTeam.name)
   }, [activeTeam])
+  useEffect(() => {
+    setEmpresasTeams(teams);
+  }, [teams])
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -71,7 +75,7 @@ export function TeamSwitcher({
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Empresas
             </DropdownMenuLabel>
-            {teams.map((team: { name: string; logo: React.ElementType; plan: string }, index: number) => (
+            {empresasTeams.map((team: { name: string; logo: React.ElementType; plan: string }, index: number) => (
               <DropdownMenuItem
                 key={team.name}
                 onClick={() => handleActiveTeamChange(team)}

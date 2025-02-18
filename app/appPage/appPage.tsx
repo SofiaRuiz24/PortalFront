@@ -98,7 +98,9 @@ export default function AppPage() {
               </div>   
           </div>
         </section>*/
-        <LoginPage/>  
+        //<LoginPage/>
+        <PageDashboard role="admin"/>
+          
       );
     }
 }

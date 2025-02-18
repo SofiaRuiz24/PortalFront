@@ -90,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             icon: icon,
             items: cat.subcategorias?.map((subcat: any) => {
               return {
-              title: subcat.charAt(0).toUpperCase() + subcat.slice(1).toLowerCase(),
+              title: subcat.nombre.charAt(0).toUpperCase() + subcat.nombre.slice(1).toLowerCase(),
               url: "#",
               };
             }),

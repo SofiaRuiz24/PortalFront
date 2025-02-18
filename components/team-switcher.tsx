@@ -19,7 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { useSidebarContext } from "@/app/context/SidebarContext"
-
+import { useEffect } from "react"
 export function TeamSwitcher({
   teams,
 }: {
@@ -32,6 +32,14 @@ export function TeamSwitcher({
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
   const { setSelectedEmpresa } = useSidebarContext();
+
+  const handleActiveTeamChange = (team: { name: string; logo: React.ElementType; plan: string }) => {
+    setActiveTeam(team);
+    setSelectedEmpresa(team.name)
+  }
+  useEffect(() => {
+    setSelectedEmpresa(activeTeam.name)
+  }, [activeTeam])
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -62,10 +70,10 @@ export function TeamSwitcher({
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Empresas
             </DropdownMenuLabel>
-            {teams.map((team, index) => (
+            {teams.map((team: { name: string; logo: React.ElementType; plan: string }, index: number) => (
               <DropdownMenuItem
                 key={team.name}
-                onClick={() => setSelectedEmpresa(team.name)}
+                onClick={() => handleActiveTeamChange(team)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">

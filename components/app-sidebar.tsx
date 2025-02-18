@@ -47,8 +47,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }>({
     user: {name: "Admin",
       email: "admin@admin.com",
-      avatar: " ",},
-      teams: empresas?.map((empresa, index) => ({
+      avatar: " "},
+    teams: empresas?.map((empresa, index) => ({
       name: empresa.nombre,
       logo: index === 0 ? GalleryVerticalEnd : AudioWaveform,
       plan: "",
@@ -72,22 +72,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   });
   useEffect(() => {
     async function fetchData() {
+      
       try {
+        console.log("Bandera1 " + selectedEmpresa)
         const response = await axios.get("http://localhost:4108/catGeneral");
-        //TODO sacar la bandera
-        console.log("Empresa Seleccionada "+ selectedEmpresa)
-        console.log("Bandera Categorias" + JSON.stringify(response.data.data, null, 2));
-        const filteredCategoria= response.data.data.filter((cat: any) => cat?.empresa?.includes(selectedEmpresa));
-        console.log("filteredCategoria" + JSON.stringify(filteredCategoria, null, 2));
-     
+        
+        const categoriasGeneralesBandera = response?.data.data; 
+        const filteredCategoria= categoriasGeneralesBandera.filter((cat: any) => cat?.empresa.nombre === selectedEmpresa);
+        
+      
         const newNavMain = filteredCategoria.map((cat: any) => {
-          //console.log(cat);
+          
           const icon = (cat.nombre === "pesca") ? Webhook : (cat.nombre === "corte") ? Fan : (cat.nombre === "impacto") ? Shrink : (cat.nombre === "reparacion") ? Hammer : (cat.nombre === "recoleccion") ? Package : (cat.nombre === "rotacion") ? RefreshCw : Settings2;
             return {
             title: cat.nombre.charAt(0).toUpperCase() + cat.nombre.slice(1).toLowerCase(),
             url: "#",
             icon: icon,
-            items: cat.subcategorias.map((subcat: any) => {
+            items: cat.subcategorias?.map((subcat: any) => {
               return {
               title: subcat.charAt(0).toUpperCase() + subcat.slice(1).toLowerCase(),
               url: "#",
@@ -111,6 +112,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
     fetchData();
   }, [selectedEmpresa]);
+  
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

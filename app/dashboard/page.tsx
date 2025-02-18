@@ -24,7 +24,11 @@ import { UserAll } from "../../components/usuarios/userAll";
 import { Toaster } from "@/components/ui/toaster"
 import { HomePage } from "@/components/homePage";
 
-export default function Page() {
+interface PageProps {
+  role: string;
+}
+
+export default function Page({ role }: PageProps) {
   const { selectedItem, selectedCategory,selectedAdmin, selectedSubCategory, setSelectedAdmin ,setSelectedCategory ,setSelectedItem, setArrayDeProductos , setSelectedSubCategory} = useSidebarContext();
   const handleIncio = () => {
     setSelectedCategory("");
@@ -90,8 +94,8 @@ export default function Page() {
           </div>
         </header>
         { selectedItem ? <Details /> : 
-        (selectedCategory || selectedSubCategory ? < SubCatPage /> : (
-          selectedAdmin === "Usuarios" ? < UserAll /> : (
+        ( selectedCategory || selectedSubCategory ? < SubCatPage /> : (
+          role === "user" && selectedAdmin === "Usuarios" ? < UserAll /> : (
             selectedAdmin === "Configuración" ? <CategoryAll /> : (
               selectedAdmin === "Productos" ? < ProductAll /> : <HomePage />
               )

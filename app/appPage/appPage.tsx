@@ -77,14 +77,15 @@ export default function AppPage() {
       
     } else if (session && session.user) {
         return sesion?.role?.includes("admin")? (
-            <PageDashboard/>
+            <PageDashboard role="admin"/>
         ) : /*status === "authenticated"?  <p>autentificado</p>:*/(
-          <>
+          <PageDashboard role= "user"/>
+          /*<>
           Signed in as {session.user.email} <br />
           <button onClick={() => signOut()}>Sign out</button>
           </>
-            //<LoginPage/>
-        );
+            //<LoginPage/>*/
+         );
     } else {
       return (
         /*<section className="bg-white dark:bg-gray-900">

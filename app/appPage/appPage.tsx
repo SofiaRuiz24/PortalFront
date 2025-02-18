@@ -57,7 +57,7 @@ export default function AppPage() {
     }, []);
 
     useEffect(() => {
-     setSelectedEmpresa(empresas? empresas[0].nombre  : "");
+     setSelectedEmpresa(empresas? empresas[0]?.nombre  : "");
     },[empresas]);
 
     useEffect(() => {

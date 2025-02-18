@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useRef } from "react";
 import {
     Card,
     CardContent,
@@ -38,10 +38,11 @@ import { Input } from "../ui/input";
 import SubCategory from "@/app/types/subCategoryType";
 import { ArrowDownWideNarrow, Trash2 } from "lucide-react";
 import Empresa from "@/app/types/empresasTypes";
+import { useToast } from "@/hooks/use-toast"
 
 
 export function CategoryAll(props: any) {
-    const {empresas} = useSidebarContext();
+    const {empresas , setEmpresas } = useSidebarContext();
     const [ empresaDeCategoria, setempresaDeCatgoria ] = useState<string>("");
     const [ categoriaDeSubcategoria, setCategoriaDeSubcategoria ] = useState<string>("");
     const [ categoriasGenerales , setCategoriasGenerales] = useState<Category[]>([]);
@@ -50,9 +51,12 @@ export function CategoryAll(props: any) {
     const [ nuevaSubcategoria, setNuevaSubcategoria] = useState<string>("");
     const [ subcategoriasGenerales, setSubcategoriasGenerales] = useState<SubCategory[]>([]);
     const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-   
-
-
+    const formRef = useRef<HTMLFormElement>(null); // REF para limpiar el formulario
+    const formRefCategoria = useRef<HTMLFormElement>(null); // REF para limpiar el formulario de categoría
+    const formRefSubcategoria = useRef<HTMLFormElement>(null); // REF para limpiar el formulario de subcategoría
+    const [isSuccess, setIsSuccess] = useState(false);
+    const { toast } = useToast();
+    
 
     const handleEmpresaSeleccionada = (empresa: string) => {
         setempresaDeCatgoria(empresa);
@@ -89,7 +93,7 @@ export function CategoryAll(props: any) {
         }
        
         
-    },[]);
+    },[empresas, categoriasGenerales, subcategoriasGenerales]);
 
     const handleAgregarEmpresa = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
@@ -99,6 +103,27 @@ export function CategoryAll(props: any) {
             return;
         }
         const response = await axios.post("http://localhost:4108/empresas",{  nombre: newEmpresa } );
+        if (response.status >= 200 && response.status < 300) { 
+           
+            toast({
+                title: "Éxito",
+                description: "Producto guardado correctamente",
+                variant: "default",
+                duration: 5000,
+            });
+
+            setIsSuccess(true);
+        
+            setTimeout(() => {
+                formRef.current?.reset();
+                setIsSuccess(false);
+            }, 500);
+
+            setEmpresas([...(empresas || []), response.data.data]);
+        }else {
+            throw new Error("Respuesta inesperada del servidor");
+        }
+
     };
 
     const handleAgregarCategoria = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -107,18 +132,30 @@ export function CategoryAll(props: any) {
             alert("Debes seleccionar una empresa y escribir un nombre de categoría.");
             return;
         }
-        //console.log("Empresa de categoria: ", empresaDeCategoria);
-        //console.log("Nueva categoria: ", nuevaCategoria);
-        
+       
         try {
             const response = await axios.post("http://localhost:4108/catGeneral", {
                 nombre: nuevaCategoria,
                 empresa: empresaDeCategoria
             });
     
-            if (response.status === 200) {
-                alert("Categoría agregada con éxito.");
+            if (response.status >= 200 && response.status < 300) { 
+                toast({
+                    title: "Éxito",
+                    description: "Producto guardado correctamente",
+                    variant: "default",
+                    duration: 5000,
+                });
+    
+                setIsSuccess(true);
                 setNuevaCategoria(""); // Limpiar input después de agregar
+                setempresaDeCatgoria(""); // Limpiar input después de agregar
+                setTimeout(() => {
+                    formRefCategoria.current?.reset();
+                    setIsSuccess(false);
+                }, 500);
+            } else {
+                throw new Error("Respuesta inesperada del servidor");
             }
         } catch (error) {
             console.error("Error al agregar la categoría:", error);
@@ -139,9 +176,22 @@ export function CategoryAll(props: any) {
                 nombre: nuevaSubcategoria,
                 categoriaGeneral: categoriaDeSubcategoria
             });
-            if (response.status === 200) {
-                alert("Subcategoría agregada con éxito.");
+            if (response.status >= 200 && response.status < 300) { 
+                toast({
+                    title: "Éxito",
+                    description: "Producto guardado correctamente",
+                    variant: "default",
+                    duration: 5000,
+                });
+    
+                setIsSuccess(true);
                 setNuevaSubcategoria(""); // Limpiar input después de agregar
+                setTimeout(() => {
+                    formRefSubcategoria.current?.reset();
+                    setIsSuccess(false);
+                }, 500);
+            }else {
+                throw new Error("Respuesta inesperada del servidor");
             }
         } catch (error) {
             console.error("Error al agregar la subcategoría:", error);
@@ -152,6 +202,10 @@ export function CategoryAll(props: any) {
     const handleEliminarEmpresa = async (empresa: Empresa) => {
         const response = await axios.delete(`http://localhost:4108/empresas/${empresa._id}`);
         console.log("Empresa eliminada: ", response.data);
+        if (response.status >= 200 && response.status < 300) {
+            setEmpresas((prevEmpresas) => (prevEmpresas ? prevEmpresas.filter(e => e._id !== empresa._id) : []));
+            console.log("Empresa eliminada: ", response.data);
+        }
     }
     const handleEliminarCategoria = async (categoria: Category) => {
         try {
@@ -180,6 +234,7 @@ export function CategoryAll(props: any) {
                  </CardHeader>
                     <CardContent>
                     <form
+                        ref={formRef}
                          action="http://localhost:4108/empresas"
                          method="post"
                          onSubmit={handleAgregarEmpresa}
@@ -210,7 +265,10 @@ export function CategoryAll(props: any) {
                      <CardTitle className="text-2xl">Agregar Nueva Categoria</CardTitle>
                  </CardHeader>
                     <CardContent>
-                    <form onSubmit={handleAgregarCategoria}>
+                    <form
+                    ref={formRefCategoria} 
+                    onSubmit={handleAgregarCategoria}
+                    >
                     <div className="flex flex-row gap-4 w-full justify-between ">
                          <div className="w-full flex flex-col gap-2">
                             <label className="text-lg">Seleccionar Empresa</label>
@@ -256,7 +314,8 @@ export function CategoryAll(props: any) {
                 </CardHeader>
 
                 <CardContent>
-                <form onSubmit={handleAgregarSubcategoria}>
+                <form onSubmit={handleAgregarSubcategoria}
+                ref={formRef}>
                   <div className="flex flex-row gap-4 w-full justify-between ">
                   <div className="w-full flex flex-col gap-2">
                             <label className="text-lg">Seleccionar Categoria</label>

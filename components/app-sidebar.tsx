@@ -49,7 +49,7 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
       avatar: " "},
     teams: empresas?.map((empresa, index) => ({
       name: empresa.nombre,
-      logo: index === 0 ? GalleryVerticalEnd : AudioWaveform,
+      logo: index? (index === 0 ? GalleryVerticalEnd : AudioWaveform) : BookOpen,
       plan: "",
     })) || [],
     navMain: [],

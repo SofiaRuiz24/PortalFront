@@ -32,6 +32,7 @@ export function TeamSwitcher({
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
   const { setSelectedEmpresa } = useSidebarContext();
+  const variasEmpresas: boolean = teams.length > 1;
 
   const handleActiveTeamChange = (team: { name: string; logo: React.ElementType; plan: string }) => {
     setActiveTeam(team);
@@ -58,10 +59,10 @@ export function TeamSwitcher({
                 </span>
                 <span className="truncate text-xs">{activeTeam.plan}</span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              {variasEmpresas && <ChevronsUpDown className="ml-auto" />}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
+          {variasEmpresas && <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             align="start"
             side={isMobile ? "bottom" : "right"}
@@ -90,7 +91,7 @@ export function TeamSwitcher({
               </div>
               <div className="font-medium text-muted-foreground">Agregar Empresa</div>
             </DropdownMenuItem>*/}
-          </DropdownMenuContent>
+          </DropdownMenuContent>}
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>

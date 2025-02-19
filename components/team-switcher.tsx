@@ -32,7 +32,8 @@ export function TeamSwitcher({
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState(teams[0]? teams[0] : { name: "", logo: Plus, plan: "" })
   const { setSelectedEmpresa } = useSidebarContext();
-
+  const variasEmpresas: boolean = teams.length > 1;
+  const [empresasTeams, setEmpresasTeams] = React.useState(teams);
   const handleActiveTeamChange = (team: { name: string; logo: React.ElementType; plan: string }) => {
     setActiveTeam(team);
     setSelectedEmpresa(team.name)
@@ -40,6 +41,10 @@ export function TeamSwitcher({
   useEffect(() => {
     setSelectedEmpresa(activeTeam.name)
   }, [activeTeam])
+  useEffect(() => {
+    setEmpresasTeams(teams);
+  }, [teams])
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -58,10 +63,10 @@ export function TeamSwitcher({
                 </span>
                 <span className="truncate text-xs">{activeTeam.plan}</span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              {variasEmpresas && <ChevronsUpDown className="ml-auto" />}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
+          {variasEmpresas && <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             align="start"
             side={isMobile ? "bottom" : "right"}
@@ -70,7 +75,7 @@ export function TeamSwitcher({
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Empresas
             </DropdownMenuLabel>
-            {teams.map((team: { name: string; logo: React.ElementType; plan: string }, index: number) => (
+            {empresasTeams.map((team: { name: string; logo: React.ElementType; plan: string }, index: number) => (
               <DropdownMenuItem
                 key={team.name}
                 onClick={() => handleActiveTeamChange(team)}
@@ -90,7 +95,7 @@ export function TeamSwitcher({
               </div>
               <div className="font-medium text-muted-foreground">Agregar Empresa</div>
             </DropdownMenuItem>*/}
-          </DropdownMenuContent>
+          </DropdownMenuContent>}
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>

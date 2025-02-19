@@ -44,31 +44,42 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
     navMain: { title: string; url: string; icon: any; items: { title: string; url: string }[] }[];
     projects: { name: string; url: string; icon: any }[];
   }>({
-    user: {name: "Admin",
-      email: "admin@admin.com",
-      avatar: " "},
+    user: { name: "Admin", email: "admin@admin.com", avatar: " " },
     teams: empresas?.map((empresa, index) => ({
       name: empresa.nombre,
       logo: index? (index === 0 ? GalleryVerticalEnd : AudioWaveform) : BookOpen,
       plan: "",
     })) || [],
     navMain: [],
-    projects: [{
-      name: "Usuarios",
-      url: "#",
-      icon: UsersRound ,
-    },
-    {
-      name: "Productos",
-      url: "#",
-      icon: PencilRuler,
-    },
-    {
-      name: "Configuración",
-      url: "#",
-      icon: Frame,
-    },],
+    projects: [
+      {
+        name: "Usuarios",
+        url: "#",
+        icon: UsersRound,
+      },
+      {
+        name: "Productos",
+        url: "#",
+        icon: PencilRuler,
+      },
+      {
+        name: "Configuración",
+        url: "#",
+        icon: Frame,
+      },
+    ],
   });
+
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      teams: empresas?.map((empresa, index) => ({
+        name: empresa.nombre,
+        logo: index === 0 ? GalleryVerticalEnd : AudioWaveform,
+        plan: "",
+      })) || [],
+    }));
+  }, [empresas]);
   useEffect(() => {
     async function fetchData() {
       

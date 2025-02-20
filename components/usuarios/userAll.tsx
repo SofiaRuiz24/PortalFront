@@ -27,6 +27,7 @@ import {
 import { Pencil, Trash2 } from "lucide-react";
 import axios from "axios";
 import { useSidebarContext } from "@/app/context/SidebarContext";
+import Empresa from "@/app/types/empresasTypes";
 
 interface User {
   _id: string;
@@ -34,7 +35,7 @@ interface User {
   email: string;
   password: string;
   rol: string;
-  empresa: string;
+  empresas: Empresa[];
 }
 
 export function UserAll() {
@@ -45,10 +46,13 @@ export function UserAll() {
   
   // Form states
   const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rol, setRol] = useState("");
-  const [empresa, setEmpresa] = useState("");
+  const [empresa, setEmpresa] = useState<Empresa[]>([]);
+  const [empresasSeleccionadas, setEmpresasSeleccionadas] = useState<Empresa[]>([]);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -60,9 +64,21 @@ export function UserAll() {
     try {
       const response = await axios.get("http://localhost:4108/usuarios");
       setUsers(response.data.data);
+      console.log("Usuarios", response.data.data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
+  };
+
+  const handleEmpresaChange = (value: string) => {
+    const selectedEmpresa = empresas?.find((e) => e.nombre === value);
+    if (selectedEmpresa && !empresasSeleccionadas.some((e) => e._id === selectedEmpresa._id)) {
+      setEmpresasSeleccionadas([...empresasSeleccionadas, selectedEmpresa]);
+    }
+  };
+
+  const handleRemoveEmpresa = (empresaId: string) => {
+    setEmpresasSeleccionadas(empresasSeleccionadas.filter((e) => e._id !== empresaId));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,7 +89,7 @@ export function UserAll() {
       email,
       password,
       rol,
-      empresa
+      empresas: empresasSeleccionadas
     };
 
     try {
@@ -112,7 +128,8 @@ export function UserAll() {
     setEmail(user.email);
     setPassword(user.password);
     setRol(user.rol);
-    setEmpresa(user.empresa);
+    const newEmpresa: Empresa[] = user.empresas;
+    setEmpresa(newEmpresa);
   };
 
   const handleDelete = async (userId: string) => {
@@ -139,7 +156,7 @@ export function UserAll() {
     setEmail("");
     setPassword("");
     setRol("");
-    setEmpresa("");
+    setEmpresa([{ _id: "", nombre: "" }]);
     setEditingUser(null);
   };
 
@@ -155,70 +172,102 @@ export function UserAll() {
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="nombre">Nombre</Label>
-                <Input
-                  id="nombre"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  required
-                />
+          <Label htmlFor="nombre">Nombre</Label>
+          <Input
+            id="nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            required
+          />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+          <Label htmlFor="apellido">Apellido</Label>
+          <Input
+            id="apellido"
+            value={apellido}
+            onChange={(e) => setApellido(e.target.value)}
+            required
+          />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Contraseña</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required={!editingUser}
-                />
+          <Label htmlFor="usuario">Usuario</Label>
+          <Input
+            id="usuario"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+            required
+          />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="rol">Rol</Label>
-                <Select value={rol} onValueChange={setRol}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccione un rol" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="admin">Administrador</SelectItem>
-                    <SelectItem value="cliente">Cliente</SelectItem>
-                  </SelectContent>
-                </Select>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="empresa">Empresa</Label>
-                <Select value={empresa} onValueChange={setEmpresa}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccione una empresa" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {empresas?.map((empresa) => (
-                      <SelectItem key={empresa._id} value={empresa.nombre}>
-                        {empresa.nombre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+          <Label htmlFor="password">Contraseña</Label>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required={!editingUser}
+          />
               </div>
+              <div className="space-y-2">
+          <Label htmlFor="rol">Rol</Label>
+          <Select value={rol} onValueChange={setRol}>
+            <SelectTrigger>
+              <SelectValue placeholder="Seleccione un rol" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="admin">Administrador</SelectItem>
+              <SelectItem value="cliente">Cliente</SelectItem>
+            </SelectContent>
+          </Select>
+              </div>
+                <div className="space-y-2">
+                <Label htmlFor="empresas">Empresa</Label>
+                <Select onValueChange={handleEmpresaChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Seleccione una empresa" />
+              </SelectTrigger>
+              <SelectContent>
+              {empresas?.map((empresa) => (
+                <SelectItem key={empresa._id} value={empresa.nombre}>
+                  {empresa.nombre}
+                </SelectItem>
+              ))}
+              </SelectContent>
+              </Select>
+                </div>
+                <div className="space-y-2">
+              <Label>Empresas Seleccionadas</Label>
+              <div className="flex flex-wrap gap-2">
+              {empresasSeleccionadas.length === 0 && <p className="ml-2 text-gray-500 text-sm">No hay empresas seleccionadas</p>}
+              {empresasSeleccionadas?.map((empresa) => (
+                <div key={empresa._id} className="flex items-center gap-2 bg-gray-200 p-2 rounded">
+                <span>{empresa.nombre}</span>
+                <Button variant="destructive" className="h-[20px] w-[10px]" onClick={() => handleRemoveEmpresa(empresa._id)}>
+                  X
+                </Button>
+                </div>
+              ))}
+              </div>
+                </div>
             </div>
             <div className="flex justify-end gap-4">
               {editingUser && (
-                <Button type="button" variant="outline" onClick={clearForm}>
-                  Cancelar
-                </Button>
+          <Button type="button" variant="outline" onClick={clearForm}>
+            Cancelar
+          </Button>
               )}
               <Button type="submit">
-                {editingUser ? "Actualizar" : "Registrar"}
+          {editingUser ? "Actualizar" : "Registrar"}
               </Button>
             </div>
           </form>
@@ -246,7 +295,7 @@ export function UserAll() {
                   <TableCell>{user.nombre}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.rol}</TableCell>
-                  <TableCell>{user.empresa}</TableCell>
+                  <TableCell>{user.empresas?.map((empresa) => empresa.nombre).join(", ")}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Button

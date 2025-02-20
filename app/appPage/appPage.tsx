@@ -32,6 +32,7 @@ export default function AppPage() {
           email: auxUser.email,
           role: auxUser.rol,
           name: auxUser.nombre,
+          empresas: auxUser.empresas || [],
         }
         setSesion(user1);
         
@@ -79,7 +80,7 @@ export default function AppPage() {
         return sesion?.role?.includes("admin")? (
             <PageDashboard role="admin"/>
         ) : /*status === "authenticated"?  <p>autentificado</p>:*/(
-          <PageDashboard role= "user"/>
+          <PageDashboard role= "cliente"/>
           /*<>
           Signed in as {session.user.email} <br />
           <button onClick={() => signOut()}>Sign out</button>
@@ -98,8 +99,8 @@ export default function AppPage() {
               </div>   
           </div>
         </section>*/
-        <LoginPage/> 
-        //<PageDashboard role="admin"/>
+        //<LoginPage/> 
+        <PageDashboard role="admin"/>
           
       );
     }

@@ -35,6 +35,7 @@ import axios from "axios"
 import { useSidebarContext } from "@/app/context/SidebarContext"
 import { signOut, useSession } from "next-auth/react"
 import "dotenv/config";
+
 export function NavUser({
   user,
 }: {

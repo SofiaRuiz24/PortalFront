@@ -24,7 +24,8 @@ export function LoginForm({
       const newUser: User = {
         name: "Admin",
         email: email,
-        role: "admin"
+        role: "admin",
+        empresas:[{_id: "", nombre: ""}],
       }
       setSesion(newUser);
     }

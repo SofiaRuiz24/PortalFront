@@ -1,5 +1,4 @@
 import { useSidebarContext } from "@/app/context/SidebarContext";
-import { useSidebarContext } from "@/app/context/SidebarContext";
 import React from "react";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
@@ -13,7 +12,11 @@ import {
   CheckCircle2,
   Lightbulb,
   HandshakeIcon,
+  Mail,
+  Phone,
+  MapPin,
 } from "lucide-react";
+import { Button } from "./ui/button";
 
 export function HomePage() {
   const { selectedEmpresa } = useSidebarContext();
@@ -34,7 +37,7 @@ export function HomePage() {
               Innovación y excelencia en servicios petroleros. Comprometidos con el futuro energético.
             </p>
           </div>
-          <div className="absolute right-0 top-0 w-1/3 h-full opacity-10">
+          <div className="absolute right-0 top-0 w-1/3 h-full opacity-60">
             <Globe className="w-full h-full" />
           </div>
         </div>
@@ -122,6 +125,55 @@ export function HomePage() {
             </Card>
           ))}
         </div>
+
+         {/* Sección de Contacto Rápido */}
+         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <Card className="bg-accent/80 text-white">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold mb-4">Contacto Directo</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Mail className="h-5 w-5" />
+                  <span>contacto@empresa.com</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5" />
+                  <span>+54 (261) XXX-XXXX</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin className="h-5 w-5" />
+                  <span>Ubicación Principal, Argentina</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-accent/80 text-white">
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold mb-4">Certificaciones y Alianzas</h3>
+              <div className="grid grid-cols-3 gap-4">
+                {[1, 2, 3].map((cert) => (
+                  <div key={cert} className="aspect-square bg-white/10 rounded-lg flex items-center justify-center">
+                    <Award className="h-8 w-8" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Footer con CTA */}
+        <Card className="bg-gradient-to-r from-accent to-primary2-900 text-white">
+          <CardContent className="p-8 text-center">
+            <h3 className="text-2xl font-bold mb-4">¿Necesita nuestros servicios?</h3>
+            <p className="mb-6 text-white/80">
+              Estamos aquí para ayudarle con soluciones personalizadas para su empresa
+            </p>
+            <Button variant="outline" className="bg-white/10 border-white text-white hover:bg-white/20">
+              Contactar Ahora
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

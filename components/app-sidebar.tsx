@@ -37,7 +37,7 @@ import { useSidebarContext } from "@/app/context/SidebarContext";
 
 
 export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { empresas , selectedEmpresa } = useSidebarContext();
+  const { empresas , selectedEmpresa , banderaMenu } = useSidebarContext();
   const [data, setData] = useState<{
     user: { name: string; email: string; avatar: string };
     teams: { name: string; logo: any; plan: string }[];
@@ -88,7 +88,7 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
         const response = await axios.get("http://localhost:4108/catGeneral");
         
         const categoriasGeneralesBandera = response?.data.data; 
-        const filteredCategoria= categoriasGeneralesBandera.filter((cat: any) => cat?.empresa.nombre === selectedEmpresa);
+        const filteredCategoria= categoriasGeneralesBandera.filter((cat: any) => cat?.empresa === selectedEmpresa);
         
       
         const newNavMain = filteredCategoria.map((cat: any) => {
@@ -121,7 +121,7 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
     }
   
     fetchData();
-  }, [selectedEmpresa]);
+  }, [selectedEmpresa , banderaMenu]);
   
   return (
     <Sidebar collapsible="icon" {...props}>

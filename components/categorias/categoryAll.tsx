@@ -42,7 +42,7 @@ import { useToast } from "@/hooks/use-toast"
 
 
 export function CategoryAll(props: any) {
-    const {empresas , setEmpresas } = useSidebarContext();
+    const {empresas , setEmpresas, banderaMenu, setBanderaMenu } = useSidebarContext();
     const [ empresaDeCategoria, setempresaDeCatgoria ] = useState<string>("");
     const [ categoriaDeSubcategoria, setCategoriaDeSubcategoria ] = useState<string>("");
     const [ categoriasGenerales , setCategoriasGenerales] = useState<Category[]>([]);
@@ -65,35 +65,29 @@ export function CategoryAll(props: any) {
         setCategoriaDeSubcategoria(categoria);
     };
     useEffect(() => {
-        try {
-
         const fetchData = async () => {
-            const response = await axios.get("http://localhost:4108/catGeneral");
-            setCategoriasGenerales(response.data.data);
-            console.log("Categorias Generales: ",response.data);
-        };
-        fetchData();
-         } catch (error) {
-        console.error("Error al obtener las categorías:", error);
-        }
-        try {
-        const fetchCategorias = async () => {
-            const response = await axios.get("http://localhost:4108/categorias");
-            const subcategorias = response.data.data.map((subcategoria: any) => ({
-                ...subcategoria,
-                categoria: subcategoria.catGeneral
-            }));
-            setSubcategoriasGenerales(subcategorias);
-            console.log("SubcategoriasGenerales: ",response.data);
+            try {
+                const [catGeneralResponse, categoriasResponse] = await Promise.all([
+                    axios.get("http://localhost:4108/catGeneral"),
+                    axios.get("http://localhost:4108/categorias")
+                ]);
+
+                setCategoriasGenerales(catGeneralResponse.data.data);
+                //console.log("Categorias Generales: ", catGeneralResponse.data);
+
+                const subcategorias = categoriasResponse.data.data.map((subcategoria: any) => ({
+                    ...subcategoria,
+                    categoria: subcategoria.catGeneral
+                }));
+                setSubcategoriasGenerales(subcategorias);
+                //console.log("SubcategoriasGenerales: ", categoriasResponse.data);
+            } catch (error) {
+                console.error("Error al obtener las categorías o subcategorías:", error);
+            }
         };
 
-        fetchCategorias();
-        } catch (error) {
-        console.error("Error al obtener las subcategorías:", error);
-        }
-       
-        
-    },[empresas, categoriasGenerales, subcategoriasGenerales]);
+        fetchData();
+    }, []);
 
     const handleAgregarEmpresa = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
@@ -154,6 +148,8 @@ export function CategoryAll(props: any) {
                     formRefCategoria.current?.reset();
                     setIsSuccess(false);
                 }, 500);
+                setBanderaMenu("Cambio");
+
             } else {
                 throw new Error("Respuesta inesperada del servidor");
             }
@@ -373,7 +369,7 @@ export function CategoryAll(props: any) {
                                         {empresas?.map((empresa) => {
                                             const filteredCategories = categoriasGenerales?.filter((categoria) => categoria.empresa === empresa.nombre);
                                             const isExpanded = expandedRows[empresa.nombre] || false;
-
+                                            
                                             return (
                                             <React.Fragment key={empresa._id}>
                                                 <TableRow onClick={() => setExpandedRows((prev) => ({ ...prev, [empresa.nombre]: !prev[empresa.nombre] }))}>
@@ -389,13 +385,14 @@ export function CategoryAll(props: any) {
                                                         <Button 
                                                             className="w-[25px] h-[25px]"
                                                             variant="destructive"
-                                                            onClick={() => handleEliminarEmpresa(empresa)}>
+                                                            
+                                                            onClick={  () => handleEliminarEmpresa(empresa)}>
                                                             <Trash2 />
                                                         </Button>
                                                 </TableCell>
                                                 </TableRow>
-                                                {isExpanded && filteredCategories.map((categoria) => {
-                                                const filteredSubcategories = subcategoriasGenerales?.filter((subcategoria) => subcategoria.categoria === categoria.nombre);
+                                                {isExpanded && filteredCategories?.map((categoria) => {
+                                                const filteredSubcategories = subcategoriasGenerales?.filter((subcategoria) => subcategoria?.categoria === categoria?.nombre) || [];
                                                 return (
                                                     <React.Fragment key={categoria._id}>
                                                     <TableRow>

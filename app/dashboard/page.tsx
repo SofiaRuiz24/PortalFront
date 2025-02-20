@@ -97,7 +97,8 @@ export default function Page({ role }: PageProps) {
         ( selectedCategory || selectedSubCategory ? < SubCatPage /> : (
           role === "admin" && selectedAdmin === "Usuarios" ? < UserAll /> : (
             role === "admin" && selectedAdmin === "Configuración" ? <CategoryAll /> : (
-              role === "admin" && selectedAdmin === "Productos" ? < ProductAll /> : <HomePage />
+              role === "admin" && selectedAdmin === "Productos" ? < ProductAll /> : 
+               <HomePage />
               )
             )
           )

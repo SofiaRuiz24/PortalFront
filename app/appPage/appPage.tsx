@@ -57,7 +57,7 @@ export default function AppPage() {
     }, []);
 
     useEffect(() => {
-     setSelectedEmpresa(empresas? empresas[0].nombre  : "");
+     setSelectedEmpresa(empresas? empresas[0]?.nombre  : "");
     },[empresas]);
 
     useEffect(() => {
@@ -98,8 +98,8 @@ export default function AppPage() {
               </div>   
           </div>
         </section>*/
-        //<LoginPage/> 
-        <PageDashboard role="admin"/>
+        <LoginPage/> 
+        //<PageDashboard role="admin"/>
           
       );
     }

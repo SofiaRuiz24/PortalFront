@@ -13,6 +13,7 @@ interface SidebarContextType {
   crudProduct: string | null; // Nombre del crud seleccionado
   empresas: Empresa[] | null;
   selectedEmpresa: string | null; // Nombre de la empresa seleccionada
+  banderaMenu: string | null; 
   setArrayDeProductos: React.Dispatch<React.SetStateAction<{id: string, nombre: string}[] | null>>;
   setSelectedItem: (item: string) => void; // Función para actualizar el ítem seleccionadoo
   setSelectedCategory: (category: string) => void; // Función para actualizar la categoría seleccionada
@@ -22,6 +23,7 @@ interface SidebarContextType {
   setCrudProduct: (crudProduct: string) => void; // Función para actualizar el crud seleccionado
   setEmpresas: React.Dispatch<React.SetStateAction<Empresa[] | null>>; // Función para actualizar las empresas
   setSelectedEmpresa: (empresa: string) => void; // Función para actualizar la empresa seleccionada
+  setBanderaMenu: (bandera: string) => void; // Función para actualizar la bandera del menú
 }
 
 // Crear el contexto
@@ -38,6 +40,8 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null); //Almacena la subcategoría del menú actualmente seleccionada.
   const [sesion, setSesion] = useState<User | null>(null); //Almacena la sesion del usuario.
   const [crudProduct, setCrudProduct] = useState<string | null>(null); //Almacena el crud del producto actualmente seleccionado.
+  const [menuCategorias, setMenuCategorias] = useState<string[] | null>(null); //Almacena las categorías del menú actualmente seleccionadas.
+  const [banderaMenu, setBanderaMenu] = useState<string>("No Cambio"); //Almacena la bandera del menú actualmente seleccionada.
   return (
     <SidebarContext.Provider value={{  // Proporcionar los valores del contexto
       sesion,
@@ -57,7 +61,9 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       selectedSubCategory,
       setSelectedSubCategory,
       crudProduct,
-      setCrudProduct
+      setCrudProduct,
+      banderaMenu,
+      setBanderaMenu,
     }}>
       {children}
     </SidebarContext.Provider>

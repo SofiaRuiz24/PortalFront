@@ -30,7 +30,7 @@ export function TeamSwitcher({
   }[]
 }) {
   const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  const [activeTeam, setActiveTeam] = React.useState(teams[0]? teams[0] : { name: "", logo: Plus, plan: "" })
   const { setSelectedEmpresa } = useSidebarContext();
   const variasEmpresas: boolean = teams.length > 1;
   const [empresasTeams, setEmpresasTeams] = React.useState(teams);

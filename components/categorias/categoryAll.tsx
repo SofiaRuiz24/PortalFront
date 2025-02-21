@@ -67,18 +67,14 @@ export function CategoryAll(props: any) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [catGeneralResponse, categoriasResponse] = await Promise.all([
-                    axios.get("http://localhost:4108/catGeneral"),
-                    axios.get("http://localhost:4108/categorias")
-                ]);
-
+                const catGeneralResponse = await axios.get("http://localhost:4108/catGeneral");
                 setCategoriasGenerales(catGeneralResponse.data.data);
-                //console.log("Categorias Generales: ", catGeneralResponse.data);
-
-                const subcategorias = categoriasResponse.data.data.map((subcategoria: any) => ({
+                console.log("Categorias Generales: ", catGeneralResponse.data);
+                const categoriasResponse = await axios.get("http://localhost:4108/categorias");
+                const subcategorias = categoriasResponse.data.data?.map((subcategoria: any) => ({
                     ...subcategoria,
                     categoria: subcategoria.catGeneral
-                }));
+                })) || [];
                 setSubcategoriasGenerales(subcategorias);
                 //console.log("SubcategoriasGenerales: ", categoriasResponse.data);
             } catch (error) {
@@ -186,6 +182,7 @@ export function CategoryAll(props: any) {
                     formRefSubcategoria.current?.reset();
                     setIsSuccess(false);
                 }, 500);
+                setBanderaMenu("Cambio Subcategoria");
             }else {
                 throw new Error("Respuesta inesperada del servidor");
             }
@@ -358,7 +355,7 @@ export function CategoryAll(props: any) {
                                 <div className="overflow-x-auto">
                                     <Table>
                                         <TableHeader>
-                                            <TableRow>
+                                            <TableRow className="hover:bg-accent/0">
                                                 <TableHead className="w-[25%] font-semibold border-r-2">Empresa</TableHead>
                                                 <TableHead className="w-[20%] font-semibold border-r-2">Categoría</TableHead>
                                                 <TableHead className="w-[20%] font-semibold border-r-2">Subcategoria</TableHead>
@@ -367,12 +364,14 @@ export function CategoryAll(props: any) {
                                         </TableHeader>
                                         <TableBody>
                                         {empresas?.map((empresa) => {
-                                            const filteredCategories = categoriasGenerales?.filter((categoria) => categoria.empresa === empresa.nombre);
+                                            const filteredCategories = categoriasGenerales?.filter((categoria) => categoria.empresa.nombre === empresa.nombre);
                                             const isExpanded = expandedRows[empresa.nombre] || false;
-                                            
+                                            console.log("Empresa: ", empresa);
+                                            console.log("Categorias General: ", categoriasGenerales);
+                                            console.log("Categorias: ", filteredCategories);
                                             return (
                                             <React.Fragment key={empresa._id}>
-                                                <TableRow onClick={() => setExpandedRows((prev) => ({ ...prev, [empresa.nombre]: !prev[empresa.nombre] }))}>
+                                                <TableRow className={`${isExpanded ? "bg-accent/80 text-white font-bold hover:text-black" : "font-bold"}`} onClick={() => setExpandedRows((prev) => ({ ...prev, [empresa.nombre]: !prev[empresa.nombre] }))}>
                                                 <TableCell className="border-r-2 ">
                                                     <div className="flex items-center gap-6">
                                                     <ArrowDownWideNarrow className="w-[15px] h-[15px] "/>
@@ -395,7 +394,7 @@ export function CategoryAll(props: any) {
                                                 const filteredSubcategories = subcategoriasGenerales?.filter((subcategoria) => subcategoria?.categoria === categoria?.nombre) || [];
                                                 return (
                                                     <React.Fragment key={categoria._id}>
-                                                    <TableRow>
+                                                    <TableRow className="bg-accent/20">
                                                         <TableCell className="border-r-2 "></TableCell>
                                                         <TableCell className="border-r-2 ">{categoria.nombre}</TableCell>
                                                         <TableCell className="border-r-2 "></TableCell>
@@ -409,7 +408,7 @@ export function CategoryAll(props: any) {
                                                 </TableCell>
                                                     </TableRow>
                                                     {filteredSubcategories.map((subcategoria) => (
-                                                        <TableRow key={subcategoria._id}>
+                                                        <TableRow key={subcategoria._id} className="bg-accent/20">
                                                         <TableCell className="border-r-2"></TableCell>
                                                         <TableCell className="border-r-2"></TableCell>
                                                         <TableCell className="border-r-2">{subcategoria.nombre}</TableCell>

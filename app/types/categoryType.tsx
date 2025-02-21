@@ -1,9 +1,12 @@
+import Empresa from "./empresasTypes";
+import SubCategory from "./subCategoryType";
+
 //Interface de categoria
 interface Category{
     nombre: string;
     _id: string;
-    subcategorias: Array<string>;
-    empresa: string;
+    subcategorias: Array<SubCategory>;
+    empresa: Empresa;
 }
 
 export default Category;

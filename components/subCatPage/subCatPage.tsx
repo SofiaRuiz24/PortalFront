@@ -13,12 +13,13 @@ interface Product {
 }
 
 export function SubCatPage(props: any) {
-  const { selectedCategory, selectedSubCategory, setSelectedItem , selectedItem} = useSidebarContext()
+  const { setBanderaFiltradoProductos, selectedCategory, selectedSubCategory, setSelectedItem , selectedItem, setSelectedCategory} = useSidebarContext()
   const [ productsCategory, setProductsCategory ] = useState<Product[]>([]);
   const [ productos, setProductos ] = useState<Product[]>([]);
   const [ idCategory, setIdCategory ] = useState<string | null>(null);
+  
 
-
+ 
   useEffect(() => {
     if(selectedSubCategory){
       return;
@@ -52,6 +53,7 @@ export function SubCatPage(props: any) {
       // Lógica para seleccionar un producto
       //console.log("Producto seleccionado", product);
       setSelectedItem(product);
+      setBanderaFiltradoProductos(false);
   };
 
   return (
@@ -61,7 +63,7 @@ export function SubCatPage(props: any) {
           <h1 className="text-3xl font-semibold ml-5">{selectedSubCategory? selectedSubCategory : selectedCategory}</h1>
           <div className="grid auto-rows-min gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {
-              productsCategory.map((product) => (
+              productsCategory?.map((product) => (
                 <button onClick={(e) => handleSelectedProduct(e, product._id)} key={product._id} className="relative aspect-[2/3] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg" >
                   <img src={product.imagen[0]?.url ? product.imagen[0].url : "/images/placeholder.jpeg"} alt={product.imagen[0]?.nombre} className="h-full w-full object-cover"/>
                   <span className="absolute bottom-0 left-0 w-full bg-black/60 text-white p-2 text-center text-sm truncate">{product.nombre}</span>

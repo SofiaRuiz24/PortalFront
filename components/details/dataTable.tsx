@@ -41,7 +41,7 @@ export function DataTable<TData, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow className="" key={headerGroup.id}>
+            <TableRow className="hover:bg-accent/0" key={headerGroup.id}>
               {headerGroup.headers.map((header, index) => {
               return (
                 <TableHead

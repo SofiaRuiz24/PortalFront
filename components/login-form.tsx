@@ -17,9 +17,9 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  /*const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if(password.match("nomade")){
+    /*if(password.match("nomade")){
       //console.log("bandera login");
       const newUser: User = {
         name: "Admin",
@@ -28,7 +28,7 @@ export function LoginForm({
         empresas:[{_id: "", nombre: ""}],
       }
       setSesion(newUser);
-    }
+    }*/
     //console.log('Email:', email);
     //console.log('Password:', password);
     //console.log(sesion);
@@ -48,11 +48,11 @@ export function LoginForm({
     } catch (error) {
       console.error("Error durante el login:", error);
       setError("Error al iniciar sesión. Por favor, intenta de nuevo.");
-    }*/
-  };
+    }
+  };*/
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={handleSubmit}>
+    <form className={cn("flex flex-col gap-6", className)} {...props} >
       <div className="flex flex-col items-center gap-2 text-center">
         <Image src="/images/logo---ortubia.png" alt="Logo" width={200} height={200} />
         {/*<h1 className="text-2xl font-bold">Ingresa tu cuenta</h1>
@@ -82,7 +82,7 @@ export function LoginForm({
                 {error}
               </div>
             )}
-        <Button type="submit" className="w-full bg-orange-700 hover:bg-orange-800">
+        <Button className="w-full bg-orange-700 hover:bg-orange-800">
           Ingresar
         </Button>
       </div>

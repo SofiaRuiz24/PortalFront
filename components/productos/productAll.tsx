@@ -57,7 +57,7 @@ export function ProductAll() {
     const [isSubmittingDelete, setIsSubmittingDelete] = useState(false);
     const [tipoDoc, setTipoDoc] = useState("");
     const [categorias, setCategorias] = useState<Array<Category>>([]);
-    const [subcategorias, setSubcategorias] = useState<Array<string>>([]);
+    const [subcategorias, setSubcategorias] = useState<Array<SubCategory>>([]);
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<Category | null>(null);
 
     //Función para obtener las categorias de la API
@@ -65,7 +65,7 @@ export function ProductAll() {
         const fetchCategorias = async () => {
             try {
                 const response = await axios.get("http://localhost:4108/catGeneral");
-                //console.log("Categorias cargadas:", response.data.data); // Debug
+                console.log("Categorias cargadas:", response.data.data); // Debug
                 setCategorias(response.data.data);
             } catch (error) {
                 console.error("Error al obtener las categorias:", error);
@@ -330,9 +330,9 @@ export function ProductAll() {
                                         <SelectValue placeholder="Selecciona una subcategoría" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                    {subcategorias.map((subcategoria) => (
-                                        <SelectItem key={subcategoria} value={subcategoria}>
-                                            {subcategoria.charAt(0).toUpperCase() + subcategoria.slice(1)}
+                                    {subcategorias?.map((subcategoria) => (
+                                        <SelectItem key={subcategoria._id} value={subcategoria.nombre}>
+                                            {subcategoria.nombre.charAt(0).toUpperCase() + subcategoria.nombre.slice(1)}
                                         </SelectItem>
                                     ))}
                                     </SelectContent>
@@ -479,7 +479,7 @@ export function ProductAll() {
                                             {product.categoria.charAt(0).toUpperCase() + product.categoria.slice(1)}
                                         </TableCell>
                                         <TableCell>
-                                            {product.subcategoria.charAt(0).toUpperCase() + product.subcategoria.slice(1)}
+                                            {product.subcategoria?.charAt(0).toUpperCase() + product.subcategoria.slice(1)}
                                         </TableCell>
                                         <TableCell>
                                             <Dialog>

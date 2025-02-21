@@ -28,10 +28,11 @@ export function SubCatPage(props: any) {
      const res = await axios.get('http://localhost:4108/productos');
      //console.log("Productos", res.data.data);
      const products = res.data.data;
+     console.log("Productos", products);
      setProductos(products);
-     const filterProducts = products.filter((product: { categoria: string }) => product.categoria === selectedCategory?.toLowerCase());
+     const filterProducts = products.filter((product: { categoria: string }) => product.categoria.toLowerCase() === selectedCategory?.toLowerCase());
      setProductsCategory(filterProducts);
-     //console.log("Productos de la categoria", filterProducts);
+     console.log("Productos de la categoria", filterProducts);
     };
       fetchProducts();
   }, [selectedCategory, selectedSubCategory]);
@@ -40,8 +41,8 @@ export function SubCatPage(props: any) {
     // Logica para filtrar por subcategoria
     if (selectedSubCategory) {
       //console.log("Subcategoria seleccionada", selectedSubCategory);
-      const filterProducts = productos?.filter((product: { categoria: string }) => product.categoria === selectedCategory?.toLowerCase());
-      const filteredSubProducts = filterProducts.filter((product: { subcategoria: string }) => product.subcategoria === selectedSubCategory?.toLowerCase());
+      const filterProducts = productos?.filter((product: { categoria: string }) => product.categoria.toLowerCase() === selectedCategory?.toLowerCase());
+      const filteredSubProducts = filterProducts.filter((product: { subcategoria: string }) => product.subcategoria.toLowerCase() === selectedSubCategory?.toLowerCase());
       setProductsCategory(filteredSubProducts);
     }
     

@@ -88,7 +88,7 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
         const response = await axios.get("http://localhost:4108/catGeneral");
         
         const categoriasGeneralesBandera = response?.data.data; 
-        const filteredCategoria= categoriasGeneralesBandera.filter((cat: any) => cat?.empresa === selectedEmpresa);
+        const filteredCategoria= categoriasGeneralesBandera.filter((cat: any) => cat?.empresa.nombre === selectedEmpresa);
         
       
         const newNavMain = filteredCategoria.map((cat: any) => {
@@ -106,7 +106,7 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
             }),
             };
         });
-        //console.log("newNavMain" + JSON.stringify(newNavMain, null, 2));
+        console.log("newNavMain" + JSON.stringify(newNavMain, null, 2));
         
         setData((prevData) => {
           return {

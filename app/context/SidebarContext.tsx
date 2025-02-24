@@ -14,6 +14,8 @@ interface SidebarContextType {
   empresas: Empresa[] | null;
   selectedEmpresa: string | null; // Nombre de la empresa seleccionada
   banderaMenu: string | null; 
+  banderaFiltradoProductos: boolean; // Bandera de filtrado de productos
+  setBanderaFiltradoProductos: React.Dispatch<React.SetStateAction<boolean>>; // Función para actualizar la bandera de filtrado de productos
   setArrayDeProductos: React.Dispatch<React.SetStateAction<{id: string, nombre: string}[] | null>>;
   setSelectedItem: (item: string) => void; // Función para actualizar el ítem seleccionadoo
   setSelectedCategory: (category: string) => void; // Función para actualizar la categoría seleccionada
@@ -41,6 +43,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [sesion, setSesion] = useState<User | null>(null); //Almacena la sesion del usuario.
   const [crudProduct, setCrudProduct] = useState<string | null>(null); //Almacena el crud del producto actualmente seleccionado.
   const [menuCategorias, setMenuCategorias] = useState<string[] | null>(null); //Almacena las categorías del menú actualmente seleccionadas.
+  const [banderaFiltradoProductos, setBanderaFiltradoProductos] = useState<boolean>(false); //Almacena la bandera del menú actualmente seleccionada.
   const [banderaMenu, setBanderaMenu] = useState<string>("No Cambio"); //Almacena la bandera del menú actualmente seleccionada.
   return (
     <SidebarContext.Provider value={{  // Proporcionar los valores del contexto
@@ -64,6 +67,8 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       setCrudProduct,
       banderaMenu,
       setBanderaMenu,
+      banderaFiltradoProductos, 
+      setBanderaFiltradoProductos
     }}>
       {children}
     </SidebarContext.Provider>

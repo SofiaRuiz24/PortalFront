@@ -34,19 +34,23 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const { setSelectedItem, setSelectedCategory, setSelectedSubCategory } = useSidebarContext();
+  const {selectedCategory, setBanderaFiltradoProductos, banderaFiltradoProductos, setSelectedItem, setSelectedCategory, setSelectedSubCategory } = useSidebarContext();
   //console.log('NavMain'+JSON.stringify(items,null, 2)); // Usar JSON.stringify para imprimir los objetos de manera legible);
   const handleSidebarMenuClick = (categoryTitle: string, itemTitle: string) => {
     setSelectedCategory(categoryTitle);
     setSelectedSubCategory(itemTitle);
     setSelectedItem("");
-    //console.log('SidebarMenu clicked');
+    
+    console.log('SidebarMenu clicked');
+    console.log('Category: '+categoryTitle);
+    console.log('SubCategory: '+itemTitle);
   }
   const handleSidebarMenu = (categoryTitle: string) => {
     setSelectedCategory(categoryTitle);
     setSelectedSubCategory("");
     setSelectedItem("");
     //console.log('SidebarMenu clicked');
+    setBanderaFiltradoProductos(true);
   }
   return (
     <SidebarGroup>
@@ -56,6 +60,7 @@ export function NavMain({
           <Collapsible
             key={item.title}
             asChild
+            open={banderaFiltradoProductos && item.title === selectedCategory}
             //defaultOpen={item.isActive}
             className="group/collapsible"
           >

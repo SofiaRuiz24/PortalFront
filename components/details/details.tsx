@@ -62,14 +62,15 @@ export function Details() {
     }, [product, selectedData])
 
     return(
-        <Card className="flex flex-col justify-center items-center gap-10 m-8 pt-8">
-            <div id="DetailHeader" className="flex lg:flex-row justify-center gap-10 w-full ">
-                <div className="w-1/2 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center ">
-                    <Carousel className="w-2/3 max-w-[600px] ">
+        <>
+        <Card className="flex flex-col items-center m-8 pt-8 lg:h-[600px]">
+            <div id="DetailHeader" className="flex lg:flex-row w-full lg:h-[600px] ">
+                <div className="w-1/2 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center pb-[120px]">
+                    <Carousel className="w-2/3 max-w-[400px] ">
                         <CarouselContent className="">
                             {product?.imagen[0]? product.imagen.map((img, index) => (
                                 <CarouselItem key={index}>
-                                    <div className="flex justify-center item-center h-[400px] w-full rounded-lg border-black shadow-lg">
+                                    <div className="flex justify-center item-center h-[300px] w-full rounded-lg border-black shadow-lg">
                                         <img 
                                             src={img.url? img.url : "/images/placeholder.jpeg"} 
                                             alt={`Imagen ${index + 1}, nombre: ${img.nombre}`} 
@@ -91,15 +92,17 @@ export function Details() {
                     </Carousel>
                 </div>
                 
-                <div id="DetailTitle" className="lg:w-1/3 text-center lg:text-left flex flex-col gap-4 h-auto lg:h-[400px]">
+                <div id="DetailTitle" className="lg:w-1/2 p-2  text-center lg:text-left flex flex-col gap-4 lg:h-auto">
                     <h2 className="text-2xl font-bold " >{product?.nombre}</h2>
                     <div className="flex flex-wrap justify-center lg:justify-start gap-2 mt--2 ">
                     {product?.etiquetas?.map((etiqueta: string) => (
                         <span className="inline-block bg-gray-200 text-gray-700 text-xs font-small px-2 py-0.5 rounded-full ">{etiqueta}</span>))
                     }
                     </div>
-                    <p className="text-gray-500 h-[300px]">lorem</p>
-                    <Accordion type="single" collapsible className="w-full z-10">
+                    <div className="text-gray-600 bg-gray-200 backdrop-blur-sm rounded-lg h-[300px] p-4 mr-2  shadow-inner relative overflow-hidden hover:overflow-y-auto transition-all duration-300 scrollbar-hide">
+                        <p className="prose prose-sm">{product?.descripcion}</p>
+                    </div>
+                    <Accordion type="single" collapsible className="w-full z-10 ">
                         <AccordionItem value="item-1">
                             <AccordionTrigger>Mas detalles</AccordionTrigger>
                             <AccordionContent>
@@ -112,10 +115,13 @@ export function Details() {
             {/*<div id="DetailInfo" className=" lg:w-2/3 w-vw mt-4">
                 
             </div>*/}
-            <div id="DateilTable" className=" lg:w-4/5 mt-8 mb-8">
+             </Card>
+            <Card className="flex flex-col justify-center items-center gap-20 m-8 pt-8">
+            <div id="DateilTable" className=" lg:w-4/5 mt-10 mb-8">
                 <DataTable columns={columns} data={selectedData} getRowCanExpand={() => true}
                     renderSubComponent={renderSubComponent}/>
             </div>
         </Card>
+        </>
     ) 
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { FileDown, FileX } from 'lucide-react'
+import { ArrowDownToLine, FileDown, FileX } from 'lucide-react'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -92,7 +92,7 @@ export const columns: ColumnDef<Unidades>[] = [
                 }}
                 className="flex flex-col w-1/6 justify-center items-center gap-2"
               >
-                <FileDown size={24} />
+                <ArrowDownToLine size={24} />
                 
               </button>
             );
@@ -136,7 +136,7 @@ export const columns: ColumnDef<Unidades>[] = [
                   }}
                   className="flex flex-col w-1/6 justify-center items-center gap-2"
                 >
-                  <FileDown size={24} />
+                  <ArrowDownToLine size={24} />
                   
                 </button>
               );
@@ -177,7 +177,7 @@ export const columns: ColumnDef<Unidades>[] = [
                     }}
                     className="flex flex-col w-1/6 justify-center items-center gap-2"
                   >
-                    <FileDown size={24} />
+                    <ArrowDownToLine size={24} />
                     
                   </button>
                 );
@@ -218,7 +218,7 @@ export const columns: ColumnDef<Unidades>[] = [
                       }}
                       className="flex flex-col w-1/6 justify-center items-center gap-2"
                     >
-                      <FileDown size={24} />
+                      <ArrowDownToLine size={24} />
                       
                     </button>
                   );

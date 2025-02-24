@@ -238,11 +238,14 @@ export function ProductAll() {
     };
     
     //Función para eliminar un producto
-    const handleDelete = async (productId: string) => {
+    const handleDelete = async (productId: string , subcategoria: string) => {
         setIsSubmittingDelete(true);
         try {
             // Eliminar el producto y sus unidades
-            const response = await axios.delete(`http://localhost:4108/productos/${productId}`);
+            const response = await axios.delete(`http://localhost:4108/productos/${productId}`, {
+                data: { subcategoria }
+              });
+              
             
 
             if (response.status >= 200 && response.status < 300) {
@@ -586,7 +589,7 @@ export function ProductAll() {
                                             <Button
                                                 variant="destructive"
                                                 size="sm"
-                                                onClick={() => handleDelete(product._id)}
+                                                onClick={() => handleDelete(product._id,product.subcategoria)}
                                                 className=" bg-red-600 hover:bg-red-700 transition-colors flex items-center gap-3"
                                                 disabled={isSubmittingDelete}
                                             >

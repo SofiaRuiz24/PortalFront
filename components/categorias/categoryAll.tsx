@@ -39,6 +39,18 @@ import SubCategory from "@/app/types/subCategoryType";
 import { ArrowDownWideNarrow, Trash2 } from "lucide-react";
 import Empresa from "@/app/types/empresasTypes";
 import { useToast } from "@/hooks/use-toast"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 
 export function CategoryAll(props: any) {
@@ -381,13 +393,28 @@ export function CategoryAll(props: any) {
                                                 <TableCell className=" border-r-2 "></TableCell>
                                                 <TableCell className="border-r-2 "></TableCell>
                                                 <TableCell className="flex justify-center"> 
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger>
                                                         <Button 
                                                             className="w-[25px] h-[25px]"
                                                             variant="destructive"
-                                                            
-                                                            onClick={  () => handleEliminarEmpresa(empresa)}>
+                                                        >
                                                             <Trash2 />
                                                         </Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle>¿Está seguro de que desea continuar?</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                Esta acción no se puede deshacer. Esto eliminará permanentemente esta subcategoría y toda la información relacionada de los servidores.
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                            <AlertDialogAction onClick={  () => handleEliminarEmpresa(empresa)}>Aceptar</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
                                                 </TableCell>
                                                 </TableRow>
                                                 {isExpanded && filteredCategories?.map((categoria) => {
@@ -399,13 +426,29 @@ export function CategoryAll(props: any) {
                                                         <TableCell className="border-r-2 ">{categoria.nombre}</TableCell>
                                                         <TableCell className="border-r-2 "></TableCell>
                                                         <TableCell className="flex justify-center">
-                                                        <Button 
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger>
+                                                            <Button 
                                                             className="w-[25px] h-[25px]"
                                                             variant="destructive"
-                                                            onClick={() => handleEliminarCategoria(categoria)}>
+                                                            >
                                                             <Trash2 />
-                                                        </Button>
-                                                </TableCell>
+                                                            </Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                <AlertDialogTitle>¿Está seguro de que desea continuar?</AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    Esta acción no se puede deshacer. Esto eliminará permanentemente esta subcategoría y toda la información relacionada de los servidores.
+                                                                </AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter>
+                                                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                                <AlertDialogAction onClick={() => handleEliminarCategoria(categoria)}>Aceptar</AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                        </AlertDialog>
+                                                    </TableCell>
                                                     </TableRow>
                                                     {filteredSubcategories.map((subcategoria) => (
                                                         <TableRow key={subcategoria._id} className="bg-accent/20">
@@ -413,13 +456,31 @@ export function CategoryAll(props: any) {
                                                         <TableCell className="border-r-2"></TableCell>
                                                         <TableCell className="border-r-2">{subcategoria.nombre}</TableCell>
                                                         <TableCell className="flex justify-center">
-                                                        <Button 
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger>
+                                                            <Button 
                                                             className="w-[25px] h-[25px]"
                                                             variant="destructive"
-                                                            onClick={() => handleEliminarSubcategoria(subcategoria)}>
-                                                            <Trash2 />
-                                                        </Button>
-                                                </TableCell>
+                                                            >
+                                                                <Trash2 />
+                                                            </Button>
+                                                            </AlertDialogTrigger>
+                                                            
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                <AlertDialogTitle>¿Está seguro de que desea continuar?</AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    Esta acción no se puede deshacer. Esto eliminará permanentemente esta subcategoría y toda la información relacionada de los servidores.
+                                                                </AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter>
+                                                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                                <AlertDialogAction onClick={() => handleEliminarSubcategoria(subcategoria)}>Aceptar</AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                            
+                                                        </AlertDialog>
+                                                        </TableCell>
                                                         </TableRow>
                                                     ))}
                                                    

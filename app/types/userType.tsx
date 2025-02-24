@@ -5,6 +5,7 @@ interface User {
     role: string;
     name: string;
     empresas: Empresa[];
+    idKey: string;
 }
 
 export default User;

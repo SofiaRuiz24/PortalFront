@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, X } from "lucide-react";
 import axios from "axios";
 import { useSidebarContext } from "@/app/context/SidebarContext";
 import Empresa from "@/app/types/empresasTypes";
@@ -161,163 +161,225 @@ export function UserAll() {
   };
 
   return (
-    <div className="flex flex-col gap-8 m-2">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">
+    <div className="flex flex-col gap-4 sm:gap-8 p-2 sm:p-4 lg:p-8">
+      <Card className="shadow-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-xl sm:text-2xl font-bold text-center sm:text-left">
             {editingUser ? "Editar Usuario" : "Registrar Nuevo Usuario"}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-2">
-          <Label htmlFor="nombre">Nombre</Label>
-          <Input
-            id="nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
+                <Label htmlFor="nombre">Nombre</Label>
+                <Input
+                  id="nombre"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  className="w-full"
+                  required
+                />
               </div>
               <div className="space-y-2">
-          <Label htmlFor="apellido">Apellido</Label>
-          <Input
-            id="apellido"
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
-            required
-          />
+                <Label htmlFor="apellido">Apellido</Label>
+                <Input
+                  id="apellido"
+                  value={apellido}
+                  onChange={(e) => setApellido(e.target.value)}
+                  className="w-full"
+                  required
+                />
               </div>
               <div className="space-y-2">
-          <Label htmlFor="usuario">Usuario</Label>
-          <Input
-            id="usuario"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-            required
-          />
+                <Label htmlFor="usuario">Usuario</Label>
+                <Input
+                  id="usuario"
+                  value={usuario}
+                  onChange={(e) => setUsuario(e.target.value)}
+                  className="w-full"
+                  required
+                />
               </div>
               <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full"
+                  required
+                />
               </div>
               <div className="space-y-2">
-          <Label htmlFor="password">Contraseña</Label>
-          <Input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required={!editingUser}
-          />
+                <Label htmlFor="password">Contraseña</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full"
+                  required={!editingUser}
+                />
               </div>
               <div className="space-y-2">
-          <Label htmlFor="rol">Rol</Label>
-          <Select value={rol} onValueChange={setRol}>
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccione un rol" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="admin">Administrador</SelectItem>
-              <SelectItem value="cliente">Cliente</SelectItem>
-            </SelectContent>
-          </Select>
+                <Label htmlFor="rol">Rol</Label>
+                <Select value={rol} onValueChange={setRol}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Seleccione un rol" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Administrador</SelectItem>
+                    <SelectItem value="cliente">Cliente</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-                <div className="space-y-2">
+              <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="empresas">Empresa</Label>
                 <Select onValueChange={handleEmpresaChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Seleccione una empresa" />
-              </SelectTrigger>
-              <SelectContent>
-              {empresas?.map((empresa) => (
-                <SelectItem key={empresa._id} value={empresa.nombre}>
-                  {empresa.nombre}
-                </SelectItem>
-              ))}
-              </SelectContent>
-              </Select>
-                </div>
-                <div className="space-y-2">
-              <Label>Empresas Seleccionadas</Label>
-              <div className="flex flex-wrap gap-2">
-              {empresasSeleccionadas.length === 0 && <p className="ml-2 text-gray-500 text-sm">No hay empresas seleccionadas</p>}
-              {empresasSeleccionadas?.map((empresa) => (
-                <div key={empresa._id} className="flex items-center gap-2 bg-gray-200 p-2 rounded">
-                <span>{empresa.nombre}</span>
-                <Button variant="destructive" className="h-[20px] w-[10px]" onClick={() => handleRemoveEmpresa(empresa._id)}>
-                  X
-                </Button>
-                </div>
-              ))}
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Seleccione una empresa" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {empresas?.map((empresa) => (
+                      <SelectItem key={empresa._id} value={empresa.nombre}>
+                        {empresa.nombre}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+              {/*<div className="space-y-2 sm:col-span-2">
+                <Label>Empresas Seleccionadas</Label>
+                <div className="min-h-[60px] p-2 rounded-md border border-input bg-background">
+                  {empresasSeleccionadas.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center">No hay empresas seleccionadas</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {empresasSeleccionadas?.map((empresa) => (
+                        <div
+                          key={empresa._id}
+                          className="flex items-center gap-2 bg-secondary px-3 py-1 rounded-full text-sm"
+                        >
+                          <span>{empresa.nombre}</span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-auto p-0 hover:bg-transparent"
+                            onClick={() => handleRemoveEmpresa(empresa._id)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
+              </div>*/}
             </div>
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-end gap-4 pt-2">
               {editingUser && (
-          <Button type="button" variant="outline" onClick={clearForm}>
-            Cancelar
-          </Button>
+                <Button type="button" variant="outline" onClick={clearForm}>
+                  Cancelar
+                </Button>
               )}
               <Button type="submit">
-          {editingUser ? "Actualizar" : "Registrar"}
+                {editingUser ? "Actualizar" : "Registrar"}
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="shadow-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Usuarios Registrados</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl font-bold">Usuarios Registrados</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nombre</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Rol</TableHead>
-                <TableHead>Empresa</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {users.map((user) => (
-                <TableRow key={user._id}>
-                  <TableCell>{user.nombre}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.rol}</TableCell>
-                  <TableCell>{user.empresas?.map((empresa) => empresa.nombre).join(", ")}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(user)}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(user._id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
+          {/* Vista móvil */}
+          <div className="block sm:hidden space-y-4">
+            {users.map((user) => (
+              <div key={user._id} className="bg-secondary/10 rounded-lg p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <h3 className="font-medium">{user.nombre}</h3>
+                    <p className="text-sm text-muted-foreground">{user.email}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(user)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(user._id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span className="font-medium">Rol: </span>
+                    <span className="capitalize">{user.rol}</span>
+                  </div>
+                  <div>
+                    <span className="font-medium">Empresas: </span>
+                    <span>{user.empresas?.map((empresa) => empresa.nombre).join(", ")}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Vista desktop */}
+          <div className="hidden sm:block">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Rol</TableHead>
+                  <TableHead>Empresa</TableHead>
+                  <TableHead className="text-right">Acciones</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user._id}>
+                    <TableCell>{user.nombre}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell className="capitalize">{user.rol}</TableCell>
+                    <TableCell>{user.empresas?.map((empresa) => empresa.nombre).join(", ")}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEdit(user)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(user._id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

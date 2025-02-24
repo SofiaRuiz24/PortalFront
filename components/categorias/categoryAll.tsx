@@ -36,27 +36,78 @@ import Category from "@/app/types/categoryType";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Input } from "../ui/input";
 import SubCategory from "@/app/types/subCategoryType";
-import { ArrowDownWideNarrow, Trash2 } from "lucide-react";
+import { ArrowDownWideNarrow, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import Empresa from "@/app/types/empresasTypes";
 import { useToast } from "@/hooks/use-toast"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Check, ChevronsUpDown,
+    AudioWaveform,
+    BookOpen,
+    Bot,
+    Frame,
+    GalleryVerticalEnd,
+    Map,
+    PieChart,
+    Settings2,
+    Shrink,
+    Hammer,
+    Package,
+    RefreshCw,
+    Fan,
+    Webhook,
+    UsersRound,
+    PencilRuler,
+} from "lucide-react"
 
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
+import { cn } from "@/lib/utils"
 
 export function CategoryAll(props: any) {
-    const {empresas , setEmpresas, banderaMenu, setBanderaMenu } = useSidebarContext();
-    const [ empresaDeCategoria, setempresaDeCatgoria ] = useState<string>("");
-    const [ categoriaDeSubcategoria, setCategoriaDeSubcategoria ] = useState<string>("");
-    const [ categoriasGenerales , setCategoriasGenerales] = useState<Category[]>([]);
-    const [ nuevaEmpresa, setNuevaEmpresa] = useState<string>("");
-    const [ nuevaCategoria, setNuevaCategoria] = useState<string>("");
-    const [ nuevaSubcategoria, setNuevaSubcategoria] = useState<string>("");
-    const [ subcategoriasGenerales, setSubcategoriasGenerales] = useState<SubCategory[]>([]);
+    const { empresas, setEmpresas, banderaMenu, setBanderaMenu } = useSidebarContext();
+    const [empresaDeCategoria, setempresaDeCatgoria] = useState<string>("");
+    const [categoriaDeSubcategoria, setCategoriaDeSubcategoria] = useState<string>("");
+    const [categoriasGenerales, setCategoriasGenerales] = useState<Category[]>([]);
+    const [nuevaEmpresa, setNuevaEmpresa] = useState<string>("");
+    const [nuevaCategoria, setNuevaCategoria] = useState<string>("");
+    const [nuevaSubcategoria, setNuevaSubcategoria] = useState<string>("");
+    const [subcategoriasGenerales, setSubcategoriasGenerales] = useState<SubCategory[]>([]);
     const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
     const formRef = useRef<HTMLFormElement>(null); // REF para limpiar el formulario
     const formRefCategoria = useRef<HTMLFormElement>(null); // REF para limpiar el formulario de categoría
     const formRefSubcategoria = useRef<HTMLFormElement>(null); // REF para limpiar el formulario de subcategoría
     const [isSuccess, setIsSuccess] = useState(false);
     const { toast } = useToast();
-    
+    const [expandedMobileItems, setExpandedMobileItems] = useState<Record<string, boolean>>({});
+    const [selectedIcon, setSelectedIcon] = useState<string>("");
+    const [selectedIconEmpresa, setSelectedIconEmpresa] = useState<string>("");
+
+    const icons = [
+        { value: "webhook", label: "Webhook", icon: Webhook },
+        { value: "fan", label: "Fan", icon: Fan },
+        { value: "shrink", label: "Shrink", icon: Shrink },
+        { value: "hammer", label: "Hammer", icon: Hammer },
+        { value: "package", label: "Package", icon: Package },
+        { value: "refresh", label: "Refresh", icon: RefreshCw },
+        { value: "settings", label: "Settings", icon: Settings2 },
+        { value: "audioWaveform", label: "Audio Waveform", icon: AudioWaveform },
+        { value: "bookOpen", label: "Book Open", icon: BookOpen },
+        { value: "bot", label: "Bot", icon: Bot },
+        { value: "frame", label: "Frame", icon: Frame },
+        { value: "galleryVerticalEnd", label: "Gallery Vertical End", icon: GalleryVerticalEnd },
+        { value: "map", label: "Map", icon: Map },
+        { value: "pieChart", label: "Pie Chart", icon: PieChart },
+        { value: "usersRound", label: "Users Round", icon: UsersRound },
+        { value: "pencilRuler", label: "Pencil Ruler", icon: PencilRuler },
+    ];
+    const iconEmpresa =[
+        {value: "GalleryVerticalEnd" ,label: "Gallery Vertical End", icon: GalleryVerticalEnd},
+        {value: "AudioWaveform" ,label: "AudioWaveform", icon: AudioWaveform},
+        {value: "BookOpen", label: "Book Open", icon: BookOpen},
+    ]
 
     const handleEmpresaSeleccionada = (empresa: string) => {
         setempresaDeCatgoria(empresa);
@@ -86,13 +137,16 @@ export function CategoryAll(props: any) {
     }, []);
 
     const handleAgregarEmpresa = async (e: React.FormEvent<HTMLFormElement>) => {
+       
         e.preventDefault(); 
         const newEmpresa = nuevaEmpresa;
-        if (!newEmpresa) {
+        if (!newEmpresa && !selectedIconEmpresa) {
             alert("El nombre de la empresa no puede estar vacío.");
             return;
         }
-        const response = await axios.post("http://localhost:4108/empresas",{  nombre: newEmpresa } );
+        console.log("Entraba a agregar empresa");
+        const response = await axios.post("http://localhost:4108/empresas",{  nombre: newEmpresa , icon: selectedIconEmpresa} );
+        console.log("Empresa guardada: ", response.data);
         if (response.status >= 200 && response.status < 300) { 
            
             toast({
@@ -118,28 +172,30 @@ export function CategoryAll(props: any) {
 
     const handleAgregarCategoria = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!nuevaCategoria || !empresaDeCategoria) {
-            alert("Debes seleccionar una empresa y escribir un nombre de categoría.");
+        if (!nuevaCategoria || !empresaDeCategoria || !selectedIcon) {
+            alert("Debes seleccionar una empresa, escribir un nombre de categoría y seleccionar un icono.");
             return;
         }
        
         try {
             const response = await axios.post("http://localhost:4108/catGeneral", {
                 nombre: nuevaCategoria,
-                empresa: empresaDeCategoria
+                empresa: empresaDeCategoria,
+                icon: selectedIcon
             });
     
             if (response.status >= 200 && response.status < 300) { 
                 toast({
                     title: "Éxito",
-                    description: "Producto guardado correctamente",
+                    description: "Categoría guardada correctamente",
                     variant: "default",
                     duration: 5000,
                 });
     
                 setIsSuccess(true);
-                setNuevaCategoria(""); // Limpiar input después de agregar
-                setempresaDeCatgoria(""); // Limpiar input después de agregar
+                setNuevaCategoria(""); 
+                setempresaDeCatgoria(""); 
+                setSelectedIcon(""); 
                 setTimeout(() => {
                     formRefCategoria.current?.reset();
                     setIsSuccess(false);
@@ -219,223 +275,412 @@ export function CategoryAll(props: any) {
         };
     }
 
+    const toggleMobileExpand = (id: string) => {
+        setExpandedMobileItems(prev => ({
+            ...prev,
+            [id]: !prev[id]
+        }));
+    };
+
     return(
-        <div className="flex flex-col gap-8 m-2">
-            <Card >
-                 <CardHeader>
-                     <CardTitle className="text-2xl">Agregar Nueva Empresa</CardTitle>
-                 </CardHeader>
-                    <CardContent>
+        <div className="flex flex-col gap-4 sm:gap-8 p-2 sm:p-4 lg:p-8">
+            <Card className="shadow-md">
+                <CardHeader>
+                    <CardTitle className="text-xl sm:text-2xl">Agregar Nueva Empresa</CardTitle>
+                </CardHeader>
+                <CardContent>
                     <form
                         ref={formRef}
-                         action="http://localhost:4108/empresas"
-                         method="post"
-                         onSubmit={handleAgregarEmpresa}
-                         encType="multipart/form-data"
-                        >
-                        <div className="flex flex-col gap-4 w-1/2">
-                            <Label className="text-lg">Nombre de la Empresa</Label>
-                            <Input 
-                                type="text" 
-                                name="nombre" 
-                                className="border border-gray-700 p-2" 
-                                onChange={(e) => setNuevaEmpresa(e.target.value)}
-                            />
+                        onSubmit={handleAgregarEmpresa}
+                        className="space-y-4"
+                    > 
+                        <div className="flex gap-4">
+                            <div className="flex flex-col w-1/3 space-y-2 ">
+                                <Label className=" text-sm font-medium ">Icono de la Empresa</Label>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            className=" justify-between bg-white"
+                                        >
+                                            {selectedIconEmpresa ? (
+                                                <div className="flex items-center gap-2">
+                                                    {iconEmpresa?.find(iconEmpresa => iconEmpresa.value === selectedIconEmpresa)?.icon && 
+                                                        React.createElement(iconEmpresa.find(iconEmpresa => iconEmpresa.value === selectedIconEmpresa)!.icon, { className: "h-4 w-4" })}
+                                                    {iconEmpresa?.find(iconEmpresa => iconEmpresa.value === selectedIconEmpresa)?.label}
+                                                </div>
+                                            ) : (
+                                                "Seleccionar icono"
+                                            )}
+                                            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-full p-0 grid-cols-3 grid">
+                                        {iconEmpresa?.map((iconEmpresa) => (
+                                            <Button
+                                                key={iconEmpresa.value}
+                                                variant="ghost"
+                                                className="w-full"
+                                                onClick={() => {setSelectedIconEmpresa(iconEmpresa.value)
+                                                    console.log("Icono seleccionado: ", typeof(iconEmpresa.value))
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-2 ">
+                                                    {iconEmpresa.icon && React.createElement(iconEmpresa.icon, { className: "h-4 w-4" })}
+                                                    
+                                                </div>
+                                            </Button>
+                                        ))}
+                            
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                            <div className="space-y-2 w-2/3">
+                                <Label className="text-sm font-medium">Nombre de la Empresa</Label>
+                                <Input 
+                                    type="text" 
+                                    name="nombre" 
+                                    onChange={(e) => setNuevaEmpresa(e.target.value)}
+                                    className="w-full"
+                                    placeholder="Ingrese el nombre de la empresa"
+                                />
+                            </div>
                         </div>
-                         {/* Botón Submit */}
-                         <div className="flex justify-center pt-4">
-                            <Button 
-                                type="submit"
-                            > 
-                                Agregar Empresa
-                            </Button>
-                        </div>
+                        <div className="flex justify-end">
+                                <Button type="submit">
+                                    Agregar Empresa
+                                </Button>
+                            </div>
                     </form>
-                    </CardContent>
+                </CardContent>
             </Card>
-            <Card >
-                 <CardHeader>
-                     <CardTitle className="text-2xl">Agregar Nueva Categoria</CardTitle>
-                 </CardHeader>
-                    <CardContent>
+
+            <Card className="shadow-md">
+                <CardHeader>
+                    <CardTitle className="text-xl sm:text-2xl">Agregar Nueva Categoría</CardTitle>
+                </CardHeader>
+                <CardContent>
                     <form
-                    ref={formRefCategoria} 
-                    onSubmit={handleAgregarCategoria}
+                        ref={formRefCategoria} 
+                        onSubmit={handleAgregarCategoria}
+                        className="space-y-4"
                     >
-                    <div className="flex flex-row gap-4 w-full justify-between ">
-                         <div className="w-full flex flex-col gap-2">
-                            <label className="text-lg">Seleccionar Empresa</label>
-                            <Select name="empresas" onValueChange={handleEmpresaSeleccionada}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Selecciona una empresa." />
+                        <div className="flex sm:grid-cols-3 gap-4">
+                            <div className="w-2/5 space-y-2">
+                                <Label className="text-sm font-medium">Seleccionar Empresa</Label>
+                                <Select name="empresas" onValueChange={handleEmpresaSeleccionada}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Selecciona una empresa" />
                                     </SelectTrigger>
-                                    <SelectContent >
+                                    <SelectContent>
                                         {empresas?.map((empresa) => (
                                             <SelectItem key={empresa._id} value={empresa.nombre}>
                                                 {empresa.nombre.charAt(0).toUpperCase() + empresa.nombre.slice(1)}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="flex flex-col gap-2 w-full">
-                            <label className="text-lg">Nombre de la Categoria</label>
-                            <input 
-                                type="text" 
-                                className="border border-gray-700 p-2"
-                                value={nuevaCategoria}
-                                onChange={(e) => setNuevaCategoria(e.target.value)}
-                                />
-                        </div>
+                                </Select>
+                            </div>
+                            <div className="flex flex-col w-1/5 space-y-2">
+                                <Label className=" text-sm font-medium ">Icono de la Categoría</Label>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            className=" justify-between bg-white"
+                                        >
+                                            {selectedIcon ? (
+                                                <div className="flex items-center gap-2">
+                                                    {icons?.find(icon => icon.value === selectedIcon)?.icon && 
+                                                        React.createElement(icons.find(icon => icon.value === selectedIcon)!.icon, { className: "h-4 w-4" })}
+                                                    {icons?.find(icon => icon.value === selectedIcon)?.label}
+                                                </div>
+                                            ) : (
+                                                "Seleccionar icono"
+                                            )}
+                                            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-full p-0 grid-cols-4 grid">
+                                        {icons?.map((icon) => (
+                                            <Button
+                                                key={icon.value}
+                                                variant="ghost"
+                                                className="w-full"
+                                                onClick={() => {setSelectedIcon(icon.value)
+                                                    console.log("Icono seleccionado: ", typeof(icon.value))
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-2 ">
+                                                    {icon.icon && React.createElement(icon.icon, { className: "h-4 w-4" })}
+                                                    
+                                                </div>
+                                            </Button>
+                                        ))}
+                            
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
                         
-                    </div>
-                    
-                         {/* Botón Submit */}
-                         <div className="flex justify-center pt-4">
-                            <Button 
-                                type="submit"
-                                > 
-                                Agregar Categoria
+                            <div className="space-y-2 w-2/5">
+                                <Label className="text-sm font-medium">Nombre de la Categoría</Label>
+                                <Input 
+                                    type="text" 
+                                    value={nuevaCategoria}
+                                    onChange={(e) => setNuevaCategoria(e.target.value)}
+                                    placeholder="Ingrese el nombre de la categoría"
+                                />
+                            </div>
+                            </div>
+                        <div className="flex justify-end">
+                            <Button type="submit">
+                                Agregar Categoría
+
                             </Button>
                         </div>
                     </form>
-                    </CardContent>
+                </CardContent>
             </Card>
-            <Card>
-                <CardHeader>
-                <CardTitle className="text-2xl">Agregar Nueva Subcategoria</CardTitle>
-                </CardHeader>
 
+            <Card className="shadow-md">
+                <CardHeader>
+                    <CardTitle className="text-xl sm:text-2xl">Agregar Nueva Subcategoría</CardTitle>
+                </CardHeader>
                 <CardContent>
-                <form onSubmit={handleAgregarSubcategoria}
-                ref={formRef}>
-                  <div className="flex flex-row gap-4 w-full justify-between ">
-                  <div className="w-full flex flex-col gap-2">
-                            <label className="text-lg">Seleccionar Categoria</label>
-                            <Select name="categoria" onValueChange={handleCategoriaSeleccionada}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Selecciona una categoria." />
+                    <form 
+                        onSubmit={handleAgregarSubcategoria}
+                        ref={formRefSubcategoria}
+                        className="space-y-4"
+                    >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label className="text-sm font-medium">Seleccionar Categoría</Label>
+                                <Select name="categoria" onValueChange={handleCategoriaSeleccionada}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Selecciona una categoría" />
                                     </SelectTrigger>
-                                    <SelectContent >
+                                    <SelectContent>
                                         {categoriasGenerales?.map((categoria) => (
                                             <SelectItem key={categoria._id} value={categoria.nombre}>
                                                 {categoria.nombre.charAt(0).toUpperCase() + categoria.nombre.slice(1)}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
-                            </Select>
-                     </div>
-                    <div className="flex flex-col gap-2 w-full">
-                        <label className="text-lg">Nombre de la Subcategoria</label>
-                        <input 
-                            type="text" 
-                            value={nuevaSubcategoria}
-                            onChange={(e) => setNuevaSubcategoria(e.target.value)}
-                            className="border border-gray-700 p-2" />
-                     </div>
-                   
-                    </div>
-                        {/* Botón Submit */}
-                        <div className="flex justify-center pt-4">
-                            <Button 
-                                type="submit"
-                                > 
-                                 Agregar Subcategoria
+                                </Select>
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-sm font-medium">Nombre de la Subcategoría</Label>
+                                <Input 
+                                    type="text" 
+                                    value={nuevaSubcategoria}
+                                    onChange={(e) => setNuevaSubcategoria(e.target.value)}
+                                    placeholder="Ingrese el nombre de la subcategoría"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex justify-end">
+                            <Button type="submit">
+                                Agregar Subcategoría
                             </Button>
                         </div>
-                    </form>                             
-                </CardContent>                             
+                    </form>
+                </CardContent>
             </Card>
-            <div >
-             <Card>
-                            <CardHeader>
-                                <CardTitle className="text-2xl mb-4">Lista de Empresas</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="overflow-x-auto">
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow className="hover:bg-accent/0">
-                                                <TableHead className="w-[25%] font-semibold border-r-2">Empresa</TableHead>
-                                                <TableHead className="w-[20%] font-semibold border-r-2">Categoría</TableHead>
-                                                <TableHead className="w-[20%] font-semibold border-r-2">Subcategoria</TableHead>
-                                                <TableHead className="w-[8%] font-semibold text-center">Eliminar</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                        {empresas?.map((empresa) => {
-                                            const filteredCategories = categoriasGenerales?.filter((categoria) => categoria.empresa.nombre === empresa.nombre);
-                                            const isExpanded = expandedRows[empresa.nombre] || false;
-                                            console.log("Empresa: ", empresa);
-                                            console.log("Categorias General: ", categoriasGenerales);
-                                            console.log("Categorias: ", filteredCategories);
-                                            return (
+
+            <Card className="shadow-md">
+                <CardHeader>
+                    <CardTitle className="text-xl sm:text-2xl">Lista de Empresas</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {/* Vista móvil*/}
+                    <div className="block sm:hidden space-y-4">
+                        {empresas?.map((empresa) => {
+                            const filteredCategories = categoriasGenerales?.filter(
+                                (categoria) => categoria.empresa.nombre === empresa.nombre
+                            );
+                            const isExpanded = expandedMobileItems[empresa._id] || false;
+
+                            return (
+                                <div key={empresa._id} className="bg-secondary/10 rounded-lg">
+                                    <div 
+                                        className="flex items-center justify-between p-4 cursor-pointer"
+                                        onClick={() => toggleMobileExpand(empresa._id)}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            {isExpanded ? (
+                                                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                                            ) : (
+                                                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                            )}
+                                            <span className="font-semibold">{empresa.nombre}</span>
+                                        </div>
+                                        <Button 
+                                            variant="destructive"
+                                            size="sm"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleEliminarEmpresa(empresa);
+                                            }}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                    
+                                    {isExpanded && (
+                                        <div className="px-4 pb-4">
+                                            {filteredCategories?.map((categoria) => {
+                                                const filteredSubcategories = subcategoriasGenerales?.filter(
+                                                    (subcategoria) => subcategoria?.categoria === categoria?.nombre
+                                                );
+                                                const isCategoryExpanded = expandedMobileItems[categoria._id] || false;
+
+                                                return (
+                                                    <div key={categoria._id} className="ml-4 mb-2">
+                                                        <div 
+                                                            className="flex items-center justify-between py-2 cursor-pointer"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                toggleMobileExpand(categoria._id);
+                                                            }}
+                                                        >
+                                                            <div className="flex items-center gap-2">
+                                                                {isCategoryExpanded ? (
+                                                                    <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                                                                ) : (
+                                                                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                                                )}
+                                                                <span className="font-medium">{categoria.nombre}</span>
+                                                            </div>
+                                                            <Button 
+                                                                variant="destructive"
+                                                                size="sm"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleEliminarCategoria(categoria);
+                                                                }}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                        {isCategoryExpanded && filteredSubcategories?.map((subcategoria) => (
+                                                            <div key={subcategoria._id} className="ml-8 flex items-center justify-between py-2">
+                                                                <span className="text-sm">{subcategoria.nombre}</span>
+                                                                <Button 
+                                                                    variant="destructive"
+                                                                    size="sm"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleEliminarSubcategoria(subcategoria);
+                                                                    }}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Vista desktop */}
+                    <div className="hidden sm:block">
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="hover:bg-accent/0">
+                                        <TableHead className="w-[25%] font-semibold">Empresa</TableHead>
+                                        <TableHead className="w-[20%] font-semibold">Categoría</TableHead>
+                                        <TableHead className="w-[20%] font-semibold">Subcategoría</TableHead>
+                                        <TableHead className="w-[8%] text-center">Acciones</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {empresas?.map((empresa) => {
+                                        const filteredCategories = categoriasGenerales?.filter((categoria) => categoria.empresa.nombre === empresa.nombre);
+                                        const isExpanded = expandedRows[empresa.nombre] || false;
+                                        
+                                        return (
                                             <React.Fragment key={empresa._id}>
-                                                <TableRow className={`${isExpanded ? "bg-accent/80 text-white font-bold hover:text-black" : "font-bold"}`} onClick={() => setExpandedRows((prev) => ({ ...prev, [empresa.nombre]: !prev[empresa.nombre] }))}>
-                                                <TableCell className="border-r-2 ">
-                                                    <div className="flex items-center gap-6">
-                                                    <ArrowDownWideNarrow className="w-[15px] h-[15px] "/>
-                                                    {empresa.nombre}
-                                                    </div>                                                    
-                                                </TableCell>
-                                                <TableCell className=" border-r-2 "></TableCell>
-                                                <TableCell className="border-r-2 "></TableCell>
-                                                <TableCell className="flex justify-center"> 
+                                                <TableRow 
+                                                    className={`${isExpanded ? "bg-accent/80 text-white hover:text-black" : ""} cursor-pointer`}
+                                                    onClick={() => setExpandedRows((prev) => ({ ...prev, [empresa.nombre]: !prev[empresa.nombre] }))}
+                                                >
+                                                    <TableCell>
+                                                        <div className="flex items-center gap-2">
+                                                            <ArrowDownWideNarrow className="w-4 h-4" />
+                                                            <span className="font-medium">{empresa.nombre}</span>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell></TableCell>
+                                                    <TableCell></TableCell>
+                                                    <TableCell className="text-center">
                                                         <Button 
-                                                            className="w-[25px] h-[25px]"
                                                             variant="destructive"
-                                                            
-                                                            onClick={  () => handleEliminarEmpresa(empresa)}>
-                                                            <Trash2 />
+                                                            size="sm"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleEliminarEmpresa(empresa);
+                                                            }}
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
                                                         </Button>
-                                                </TableCell>
+                                                    </TableCell>
                                                 </TableRow>
                                                 {isExpanded && filteredCategories?.map((categoria) => {
-                                                const filteredSubcategories = subcategoriasGenerales?.filter((subcategoria) => subcategoria?.categoria === categoria?.nombre) || [];
-                                                return (
-                                                    <React.Fragment key={categoria._id}>
-                                                    <TableRow className="bg-accent/20">
-                                                        <TableCell className="border-r-2 "></TableCell>
-                                                        <TableCell className="border-r-2 ">{categoria.nombre}</TableCell>
-                                                        <TableCell className="border-r-2 "></TableCell>
-                                                        <TableCell className="flex justify-center">
-                                                        <Button 
-                                                            className="w-[25px] h-[25px]"
-                                                            variant="destructive"
-                                                            onClick={() => handleEliminarCategoria(categoria)}>
-                                                            <Trash2 />
-                                                        </Button>
-                                                </TableCell>
-                                                    </TableRow>
-                                                    {filteredSubcategories.map((subcategoria) => (
-                                                        <TableRow key={subcategoria._id} className="bg-accent/20">
-                                                        <TableCell className="border-r-2"></TableCell>
-                                                        <TableCell className="border-r-2"></TableCell>
-                                                        <TableCell className="border-r-2">{subcategoria.nombre}</TableCell>
-                                                        <TableCell className="flex justify-center">
-                                                        <Button 
-                                                            className="w-[25px] h-[25px]"
-                                                            variant="destructive"
-                                                            onClick={() => handleEliminarSubcategoria(subcategoria)}>
-                                                            <Trash2 />
-                                                        </Button>
-                                                </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                   
-                                                    </React.Fragment>
-                                                );
+                                                    const filteredSubcategories = subcategoriasGenerales?.filter(
+                                                        (subcategoria) => subcategoria?.categoria === categoria?.nombre
+                                                    );
+                                                    return (
+                                                        <React.Fragment key={categoria._id}>
+                                                            <TableRow className="bg-accent/20">
+                                                                <TableCell></TableCell>
+                                                                <TableCell>{categoria.nombre}</TableCell>
+                                                                <TableCell></TableCell>
+                                                                <TableCell className="text-center">
+                                                                    <Button 
+                                                                        variant="destructive"
+                                                                        size="sm"
+                                                                        onClick={() => handleEliminarCategoria(categoria)}
+                                                                    >
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    </Button>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                            {filteredSubcategories?.map((subcategoria) => (
+                                                                <TableRow key={subcategoria._id} className="bg-accent/10">
+                                                                    <TableCell></TableCell>
+                                                                    <TableCell></TableCell>
+                                                                    <TableCell>{subcategoria.nombre}</TableCell>
+                                                                    <TableCell className="text-center">
+                                                                        <Button 
+                                                                            variant="destructive"
+                                                                            size="sm"
+                                                                            onClick={() => handleEliminarSubcategoria(subcategoria)}
+                                                                        >
+                                                                            <Trash2 className="h-4 w-4" />
+                                                                        </Button>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            ))}
+                                                        </React.Fragment>
+                                                    );
                                                 })}
                                             </React.Fragment>
-                                            );
-                                        })}
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                            </CardContent>
-                </Card>
-    
+                                        );
+                                    })}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
-    </div>
-    )
+    );
 }

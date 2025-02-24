@@ -1,24 +1,24 @@
 'use client';
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageDashboard from "../dashboard/page";
 import LoginPage from "../login/page";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { useSidebarContext } from "@/app/context/SidebarContext";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import User from "../types/userType";
+import { Progress } from "@/components/ui/progress"
 
 export default function AppPage() {
-    //const [sessionStatus, setSessionStatus] = useState(0); // Estado para almacenar el estado de la sesión
     const {empresas, sesion , setSesion, setEmpresas ,setSelectedEmpresa } = useSidebarContext();
-    //const sesionUser = getSession();
     const { status, data: session } = useSession();
+    const [progress, setProgress] = useState(13);
   
     
     const sesionUsuario = async () => {
+      if(!session?.user?.email) return;
       try {
         const response = await axios.get("http://localhost:4108/login", {
           params: {
@@ -33,6 +33,7 @@ export default function AppPage() {
           role: auxUser.rol,
           name: auxUser.nombre,
           empresas: auxUser.empresas || [],
+          idKey: auxUser.idKey,
         }
         setSesion(user1);
         
@@ -66,6 +67,7 @@ export default function AppPage() {
         //console.log(session);
         //console.log(token);
         if (session?.user?.email) {
+          console.log("Sesion ingresada: ",session?.user?.email);
           await sesionUsuario();
         }
       };
@@ -73,9 +75,31 @@ export default function AppPage() {
       //console.log("Sesion ingresada: ",sesion?.role);
     }, [status]);
 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setProgress(66);
+      }, 500);
+      return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setProgress(100);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }, []);
+
     if (status === "loading") {
-      return <div>Cargando...</div>;
-      
+      return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background2 p-4">
+          <div className="w-full max-w-md space-y-4">
+            <h2 className="text-xl font-semibold text-center text-white mb-4">
+              Cargando...
+            </h2>
+            <Progress value={progress} className="w-full" />
+          </div>
+        </div>
+      );
     } else if (session && session.user) {
         return sesion?.role?.includes("admin")? (
             <PageDashboard role="admin"/>

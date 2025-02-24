@@ -61,10 +61,10 @@ export function SubCatPage(props: any) {
       {selectedCategory || selectedSubCategory ? (
         <div className="flex flex-1 flex-col gap-10 p-4 pt-0">
           <h1 className="text-3xl font-semibold ml-5">{selectedSubCategory? selectedSubCategory : selectedCategory}</h1>
-          <div className="grid auto-rows-min gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid auto-rows-min gap-5 grid-cols-2 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {
               productsCategory?.map((product) => (
-                <button onClick={(e) => handleSelectedProduct(e, product._id)} key={product._id} className="relative aspect-[2/3] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg" >
+                <button onClick={(e) => handleSelectedProduct(e, product._id)} key={product._id} className="relative aspect-[2/3] w-40 sm:w-24 md:w-28 lg:w-40 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg" >
                   <img src={product.imagen[0]?.url ? product.imagen[0].url : "/images/placeholder.jpeg"} alt={product.imagen[0]?.nombre} className="h-full w-full object-cover"/>
                   <span className="absolute bottom-0 left-0 w-full bg-black/60 text-white p-2 text-center text-sm truncate">{product.nombre}</span>
                 </button>

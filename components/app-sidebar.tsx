@@ -35,16 +35,40 @@ import {
 } from "@/components/ui/sidebar"
 import { useSidebarContext } from "@/app/context/SidebarContext";
 
+const iconComponents = {
+  webhook: Webhook,
+  fan: Fan,
+  shrink: Shrink,
+  hammer: Hammer,
+  package: Package,
+  refresh: RefreshCw,
+  settings: Settings2,
+  audioWaveform: AudioWaveform,
+  bookOpen: BookOpen,
+  bot: Bot,
+  frame: Frame,
+  galleryVerticalEnd: GalleryVerticalEnd,
+  map: Map,
+  pieChart: PieChart,
+  usersRound: UsersRound,
+  pencilRuler: PencilRuler
+};
 
 export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sidebar>) {
   const { empresas , selectedEmpresa , banderaMenu } = useSidebarContext();
   const [data, setData] = useState<{
-    user: { name: string; email: string; avatar: string };
+    user: { name: string; email: string; avatar: string; admin: boolean };
     teams: { name: string; logo: any; plan: string }[];
     navMain: { title: string; url: string; icon: any; items: { title: string; url: string }[] }[];
     projects: { name: string; url: string; icon: any }[];
   }>({
-    user: { name: "Admin", email: "admin@admin.com", avatar: " " },
+    //TODO : BORRAR ADMIN
+    user: { 
+      name: "Admin", 
+      email: "admin@admin.com", 
+      avatar: " ", 
+      admin:( role === "admin") ? true : false
+    },
     teams: empresas?.map((empresa, index) => ({
       name: empresa.nombre,
       logo: index? (index === 0 ? GalleryVerticalEnd : AudioWaveform) : BookOpen,
@@ -69,7 +93,8 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
       },
     ],
   });
-
+  //console.log("Role: " + role);
+  //console.log("UserAdmin=: " + data.user.admin);
   useEffect(() => {
     setData((prevData) => ({
       ...prevData,
@@ -92,19 +117,16 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
         
       
         const newNavMain = filteredCategoria.map((cat: any) => {
-          
-          const icon = (cat.nombre === "pesca") ? Webhook : (cat.nombre === "corte") ? Fan : (cat.nombre === "impacto") ? Shrink : (cat.nombre === "reparacion") ? Hammer : (cat.nombre === "recoleccion") ? Package : (cat.nombre === "rotacion") ? RefreshCw : Settings2;
-            return {
+          const IconComponent = iconComponents[cat.icon as keyof typeof iconComponents] || Settings2;
+          return {
             title: cat.nombre.charAt(0).toUpperCase() + cat.nombre.slice(1).toLowerCase(),
             url: "#",
-            icon: icon,
-            items: cat.subcategorias?.map((subcat: any) => {
-              return {
+            icon: IconComponent,
+            items: cat.subcategorias?.map((subcat: any) => ({
               title: subcat.nombre.charAt(0).toUpperCase() + subcat.nombre.slice(1).toLowerCase(),
               url: "#",
-              };
-            }),
-            };
+            })),
+          };
         });
         console.log("newNavMain" + JSON.stringify(newNavMain, null, 2));
         

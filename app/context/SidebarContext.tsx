@@ -26,6 +26,8 @@ interface SidebarContextType {
   setEmpresas: React.Dispatch<React.SetStateAction<Empresa[] | null>>; // Función para actualizar las empresas
   setSelectedEmpresa: (empresa: string) => void; // Función para actualizar la empresa seleccionada
   setBanderaMenu: (bandera: string) => void; // Función para actualizar la bandera del menú
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Crear el contexto
@@ -45,6 +47,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [menuCategorias, setMenuCategorias] = useState<string[] | null>(null); //Almacena las categorías del menú actualmente seleccionadas.
   const [banderaFiltradoProductos, setBanderaFiltradoProductos] = useState<boolean>(false); //Almacena la bandera del menú actualmente seleccionada.
   const [banderaMenu, setBanderaMenu] = useState<string>("No Cambio"); //Almacena la bandera del menú actualmente seleccionada.
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <SidebarContext.Provider value={{  // Proporcionar los valores del contexto
       sesion,
@@ -68,7 +71,9 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       banderaMenu,
       setBanderaMenu,
       banderaFiltradoProductos, 
-      setBanderaFiltradoProductos
+      setBanderaFiltradoProductos,
+      isOpen,
+      setIsOpen
     }}>
       {children}
     </SidebarContext.Provider>

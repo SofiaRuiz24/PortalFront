@@ -7,6 +7,7 @@ interface Category{
     _id: string;
     subcategorias: Array<SubCategory>;
     empresa: Empresa;
+    icon?: string;
 }
 
 export default Category;

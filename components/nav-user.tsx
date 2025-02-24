@@ -43,33 +43,39 @@ export function NavUser({
     name: string
     email: string
     avatar: string
+    admin: boolean
   }
 }) {
   const {status , data: session} = useSession() as { status: string, data: { accessToken: string } | null }
   const { isMobile } = useSidebar()
-  //const { setSession } = useSidebarContext();
+  const { sesion } = useSidebarContext();
   const handleLogout = async () => {
+    
     try {
-      // Cierra la sesión en NextAuth
+      if(user.admin){
       await signOut({ redirect: false });
-  
       const idToken = localStorage.getItem("id_token") || sessionStorage.getItem("id_token");
-
-      //console.log(localStorage.getItem("id_token"));
-      //console.log(sessionStorage.getItem("id_token"));
-
       let keycloakLogoutUrl = `http://localhost:8080/realms/sasha/protocol/openid-connect/logout?client_id=sasha-cliente&post_logout_redirect_uri=http://localhost:3000/`;
-      
       if (idToken) {
           keycloakLogoutUrl += `&id_token_hint=${idToken}`;
       }
-      
-      
-     
       // Redirige directamente a la pantalla de login sin la página de confirmación de Keycloak
       window.location.href = keycloakLogoutUrl;
+    }else{
+      console.log("sesion", sesion)
+      const findUser = await axios.post(`http://localhost:4108/user/findOne`, {
+        email: sesion?.email
+      });
+      await signOut({ redirect: false });
+      await axios.post(`http://localhost:4108/user/logout`, {
+      idKey: findUser.data.id
+    });
+    }
     } catch (error) {
       console.error("Failed to logout", error);
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error details:", error.response?.data);
+      }
     }
   };
   

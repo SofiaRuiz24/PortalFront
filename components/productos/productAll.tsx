@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast"
-import { Image } from 'lucide-react';
+import { Image, X } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -36,7 +36,7 @@ import {
     DialogClose
   } from "@/components/ui/dialog"
   
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Upload } from "lucide-react";
 import axios from "axios";
 import  Documentos  from "../../app/types/documentosType";
 import  Category  from "../../app/types/categoryType";
@@ -280,12 +280,12 @@ export function ProductAll() {
         //console.log("Categoria seleccionada:", value);
     }
 
-    return ( crudProduct?.includes("productos") ? (
-        <div className="flex flex-col gap-8 p-6">
+    return (crudProduct?.includes("productos") ? (
+        <div className="flex flex-col gap-4 sm:gap-8 p-2 sm:p-4 lg:p-8">
             {/* Formulario de Producto */}
-            <Card>
+            <Card className="shadow-md">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Agregar Nuevo Producto</CardTitle>
+                    <CardTitle className="text-xl sm:text-2xl">Agregar Nuevo Producto</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form 
@@ -294,29 +294,29 @@ export function ProductAll() {
                         action="http://localhost:4108/productos"
                         method="post" 
                         encType="multipart/form-data"
-                        className="space-y-8 max-w-4xl mx-auto"
+                        className="space-y-6"
                     >
-                        {/* Nombre del Producto */}
-                        <div className="space-y-2">
-                            <Label htmlFor="nombre">Nombre del Producto</Label>
-                            <Input
-                                id="nombre"
-                                name="nombre"
-                                placeholder="Ingrese el nombre del producto"
-                                required
-                                className="w-full"
-                            />
-                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                            {/* Nombre del Producto */}
+                            <div className="space-y-2">
+                                <Label htmlFor="nombre">Nombre del Producto</Label>
+                                <Input
+                                    id="nombre"
+                                    name="nombre"
+                                    placeholder="Ingrese el nombre del producto"
+                                    required
+                                    className="w-full"
+                                />
+                            </div>
 
-                        {/* Categoría y Subcategoría */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Categoría */}
                             <div className="space-y-2">
                                 <Label htmlFor="categoria">Categoría</Label>
                                 <Select name="categoria" onValueChange={handleCategoriaSeleccionada}>
                                     <SelectTrigger className="w-full">
                                         <SelectValue placeholder="Selecciona una categoría" />
                                     </SelectTrigger>
-                                    <SelectContent >
+                                    <SelectContent>
                                         {categorias.map((categoria) => (
                                             <SelectItem key={categoria._id} value={categoria.nombre}>
                                                 {categoria.nombre.charAt(0).toUpperCase() + categoria.nombre.slice(1)}
@@ -325,129 +325,108 @@ export function ProductAll() {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            {categoriaSeleccionada && 
-                            <div className="space-y-2">
-                                <Label htmlFor="subcategoria">Subcategoria</Label>
-                                <Select name="subcategoria">
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Selecciona una subcategoría" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                    {subcategorias?.map((subcategoria) => (
-                                        <SelectItem key={subcategoria._id} value={subcategoria.nombre}>
-                                            {subcategoria.nombre.charAt(0).toUpperCase() + subcategoria.nombre.slice(1)}
-                                        </SelectItem>
-                                    ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>}
-                        </div>
 
-                        {/* Descripción */}
-                        <div className="space-y-2">
-                            <Label htmlFor="descripcion">Descripción</Label>
-                            <textarea
-                                id="descripcion"
-                                name="descripcion"
-                                className="w-full min-h-[120px] p-3 border rounded-md resize-y"
-                                placeholder="Describe el producto"
-                                required
-                            />
-                        </div>
-
-                        {/* Imágenes */}
-                        <div className="space-y-4">
-                            <Label htmlFor="imagen" className="text-sm font-medium">
-                                Imágenes del Producto
-                            </Label>
-                            <div className="relative">
-                                <input
-                                    id="imagen"
-                                    name="product-img"
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    className="hidden"
-                                    onChange={handleDocs}
-                                />
-                                <label
-                                    htmlFor="imagen"
-                                    className="flex  items-center justify-center gap-2 px-4 py-3 rounded-lg border border-gray-400 hover:bg-gray-100 cursor-pointer transition-colors w-full"
-                                >
-                                    <svg
-                                        className="w-5 h-5 text-gray-800"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                        />
-                                    </svg>
-                                    <span className="text-sm text-gray-800">Seleccionar Imágenes</span>
-                                </label>
-                            </div>
-
-                            {/* Vista previa de imágenes */}
-                            {documentosPreview.length > 0 && (
-                                <div className="mt-4">
-                                    <p className="text-sm text-gray-600 mb-3">Imágenes seleccionadas:</p>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                        {documentosPreview.map((doc, index) => (
-                                            <div 
-                                                key={index} 
-                                                className="relative group rounded-lg border border-gray-400 p-3 hover:bg-gray-50 transition-colors"
-                                            >
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setDocumentosPreview(prevDocs => 
-                                                            prevDocs.filter((_, i) => i !== index)
-                                                        );
-                                                    }}
-                                                    className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 shadow-md hover:bg-red-700 transition-colors"
-                                                >
-                                                    <svg 
-                                                        className="w-3 h-3" 
-                                                        fill="none" 
-                                                        stroke="currentColor" 
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path 
-                                                            strokeLinecap="round" 
-                                                            strokeLinejoin="round" 
-                                                            strokeWidth="2.5" 
-                                                            d="M6 18L18 6M6 6l12 12"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-12 h-12 flex-shrink-0 rounded-md border border-gray-200 overflow-hidden">
-                                                        <img 
-                                                            src={doc.pdf} 
-                                                            alt={doc.nombre}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                    </div>
-                                                    <p className="text-sm text-gray-700 truncate flex-1">
-                                                        {doc.nombre}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                            {/* Subcategoría - Solo se muestra si hay categoría seleccionada */}
+                            {categoriaSeleccionada && (
+                                <div className="space-y-2">
+                                    <Label htmlFor="subcategoria">Subcategoría</Label>
+                                    <Select name="subcategoria">
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Selecciona una subcategoría" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {subcategorias?.map((subcategoria) => (
+                                                <SelectItem key={subcategoria._id} value={subcategoria.nombre}>
+                                                    {subcategoria.nombre.charAt(0).toUpperCase() + subcategoria.nombre.slice(1)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                             )}
+
+                            {/* Descripción */}
+                            <div className="space-y-2 md:col-span-2">
+                                <Label htmlFor="descripcion">Descripción</Label>
+                                <textarea
+                                    id="descripcion"
+                                    name="descripcion"
+                                    className="w-full min-h-[120px] p-3 border rounded-md resize-y bg-background"
+                                    placeholder="Describe el producto"
+                                    required
+                                />
+                            </div>
+
+                            {/* Imágenes */}
+                            <div className="space-y-4 md:col-span-2">
+                                <Label htmlFor="imagen" className="text-sm font-medium">
+                                    Imágenes del Producto
+                                </Label>
+                                <div className="relative">
+                                    <input
+                                        id="imagen"
+                                        name="product-img"
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        className="hidden"
+                                        onChange={handleDocs}
+                                    />
+                                    <label
+                                        htmlFor="imagen"
+                                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-input hover:bg-accent/50 cursor-pointer transition-colors w-full"
+                                    >
+                                        <Image className="w-5 h-5" />
+                                        <span className="text-sm">Seleccionar Imágenes</span>
+                                    </label>
+                                </div>
+
+                                {/* Vista previa de imágenes */}
+                                {documentosPreview.length > 0 && (
+                                    <div className="mt-4">
+                                        <p className="text-sm text-muted-foreground mb-3">Imágenes seleccionadas:</p>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {documentosPreview.map((doc, index) => (
+                                                <div 
+                                                    key={index} 
+                                                    className="relative group rounded-lg border border-input p-3 hover:bg-accent/50 transition-colors"
+                                                >
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setDocumentosPreview(prevDocs => 
+                                                                prevDocs.filter((_, i) => i !== index)
+                                                            );
+                                                        }}
+                                                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 shadow-md hover:bg-destructive/90 transition-colors"
+                                                    >
+                                                        <X className="w-3 h-3" />
+                                                    </button>
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-12 h-12 flex-shrink-0 rounded-md border overflow-hidden">
+                                                            <img 
+                                                                src={doc.pdf} 
+                                                                alt={doc.nombre}
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        <p className="text-sm truncate flex-1">
+                                                            {doc.nombre}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* Botón Submit */}
-                        <div className="flex justify-center pt-4">
+                        <div className="flex justify-end pt-4">
                             <Button 
                                 type="submit" 
-                                className="px-6 py-2 text-sm font-medium"
+                                className="px-6"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? "Guardando..." : "Guardar Producto"}
@@ -457,131 +436,87 @@ export function ProductAll() {
                 </CardContent>
             </Card>
 
-            {/* Tabla de Productos */}
-            <Card>
+            {/* Lista de Productos */}
+            <Card className="shadow-md">
                 <CardHeader>
-                    <CardTitle className="text-2xl mb-4">Lista de Productos</CardTitle>
+                    <CardTitle className="text-xl sm:text-2xl">Lista de Productos</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="overflow-x-auto">
+                    {/* Vista móvil */}
+                    <div className="block sm:hidden space-y-4">
+                        {products?.map((product: any) => (
+                            <div key={product._id} className="bg-secondary/10 rounded-lg p-4 space-y-3">
+                                <div className="flex justify-between items-start">
+                                    <div className="space-y-1">
+                                        <h3 className="font-medium">{product.nombre}</h3>
+                                        <p className="text-sm text-muted-foreground capitalize">
+                                            {product.categoria}
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button size="sm" className="w-full">
+                                                    Agregar Unidades
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="sm:max-w-[500px]">
+                                                <UnidadesForm 
+                                                    productId={product._id}
+                                                    handleSubmitUnidades={handleSubmitUnidades}
+                                                    isSubmittingUnits={isSubmittingUnits}
+                                                />
+                                            </DialogContent>
+                                        </Dialog>
+                                        <Button
+                                            variant="destructive"
+                                            size="sm"
+                                            onClick={() => handleDelete(product._id, product.subcategoria)}
+                                            disabled={isSubmittingDelete}
+                                        >
+                                            {isSubmittingDelete ? "Eliminando..." : "Eliminar"}
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Vista desktop */}
+                    <div className="hidden sm:block">
                         <Table>
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="w-[25%] font-semibold">Nombre</TableHead>
                                     <TableHead className="w-[20%] font-semibold">Categoría</TableHead>
-                                    <TableHead className="w-[20%] font-semibold">Subcategoria</TableHead>
+                                    <TableHead className="w-[20%] font-semibold">Subcategoría</TableHead>
                                     <TableHead className="w-[20%] font-semibold">Acciones</TableHead>
                                     <TableHead className="w-[15%] font-semibold">Eliminar</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {products?.map((product: any) => (
-                                    <TableRow key={product._id} className="hover:bg-accent/50">
+                                    <TableRow key={product._id}>
                                         <TableCell className="font-medium">{product.nombre}</TableCell>
-                                        <TableCell>
-                                            {product.categoria.charAt(0).toUpperCase() + product.categoria.slice(1)}
+                                        <TableCell className="capitalize">
+                                            {product.categoria}
                                         </TableCell>
-                                        <TableCell>
-                                            {product.subcategoria?.charAt(0).toUpperCase() + product.subcategoria.slice(1)}
+                                        <TableCell className="capitalize">
+                                            {product.subcategoria}
                                         </TableCell>
                                         <TableCell>
                                             <Dialog>
-                                                <DialogTrigger className="bg-accent hover:bg-accent/90 text-white px-3 py-2 rounded-lg transition-colors duration-200">
-                                                    Agregar Unidades
+                                                <DialogTrigger asChild>
+                                                    <Button variant="outline" size="sm">
+                                                        Agregar Unidades
+                                                    </Button>
                                                 </DialogTrigger>
-                                                <DialogContent className="sm:max-w-[500px] bg-white">
-                                                    <DialogHeader className="space-y-3">
-                                                        <DialogTitle className="text-xl">Editar unidades</DialogTitle>
-                                                        <DialogDescription>
-                                                            Agregue las unidades del producto. Haga click en confirmar al terminar.
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    <form 
-                                                        action="http://localhost:4108/unidades" 
-                                                        method="post" 
-                                                        className="space-y-6" 
-                                                        encType="multipart/form-data" 
-                                                        onSubmit={(e) => handleSubmitUnidades(e, product._id)}
-                                                    >
-                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                            <div className="space-y-2">
-                                                                <Label htmlFor="nSerie">Numero de Serie</Label>
-                                                                <Input
-                                                                    id="nSerie"
-                                                                    name="nSerie"
-                                                                    required
-                                                                    className="w-full"
-                                                                />
-                                                            </div>
-                                                            <div className="space-y-2">
-                                                                <Label htmlFor="antiguedad">Año</Label>
-                                                                <Input
-                                                                    id="antiguedad"
-                                                                    name="antiguedad"    
-                                                                    required
-                                                                    className="w-full"
-                                                                />
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="space-y-4">
-                                                            {/* Documentos Upload Section */}
-                                                            {['patente', 'certificadoA', 'certificadoB', 'certificadoC'].map((docType) => (
-                                                                <div key={docType} className="space-y-2">
-                                                                    <Label htmlFor={docType} className="capitalize">
-                                                                        {docType === 'patente' ? 'Patente' : `Certificado ${docType.slice(-1)}`}
-                                                                    </Label>
-                                                                    <div className="relative">
-                                                                        <input
-                                                                            id={docType}
-                                                                            name={docType}
-                                                                            type="file"
-                                                                            accept="application/pdf"
-                                                                            className="hidden"
-                                                                            onChange={(e) => {
-                                                                                const fileName = e.target.files?.[0]?.name;
-                                                                                const fileLabel = document.querySelector(`label[for="${docType}"] span`);
-                                                                                if (fileLabel && fileName) {
-                                                                                    fileLabel.textContent = fileName;
-                                                                                }
-                                                                            }}
-                                                                        />
-                                                                        <label
-                                                                            htmlFor={docType}
-                                                                            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors w-full"
-                                                                        >
-                                                                            <svg
-                                                                                className="w-5 h-5 text-gray-500"
-                                                                                fill="none"
-                                                                                stroke="currentColor"
-                                                                                viewBox="0 0 24 24"
-                                                                            >
-                                                                                <path
-                                                                                    strokeLinecap="round"
-                                                                                    strokeLinejoin="round"
-                                                                                    strokeWidth="2"
-                                                                                    d="M12 4v16m8-8H4"
-                                                                                />
-                                                                            </svg>
-                                                                            <span className="text-sm text-gray-500 truncate">
-                                                                                Seleccionar archivo
-                                                                            </span>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-
-                                                        <DialogFooter>
-                                                            <Button 
-                                                                type="submit" 
-                                                                className="bg-primary text-white hover:bg-primary/90 transition-colors"
-                                                                disabled={isSubmittingUnits}
-                                                            >
-                                                                {isSubmittingUnits ? "Guardando..." : "Confirmar"}
-                                                            </Button>
-                                                        </DialogFooter>   
-                                                    </form>
+                                                <DialogContent className="sm:max-w-[500px]">
+                                                    <UnidadesForm 
+                                                        productId={product._id}
+                                                        handleSubmitUnidades={handleSubmitUnidades}
+                                                        isSubmittingUnits={isSubmittingUnits}
+                                                    />
                                                 </DialogContent>
                                             </Dialog>
                                         </TableCell>
@@ -589,22 +524,109 @@ export function ProductAll() {
                                             <Button
                                                 variant="destructive"
                                                 size="sm"
-                                                onClick={() => handleDelete(product._id,product.subcategoria)}
-                                                className=" bg-red-600 hover:bg-red-700 transition-colors flex items-center gap-3"
+                                                onClick={() => handleDelete(product._id, product.subcategoria)}
                                                 disabled={isSubmittingDelete}
+                                                className="w-full"
                                             >
-                                                {isSubmittingDelete ? "Eliminando..." : "Eliminar"}
-                                                <Trash2 className="h-4 w-4" />
+                                                {isSubmittingDelete ? (
+                                                    "Eliminando..."
+                                                ) : (
+                                                    <div className="flex items-center gap-2">
+                                                        <span>Eliminar</span>
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </div>
+                                                )}
                                             </Button>
                                         </TableCell>
                                     </TableRow>
-                                ))}            
+                                ))}
                             </TableBody>
                         </Table>
                     </div>
                 </CardContent>
             </Card>
         </div>
-    )
-: (crudProduct?.includes("editar") ? < ProductEdit/> : null));
+    ) : (crudProduct?.includes("editar") ? <ProductEdit/> : null));
+}
+
+// Componente separado para el formulario de unidades
+function UnidadesForm({ productId, handleSubmitUnidades, isSubmittingUnits }: {
+    productId: string;
+    handleSubmitUnidades: (e: React.FormEvent<HTMLFormElement>, productId: string) => void;
+    isSubmittingUnits: boolean;
+}) {
+    return (
+        <>
+            <DialogHeader>
+                <DialogTitle>Agregar Unidades</DialogTitle>
+                <DialogDescription>
+                    Complete los detalles de la unidad
+                </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={(e) => handleSubmitUnidades(e, productId)} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="nSerie">Número de Serie</Label>
+                        <Input
+                            id="nSerie"
+                            name="nSerie"
+                            required
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="antiguedad">Año</Label>
+                        <Input
+                            id="antiguedad"
+                            name="antiguedad"    
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-4">
+                    {['patente', 'certificadoA', 'certificadoB', 'certificadoC'].map((docType) => (
+                        <div key={docType} className="space-y-2">
+                            <Label htmlFor={docType} className="capitalize">
+                                {docType === 'patente' ? 'Patente' : `Certificado ${docType.slice(-1)}`}
+                            </Label>
+                            <div className="relative">
+                                <input
+                                    id={docType}
+                                    name={docType}
+                                    type="file"
+                                    accept="application/pdf"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                        const fileName = e.target.files?.[0]?.name;
+                                        const fileLabel = document.querySelector(`label[for="${docType}"] span`);
+                                        if (fileLabel && fileName) {
+                                            fileLabel.textContent = fileName;
+                                        }
+                                    }}
+                                />
+                                <label
+                                    htmlFor={docType}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg border border-input hover:bg-accent/50 cursor-pointer transition-colors w-full"
+                                >
+                                    <Upload className="w-4 h-4" />
+                                    <span className="text-sm text-muted-foreground truncate">
+                                        Seleccionar archivo
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <DialogFooter>
+                    <Button 
+                        type="submit" 
+                        disabled={isSubmittingUnits}
+                    >
+                        {isSubmittingUnits ? "Guardando..." : "Confirmar"}
+                    </Button>
+                </DialogFooter>   
+            </form>
+        </>
+    );
 }

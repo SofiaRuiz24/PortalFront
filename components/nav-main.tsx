@@ -34,16 +34,25 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const {selectedCategory, setBanderaFiltradoProductos, banderaFiltradoProductos, setSelectedItem, setSelectedCategory, setSelectedSubCategory } = useSidebarContext();
+  const {
+    selectedCategory, 
+    setBanderaFiltradoProductos, 
+    banderaFiltradoProductos, 
+    setSelectedItem, 
+    setSelectedCategory, 
+    setSelectedSubCategory,
+    setIsOpen
+  } = useSidebarContext();
   //console.log('NavMain'+JSON.stringify(items,null, 2)); // Usar JSON.stringify para imprimir los objetos de manera legible);
   const handleSidebarMenuClick = (categoryTitle: string, itemTitle: string) => {
     setSelectedCategory(categoryTitle);
     setSelectedSubCategory(itemTitle);
     setSelectedItem("");
     
-    console.log('SidebarMenu clicked');
-    console.log('Category: '+categoryTitle);
-    console.log('SubCategory: '+itemTitle);
+    // Cerrar la barra lateral en móvil
+    if (window.innerWidth < 768) {
+      setIsOpen(false);
+    }
   }
   const handleSidebarMenu = (categoryTitle: string) => {
     setSelectedCategory(categoryTitle);

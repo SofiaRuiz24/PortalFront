@@ -177,10 +177,16 @@ export function CategoryAll(props: any) {
             }, 500);
 
             setEmpresas([...(empresas || []), response.data.data]);
+            setSelectedIconEmpresa(selectedIconEmpresa);
         }else {
             throw new Error("Respuesta inesperada del servidor");
         }
 
+    };
+
+    const handleSeleccionarIcono = (icono: string) => {
+        setSelectedIconEmpresa(icono);
+        setSelectedIcon(icono);
     };
 
     const handleAgregarCategoria = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -335,7 +341,7 @@ export function CategoryAll(props: any) {
                                                 key={iconEmpresa.value}
                                                 variant="ghost"
                                                 className="w-full"
-                                                onClick={() => {setSelectedIconEmpresa(iconEmpresa.value)
+                                                onClick={() => {handleSeleccionarIcono(iconEmpresa.value)
                                                     console.log("Icono seleccionado: ", typeof(iconEmpresa.value))
                                                 }}
                                             >
@@ -634,56 +640,53 @@ export function CategoryAll(props: any) {
                                                     <TableCell></TableCell>
                                                     <TableCell></TableCell>
                                                     <TableCell className="text-center">
-                                                <AlertDialog>
-                                                    <AlertDialogTrigger>
-                                                        <Button 
-                                                            variant="destructive"
-                                                            
-                                                            onClick={  () => handleEliminarEmpresa(empresa)}>
-                                                            <Trash2 />
-                                                        </Button>
-                                                </TableCell>
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger>
+                                                                <Button 
+                                                                    variant="destructive"
+                                                                    onClick={() => handleEliminarEmpresa(empresa)}>
+                                                                    <Trash2 />
+                                                                </Button>
+                                                            </AlertDialogTrigger>
+                                                        </AlertDialog>
+                                                    </TableCell>
                                                 </TableRow>
                                                 {isExpanded && filteredCategories?.map((categoria) => {
-                                                const filteredSubcategories = subcategoriasGenerales?.filter((subcategoria) => subcategoria?.categoria === categoria?.nombre) || [];
-                                                return (
-                                                    <React.Fragment key={categoria._id}>
-                                                    <TableRow className="bg-accent/20">
-                                                        <TableCell className="border-r-2 "></TableCell>
-                                                        <TableCell className="border-r-2 ">{categoria.nombre}</TableCell>
-                                                        <TableCell className="border-r-2 "></TableCell>
-                                                        <TableCell className="flex justify-center">
-                                                        <Button 
-                                                            className="w-[25px] h-[25px]"
-                                                            variant="destructive"
-                                                            onClick={() => handleEliminarCategoria(categoria)}>
-                                                            <Trash2 />
-                                                        </Button>
-                                                </TableCell>
-                                                    </TableRow>
-                                                    {filteredSubcategories.map((subcategoria) => (
-                                                        <TableRow key={subcategoria._id} className="bg-accent/20">
-                                                        <TableCell className="border-r-2"></TableCell>
-                                                        <TableCell className="border-r-2"></TableCell>
-                                                        <TableCell className="border-r-2">{subcategoria.nombre}</TableCell>
-                                                        <TableCell className="flex justify-center">
-                                                        <Button 
-                                                            className="w-[25px] h-[25px]"
-                                                            variant="destructive"
-                                                            onClick={() => handleEliminarSubcategoria(subcategoria)}>
-                                                            <Trash2 />
-                                                        </Button>
-                                                </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                   
-                                                    </React.Fragment>
-                                                );
+                                                    const filteredSubcategories = subcategoriasGenerales?.filter((subcategoria) => subcategoria?.categoria === categoria?.nombre) || [];
+                                                    return (
+                                                        <React.Fragment key={categoria._id}>
+                                                            <TableRow className="bg-accent/20">
+                                                                <TableCell className="border-r-2 "></TableCell>
+                                                                <TableCell className="border-r-2 ">{categoria.nombre}</TableCell>
+                                                                <TableCell className="border-r-2 "></TableCell>
+                                                                <TableCell className="flex justify-center">
+                                                                    <Button 
+                                                                        className="w-[25px] h-[25px]"
+                                                                        variant="destructive"
+                                                                        onClick={() => handleEliminarCategoria(categoria)}>
+                                                                        <Trash2 />
+                                                                    </Button>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                            {filteredSubcategories.map((subcategoria) => (
+                                                                <TableRow key={subcategoria._id} className="bg-accent/20">
+                                                                    <TableCell className="border-r-2"></TableCell>
+                                                                    <TableCell className="border-r-2"></TableCell>
+                                                                    <TableCell className="border-r-2">{subcategoria.nombre}</TableCell>
+                                                                    <TableCell className="flex justify-center">
+                                                                        <Button 
+                                                                            className="w-[25px] h-[25px]"
+                                                                            variant="destructive"
+                                                                            onClick={() => handleEliminarSubcategoria(subcategoria)}>
+                                                                            <Trash2 />
+                                                                        </Button>
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            ))}
+                                                        </React.Fragment>
+                                                    );
                                                 })}
                                             </React.Fragment>
-                                            
-                                            
-
                                         );
                                     })}
                                 </TableBody>

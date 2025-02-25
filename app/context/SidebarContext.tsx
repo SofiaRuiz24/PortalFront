@@ -73,7 +73,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
       banderaFiltradoProductos, 
       setBanderaFiltradoProductos,
       isOpen,
-      setIsOpen
+      setIsOpen,
     }}>
       {children}
     </SidebarContext.Provider>

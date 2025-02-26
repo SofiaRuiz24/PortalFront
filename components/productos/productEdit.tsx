@@ -27,7 +27,7 @@ export default function ProductEdit() {
   // Función para obtener los productos de la API
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:4108/productos");
+      const response = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/productos");
       setProducts(response.data.data);
     } catch (error) {
       console.error("Error al obtener los productos:", error);
@@ -37,7 +37,7 @@ export default function ProductEdit() {
   // Función para obtener la información del producto seleccionado
   const fetchProductById = async (id: string) => {
     try {
-      const response = await axios.get(`http://localhost:4108/productos/${id}`);
+      const response = await axios.get(`https://t72m2pk3-4108.brs.devtunnels.ms/productos/${id}`);
       setSelectedProduct(response.data);
     } catch (error) {
       console.error("Error al obtener el producto:", error);
@@ -65,7 +65,7 @@ export default function ProductEdit() {
     const formData = new FormData(e.currentTarget);
 
     try {
-      const response = await axios.put(`http://localhost:4108/productos/${selectedProduct._id}`, formData, {
+      const response = await axios.put(`https://t72m2pk3-4108.brs.devtunnels.ms/productos/${selectedProduct._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

@@ -48,6 +48,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [banderaFiltradoProductos, setBanderaFiltradoProductos] = useState<boolean>(false); //Almacena la bandera del menú actualmente seleccionada.
   const [banderaMenu, setBanderaMenu] = useState<string>("No Cambio"); //Almacena la bandera del menú actualmente seleccionada.
   const [isOpen, setIsOpen] = useState(false);
+  
   return (
     <SidebarContext.Provider value={{  // Proporcionar los valores del contexto
       sesion,

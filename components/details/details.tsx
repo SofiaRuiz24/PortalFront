@@ -48,7 +48,7 @@ export function Details() {
     useEffect(() => {
         const fetchProduct = async () => {
             if(selectedItem){
-                const res = await axios.get(`http://localhost:4108/productos/${selectedItem}`);
+                const res = await axios.get(`https://t72m2pk3-4108.brs.devtunnels.ms/productos/${selectedItem}`);
                 //TO DO: Guardar la respuesta en un estado
                 //console.log("Response", res.data.updatedProduct);
                 setProduct(res.data.updatedProduct);

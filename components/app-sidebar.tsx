@@ -55,7 +55,7 @@ const iconComponents = {
 };
 
 export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { empresas , selectedEmpresa , banderaMenu } = useSidebarContext();
+  const { empresas , selectedEmpresa , banderaMenu, sesion } = useSidebarContext();
   const [data, setData] = useState<{
     user: { name: string; email: string; avatar: string; admin: boolean };
     teams: { name: string; logo: any; plan: string }[];
@@ -64,9 +64,9 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
   }>({
     //TODO : BORRAR ADMIN
     user: { 
-      name: "Admin", 
-      email: "admin@admin.com", 
-      avatar: " ", 
+      name: sesion?.name?.charAt(0).toUpperCase() + sesion?.name?.slice(1) || "Admin" , 
+      email: sesion?.email || "admin@admin.com", 
+      avatar: sesion?.name.slice(0) || " ", 
       admin:( role === "admin") ? true : false
     },
     teams: empresas?.map((empresa, index) => ({
@@ -110,7 +110,7 @@ export function AppSidebar({ role, ...props }: React.ComponentProps<typeof Sideb
       
       try {
         console.log("Bandera1 " + selectedEmpresa)
-        const response = await axios.get("http://localhost:4108/catGeneral");
+        const response = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/catGeneral");
         
         const categoriasGeneralesBandera = response?.data.data; 
         const filteredCategoria= categoriasGeneralesBandera.filter((cat: any) => cat?.empresa.nombre === selectedEmpresa);

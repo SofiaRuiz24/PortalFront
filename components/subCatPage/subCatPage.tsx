@@ -26,7 +26,7 @@ export function SubCatPage(props: any) {
     }
     // Lógica para obtener los productos de la categoría seleccionada
     const fetchProducts = async () => {
-     const res = await axios.get('http://localhost:4108/productos');
+     const res = await axios.get('https://t72m2pk3-4108.brs.devtunnels.ms/productos');
      //console.log("Productos", res.data.data);
      const products = res.data.data;
      console.log("Productos", products);

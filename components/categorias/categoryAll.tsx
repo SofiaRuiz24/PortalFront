@@ -44,7 +44,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, ChevronsUpDown,
+import { Check, ChevronsDown,
     AudioWaveform,
     BookOpen,
     Bot,
@@ -131,10 +131,10 @@ export function CategoryAll(props: any) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const catGeneralResponse = await axios.get("http://localhost:4108/catGeneral");
+                const catGeneralResponse = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/catGeneral");
                 setCategoriasGenerales(catGeneralResponse.data.data);
                 console.log("Categorias Generales: ", catGeneralResponse.data);
-                const categoriasResponse = await axios.get("http://localhost:4108/categorias");
+                const categoriasResponse = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/categorias");
                 const subcategorias = categoriasResponse.data.data?.map((subcategoria: any) => ({
                     ...subcategoria,
                     categoria: subcategoria.catGeneral
@@ -158,7 +158,7 @@ export function CategoryAll(props: any) {
             return;
         }
         console.log("Entraba a agregar empresa");
-        const response = await axios.post("http://localhost:4108/empresas",{  nombre: newEmpresa , icon: selectedIconEmpresa} );
+        const response = await axios.post("https://t72m2pk3-4108.brs.devtunnels.ms/empresas",{  nombre: newEmpresa , icon: selectedIconEmpresa} );
         console.log("Empresa guardada: ", response.data);
         if (response.status >= 200 && response.status < 300) { 
            
@@ -197,7 +197,7 @@ export function CategoryAll(props: any) {
         }
        
         try {
-            const response = await axios.post("http://localhost:4108/catGeneral", {
+            const response = await axios.post("https://t72m2pk3-4108.brs.devtunnels.ms/catGeneral", {
                 nombre: nuevaCategoria,
                 empresa: empresaDeCategoria,
                 icon: selectedIcon
@@ -239,7 +239,7 @@ export function CategoryAll(props: any) {
         console.log("Nueva subcategoria: ", nuevaSubcategoria);
 
         try {
-            const response = await axios.post("http://localhost:4108/categorias", {
+            const response = await axios.post("https://t72m2pk3-4108.brs.devtunnels.ms/categorias", {
                 nombre: nuevaSubcategoria,
                 categoriaGeneral: categoriaDeSubcategoria
             });
@@ -268,7 +268,7 @@ export function CategoryAll(props: any) {
     };
 
     const handleEliminarEmpresa = async (empresa: Empresa) => {
-        const response = await axios.delete(`http://localhost:4108/empresas/${empresa._id}`);
+        const response = await axios.delete(`https://t72m2pk3-4108.brs.devtunnels.ms/empresas/${empresa._id}`);
         console.log("Empresa eliminada: ", response.data);
         if (response.status >= 200 && response.status < 300) {
             setEmpresas((prevEmpresas) => (prevEmpresas ? prevEmpresas.filter(e => e._id !== empresa._id) : []));
@@ -277,7 +277,7 @@ export function CategoryAll(props: any) {
     }
     const handleEliminarCategoria = async (categoria: Category) => {
         try {
-            const response = await axios.delete(`http://localhost:4108/catGeneral/${categoria._id}`);
+            const response = await axios.delete(`https://t72m2pk3-4108.brs.devtunnels.ms/catGeneral/${categoria._id}`);
             console.log("Categoría eliminada: ", response.data);
         } catch (error) {
             console.error("Error al eliminar la categoría:", error);
@@ -286,7 +286,7 @@ export function CategoryAll(props: any) {
     }
     const handleEliminarSubcategoria = async (subcategoria: SubCategory) => {
         try {
-            const response = await axios.delete(`http://localhost:4108/categorias/${subcategoria._id}`);
+            const response = await axios.delete(`https://t72m2pk3-4108.brs.devtunnels.ms/categorias/${subcategoria._id}`);
             console.log("Subcategoría eliminada: ", response.data);
         } catch (error) {
             console.error("Error al eliminar la subcategoría:", error);

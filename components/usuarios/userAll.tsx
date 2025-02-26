@@ -62,7 +62,7 @@ export function UserAll() {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:4108/usuarios");
+      const response = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/usuarios");
       setUsers(response.data.data);
       console.log("Usuarios", response.data.data);
     } catch (error) {
@@ -94,14 +94,14 @@ export function UserAll() {
 
     try {
       if (editingUser) {
-        await axios.put(`http://localhost:4108/usuarios/${editingUser._id}`, userData);
+        await axios.put(`https://t72m2pk3-4108.brs.devtunnels.ms/usuarios/${editingUser._id}`, userData);
         toast({
           title: "Éxito",
           description: "Usuario actualizado correctamente",
           variant: "default",
         });
       } else {
-        await axios.post("http://localhost:4108/usuarios", userData);
+        await axios.post("https://t72m2pk3-4108.brs.devtunnels.ms/usuarios", userData);
         toast({
           title: "Éxito",
           description: "Usuario creado correctamente",
@@ -134,7 +134,7 @@ export function UserAll() {
 
   const handleDelete = async (userId: string) => {
     try {
-      await axios.delete(`http://localhost:4108/usuarios/${userId}`);
+      await axios.delete(`https://t72m2pk3-4108.brs.devtunnels.ms/usuarios/${userId}`);
       toast({
         title: "Éxito",
         description: "Usuario eliminado correctamente",
@@ -156,7 +156,7 @@ export function UserAll() {
     setEmail("");
     setPassword("");
     setRol("");
-    setEmpresa([{ _id: "", nombre: "" }]);
+    setEmpresa([{ _id: "", nombre: "",icon : "BookOpen"}]);
     setEditingUser(null);
   };
 

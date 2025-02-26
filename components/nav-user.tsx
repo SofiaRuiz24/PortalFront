@@ -3,7 +3,7 @@
 import {
   BadgeCheck,
   Bell,
-  ChevronsUpDown,
+  ChevronsDown,
   CreditCard,
   LogOut,
   Sparkles,
@@ -63,11 +63,11 @@ export function NavUser({
       window.location.href = keycloakLogoutUrl;
     }else{
       console.log("sesion", sesion)
-      const findUser = await axios.post(`http://localhost:4108/user/findOne`, {
+      const findUser = await axios.post(`https://t72m2pk3-4108.brs.devtunnels.ms/user/findOne`, {
         email: sesion?.email
       });
       await signOut({ redirect: false });
-      await axios.post(`http://localhost:4108/user/logout`, {
+      await axios.post(`https://t72m2pk3-4108.brs.devtunnels.ms/user/logout`, {
       idKey: findUser.data.id
     });
     }
@@ -96,7 +96,7 @@ export function NavUser({
                 <span className="truncate font-semibold">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <ChevronsDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -119,7 +119,7 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+             {/* <DropdownMenuItem>
                 
                 <Bell />
                 Notificaciones
@@ -131,7 +131,7 @@ export function NavUser({
                 <SquareUserRound  />
                 Perfil
               </DropdownMenuItem>
-             {/*} <DropdownMenuItem>
+             } <DropdownMenuItem>
                 <CreditCard />
                 En Alquiler
               </DropdownMenuItem>*/}

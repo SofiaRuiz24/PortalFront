@@ -64,7 +64,7 @@ export function ProductAll() {
     useEffect(() => {
         const fetchCategorias = async () => {
             try {
-                const response = await axios.get("http://localhost:4108/catGeneral");
+                const response = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/catGeneral");
                 console.log("Categorias cargadas:", response.data.data); // Debug
                 setCategorias(response.data.data);
             } catch (error) {
@@ -84,7 +84,7 @@ export function ProductAll() {
     //Función para obtener los productos de la API
     const fetchProducts = async () => {
         try {
-            const response = await axios.get("http://localhost:4108/productos");
+            const response = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/productos");
             console.log("Productos cargados:", response.data.data); // Debug
             setProducts(response.data.data);
         } catch (error) {
@@ -116,7 +116,7 @@ export function ProductAll() {
                 formData.append("product-img", file);
             }));
     
-            const response = await axios.post("http://localhost:4108/productos", formData, {
+            const response = await axios.post("https://t72m2pk3-4108.brs.devtunnels.ms/productos", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
     
@@ -185,7 +185,7 @@ export function ProductAll() {
           }
           
         try {
-            const response = await axios.post("http://localhost:4108/unidades", formData, {
+            const response = await axios.post("https://t72m2pk3-4108.brs.devtunnels.ms/unidades", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -242,7 +242,7 @@ export function ProductAll() {
         setIsSubmittingDelete(true);
         try {
             // Eliminar el producto y sus unidades
-            const response = await axios.delete(`http://localhost:4108/productos/${productId}`, {
+            const response = await axios.delete(`https://t72m2pk3-4108.brs.devtunnels.ms/productos/${productId}`, {
                 data: { subcategoria }
               });
               
@@ -291,7 +291,7 @@ export function ProductAll() {
                     <form 
                         ref={formRef}
                         onSubmit={handleSubmit}
-                        action="http://localhost:4108/productos"
+                        action="https://t72m2pk3-4108.brs.devtunnels.ms/productos"
                         method="post" 
                         encType="multipart/form-data"
                         className="space-y-6"
@@ -346,12 +346,12 @@ export function ProductAll() {
                             )}
 
                             {/* Descripción */}
-                            <div className="space-y-2 md:col-span-2">
+                            <div className="space-y-2 md:col-span-2 ">
                                 <Label htmlFor="descripcion">Descripción</Label>
                                 <textarea
                                     id="descripcion"
                                     name="descripcion"
-                                    className="w-full min-h-[120px] p-3 border rounded-md resize-y bg-background"
+                                    className="w-full min-h-[120px] p-3 border rounded-md resize-y bg-white"
                                     placeholder="Describe el producto"
                                     required
                                 />
@@ -511,7 +511,7 @@ export function ProductAll() {
                                                         Agregar Unidades
                                                     </Button>
                                                 </DialogTrigger>
-                                                <DialogContent className="sm:max-w-[500px]">
+                                                <DialogContent className="sm:max-w-[500px] bg-white">
                                                     <UnidadesForm 
                                                         productId={product._id}
                                                         handleSubmitUnidades={handleSubmitUnidades}

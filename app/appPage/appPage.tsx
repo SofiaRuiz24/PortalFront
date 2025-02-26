@@ -20,7 +20,7 @@ export default function AppPage() {
     const sesionUsuario = async () => {
       if(!session?.user?.email) return;
       try {
-        const response = await axios.get("http://localhost:4108/login", {
+        const response = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/login", {
           params: {
             email: session?.user?.email,
           },
@@ -46,7 +46,7 @@ export default function AppPage() {
     useEffect(() => {
       const fetchEmpresas = async () => {
       try {
-        const response = await axios.get("http://localhost:4108/empresas");
+        const response = await axios.get("https://t72m2pk3-4108.brs.devtunnels.ms/empresas");
         //const companyNames = response.data.data.map((company: any) => company.nombre);
         const companyNames = response.data.data;
         setEmpresas(companyNames);
@@ -123,8 +123,8 @@ export default function AppPage() {
               </div>   
           </div>
         </section>*/
-        //<LoginPage/> 
-       <PageDashboard role="admin"/>
+        <LoginPage/> 
+       //<PageDashboard role="admin"/>
           
       );
     }

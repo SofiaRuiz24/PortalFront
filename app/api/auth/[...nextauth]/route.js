@@ -8,7 +8,8 @@ export const authOptions = {
         KeycloakProvider({
             clientId: process.env.KEYCLOAK_CLIENT_ID,
             clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
-            issuer: process.env.KEYCLOAK_ISSUER,
+            //issuer: process.env.KEYCLOAK_ISSUER,
+            issuer:"https://t72m2pk3-8080.brs.devtunnels.ms/realms/sasha",
             authorization: {
                 params: {
                     scope: "openid email profile",

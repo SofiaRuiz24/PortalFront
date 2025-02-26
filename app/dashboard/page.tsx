@@ -43,7 +43,7 @@ export default function Page({ role }: PageProps) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-          const res = await axios.get('http://localhost:4108/productos');
+          const res = await axios.get('https://t72m2pk3-4108.brs.devtunnels.ms/productos');
           const allProducts =res.data.data.map((producto: { _id: string; nombre: string }) => ({
             id: producto._id,
             nombre: producto.nombre,

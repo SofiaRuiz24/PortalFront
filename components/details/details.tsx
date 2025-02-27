@@ -133,12 +133,12 @@ export function Details() {
                                     <button
                                         key={docIndex}
                                         onClick={() => {
-                                            const url = URL.createObjectURL(new Blob([doc.pdf]));
-                                            const link = document.createElement('a');
-                                            link.href = url;
-                                            link.download = doc.nombre;
+                                            const link = document.createElement("a");
+                                            link.href = doc.pdf; // 🔹 Usamos directamente la URL del backend
+                                            link.download = doc.nombre; // 🔹 Nombre del archivo en la descarga
+                                            link.target = "_blank"; // 🔹 Opcional: abrir en nueva pestaña si el navegador bloquea descargas
+                                            link.rel = "noopener noreferrer"; // 🔹 Seguridad adicional
                                             link.click();
-                                            URL.revokeObjectURL(url);
                                         }}
                                         className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-md text-sm"
                                     >
